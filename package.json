@@ -1,6 +1,6 @@
 {
   "name": "phox",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "Create a photo blog powered by Next.",
   "scripts": {
     "build": "tsc",
@@ -11,6 +11,14 @@
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/herschel666/phox.git"
+  },
+  "bugs": {
+    "url": "https://github.com/herschel666/phox/issues"
+  },
+  "homepage": "https://github.com/herschel666/phox#readme",
   "dependencies": {
     "@types/express": "4.0.37",
     "@types/globby": "6.1.0",

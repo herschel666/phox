@@ -23,6 +23,26 @@ export interface GPS {
   GPSAltitude?: number;
 }
 
+export interface LatLng {
+  lat?: number;
+  lng?: number;
+}
+
+export interface PhotoMeta {
+  aperture: string | null;
+  camera: string;
+  createdAt: string | null;
+  description: string;
+  exposureTime: number | null;
+  flash: boolean;
+  focalLength: string | null;
+  gps: LatLng;
+  iso: number | null;
+  lens: string;
+  orientation: Orientation;
+  title: string;
+}
+
 export interface Coords {
   lat?: number;
   lng?: number;
@@ -66,7 +86,7 @@ export interface Image {
   detailLinkProps?: LinkProps;
   albumLinkProps: LinkProps;
   fileName: string;
-  meta?: any;
+  meta?: PhotoMeta;
 }
 
 export interface Album {

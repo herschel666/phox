@@ -5,7 +5,13 @@ import nodeIptc = require('node-iptc');
 import getImageSize = require('probe-image-size');
 import { decode } from 'utf8';
 import { pReadFile } from './util';
-import { GPS, Orientation, Meta } from './definitions/global';
+import {
+  GPS,
+  LatLng,
+  Orientation,
+  Meta,
+  PhotoMeta,
+} from './definitions/global';
 
 const ORIENTATION_SQUARE = 'square';
 const ORIENTATION_LANDSCAPE = 'landscape';
@@ -63,7 +69,7 @@ const getCreationDateFromString = (date: string): string => {
   return String(new Date(`${year}-${month}-${day}`));
 };
 
-const coordToDecimal = (gps: GPS) => {
+const coordToDecimal = (gps: GPS): LatLng => {
   const latArr = gps.GPSLatitude;
   const lngArr = gps.GPSLongitude;
   if (!latArr || !lngArr) {
@@ -78,21 +84,24 @@ const coordToDecimal = (gps: GPS) => {
   return { lat, lng };
 };
 
-const getDetailsFromMeta = (exif: Meta, iptc: Meta) => ({
-  title: decode(iptc.object_name),
+const getDetailsFromMeta = (exif: Meta, iptc: Meta): PhotoMeta => ({
+  title: decode(iptc.object_name || ''),
   description: marked(decode(iptc.caption || '')),
-  createdAt: getCreationDateFromString(iptc.date_created),
-  camera: exif.image.Model,
-  lens: exif.exif.LensModel,
-  iso: Number(exif.exif.ISO),
-  aperture: exif.exif.FNumber.toFixed(1),
-  focalLength: exif.exif.FocalLength.toFixed(1),
-  exposureTime: Number(exif.exif.ExposureTime),
+  createdAt: iptc.date_created
+    ? getCreationDateFromString(iptc.date_created)
+    : null,
+  camera: exif.image.Model || '',
+  lens: exif.exif.LensModel || '',
+  iso: exif.exif.ISO ? Number(exif.exif.ISO) : null,
+  aperture: exif.exif.FNumber ? exif.exif.FNumber.toFixed(1) : null,
+  focalLength: exif.exif.FocalLength ? exif.exif.FocalLength.toFixed(1) : null,
+  exposureTime: exif.exif.ExposureTime ? Number(exif.exif.ExposureTime) : null,
   flash: Boolean(exif.exif.Flash),
   gps: coordToDecimal(exif.gps),
+  orientation: null,
 });
 
-export default async (filePath: string): Promise<Meta> => {
+export default async (filePath: string): Promise<PhotoMeta> => {
   const exif = await getExifData(filePath);
   const iptc = await getIptcData(filePath);
   const orientation = await getOrientation(filePath);

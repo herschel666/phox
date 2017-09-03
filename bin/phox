@@ -109,7 +109,14 @@ const main = async () => {
     throw err;
   } finally {
     log('Shutting down dev-server ...');
-    process.kill(pid);
+    try {
+      process.kill(pid);
+    } catch (e) {
+      log(`Died while trying to kill process ${pid} ...`);
+      console.error(e.message);
+      console.log(e.stack);
+      process.exit(1);
+    }
   }
 };
 

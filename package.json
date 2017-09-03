@@ -6,7 +6,7 @@
     "build": "tsc",
     "clean": "rm -f ./{lib,lib/definitions,lib/routes,}/*.js",
     "dev": "tsc --watch",
-    "prepublish": "npm-run-all clean build",
+    "prepublishOnly": "npm-run-all clean build",
     "test": "tslint --type-check --format stylish --project tsconfig.json"
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",

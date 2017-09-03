@@ -3,9 +3,10 @@
   "version": "0.1.0-pre",
   "description": "Create a photo blog powered by Next.",
   "scripts": {
-    "dev": "tsc --watch",
     "build": "tsc",
-    "prepublish": "npm run build",
+    "clean": "rm -f ./{lib,lib/definitions,lib/routes,}/*.js",
+    "dev": "tsc --watch",
+    "prepublish": "npm-run-all clean build",
     "test": "tslint --type-check --format stylish --project tsconfig.json"
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
@@ -33,6 +34,8 @@
     "mkdirp": "0.5.1",
     "next": "3.2.1",
     "node-iptc": "1.0.4",
+    "npm-bump": "0.0.22",
+    "npm-run-all": "4.1.1",
     "pretty-ms": "3.0.0",
     "probe-image-size": "3.1.0",
     "rimraf": "2.6.1",

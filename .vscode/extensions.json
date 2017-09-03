@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "Orta.vscode-jest",
+    "andys8.jest-snippets",
+    "christian-kohler.path-intellisense",
+    "eg2.tslint",
+    "pmneo.tsimporter",
+    "esben-petersen.prettier-vscode"
+  ]
+}

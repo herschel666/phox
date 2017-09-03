@@ -1,0 +1,116 @@
+#!/usr/bin/env node
+
+const path = require('path');
+const { spawn, exec } = require('child_process');
+const { promisify } = require('util');
+const rimraf = require('rimraf');
+const delay = require('delay');
+const globby = require('globby');
+const prettyMs = require('pretty-ms');
+const minimist = require('minimist');
+const imagemin = require('imagemin');
+const imageminJpegtran = require('imagemin-jpegtran');
+const imageminPngquant = require('imagemin-pngquant');
+const { version } = require('../package.json');
+const getConfig = require('../lib/config').default;
+const { log } = require('../lib/util');
+
+const CWD = process.cwd();
+
+const argv = minimist(process.argv.slice(2), {
+  boolean: ['h', 'help', 'V', 'version'],
+  alias: {
+    h: 'help',
+    V: 'version',
+  },
+});
+
+if (argv.help) {
+  process.stdout.write(`
+🦊  Build & export your awesome photo site! 🦊
+
+Usage
+  $ npx phox
+
+Options
+  --help, -h         Show this Help section
+  --version, -V      Displays the phox version you're currently using
+
+To configure the build, add a phox.config.js to the root of your
+project and put the desired options into it.
+
+Version: ${version}
+`);
+  process.exit();
+}
+
+if (argv.version) {
+  log(`v${version}`);
+  process.exit();
+}
+
+const userConfig = (() => {
+  try {
+    return require(`${CWD}/phox.config.js`);
+  } catch (e) {
+    return {};
+  }
+})();
+const config = getConfig(userConfig);
+const outDir = path.join(CWD, config.outDir);
+const pExec = promisify(exec);
+const now = Date.now();
+
+const minifyImages = async () => {
+  const plugins = [imageminJpegtran(), imageminPngquant({ quality: '65-80' })];
+  const folder = path.join(outDir, 'static', config.albumsDir);
+  const albums = await globby(path.join(folder, '*'));
+  await Promise.all(
+    albums.map(album =>
+      imagemin([path.join(album, '*.{jpg,png}')], album, {
+        plugins,
+      })
+    )
+  );
+};
+
+const onSuccess = () => {
+  const ms = Date.now() - now;
+  const duration = prettyMs(ms);
+  log(`Successfully built your site in ${duration}.`);
+};
+
+const onError = err => {
+  console.error(err.message);
+  console.error(err.stack);
+};
+
+const main = async () => {
+  log('Cleaning up ...');
+  rimraf.sync(outDir);
+
+  log('Starting dev-server ...');
+  const { pid } = spawn('node', ['server.js']);
+
+  await delay(2000);
+
+  try {
+    log('Building the site ...');
+    await pExec('npx next build');
+
+    log('Exporting the site ...');
+    await pExec(`npx next export -o ${outDir}`);
+
+    await delay(2000);
+
+    log('Minifying the images ...');
+    await minifyImages();
+  } catch (err) {
+    throw err;
+  } finally {
+    log('Shutting down dev-server ...');
+    process.kill(pid);
+  }
+};
+
+main().then(onSuccess, onError);

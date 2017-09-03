@@ -26,11 +26,11 @@ const getDataPaths = (
     .map((x: string) => x.replace(/(\/|\b)$/, '.json'))
     .map((x: string) => ({
       source: `${baseUrl}${x}`,
-      destination: path.join(`${outDir}/data`, x),
+      destination: path.join(outDir, 'data', x),
     }))
     .concat({
-      source: `${baseUrl}/${albumsDir}.json`,
-      destination: path.join(`${outDir}/data`, `${albumsDir}.json`),
+      source: `${baseUrl}/index.json`,
+      destination: path.join(outDir, 'data', 'index.json'),
     });
 
 const fetchData = async (dataItem: DataItem): Promise<DataItem> => {

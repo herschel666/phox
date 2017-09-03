@@ -131,6 +131,8 @@ crashlytics-build.properties
 .editorconfig
 .nvmrc
 .travis.yml
-examples
+.next/
+examples/
+script/
 tsconfig.json
 tslint.json

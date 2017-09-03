@@ -1,5 +1,6 @@
 const createServer = require('phox/server');
 const next = require('next');
+const { port } = require('./phox.config');
 
 const quiet = true;
 const dev = process.env.NODE_ENV !== 'production';
@@ -10,7 +11,7 @@ app
   .prepare()
   .then(() => createServer(app, handle))
   .then(server =>
-    server.listen(3000, err => {
+    server.listen(port, err => {
       if (err) throw err;
       console.log('🦊');
     })

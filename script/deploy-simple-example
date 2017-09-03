@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -ev
+
+cd examples/simple
+yarn
+NODE_ENV=production yarn run export

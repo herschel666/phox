@@ -24,7 +24,7 @@ const getDataForImage = (albumsDir: string, albumName: string) => (
   file: string
 ): Image => ({
   filePath: file,
-  albumLinkProps: util.getAlbumLinkProps(albumsDir, albumName),
+  detailLinkProps: util.getDetailLinkProps(albumsDir, albumName, file),
   fileName: path.basename(file),
 });
 

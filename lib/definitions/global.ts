@@ -84,7 +84,6 @@ export interface Content {
 export interface Image {
   filePath: string;
   detailLinkProps?: LinkProps;
-  albumLinkProps: LinkProps;
   fileName: string;
   meta?: PhotoMeta;
 }

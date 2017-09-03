@@ -1,4 +1,4 @@
-import { getDetailLinkProps } from '../util';
+import { getDetailLinkProps, getAlbumLinkProps } from '../util';
 import {
   App,
   Image,
@@ -58,6 +58,10 @@ export default (
 
   const prev = getImageSibling(albumsDir, album, image, -1);
   const next = getImageSibling(albumsDir, album, image, 1);
+  const back = {
+    title: album.content.meta.title,
+    linkProps: getAlbumLinkProps(albumsDir, album.content.name),
+  };
 
-  res.json({ ...image, next, prev });
+  res.json({ image, next, prev, back });
 };

@@ -41,6 +41,22 @@ const fetchData = async (dataItem: DataItem): Promise<DataItem> => {
   };
 };
 
+// tslint:disable-next-line
+//TODO: sort out how to do this without `[].slice.call`
+const fetchSequentially = async (items: DataItem[]): Promise<DataItem[]> =>
+  Promise.all<DataItem>(
+    [].slice.call(
+      items.reduce(
+        async (accPromise: Promise<DataItem[]>, dataItem: DataItem) => {
+          const acc = await accPromise;
+          const result = await fetchData(dataItem);
+          return acc.concat(result);
+        },
+        Promise.resolve([] as DataItem[])
+      )
+    )
+  );
+
 const createAlbumFolders = (albumsDir: string) => async (
   dataItem: DataItem
 ): Promise<void> => {
@@ -64,7 +80,7 @@ export default async (paths: ExportPathMap): Promise<void> => {
   const baseUrl = `http://${conf.hostname}:${conf.port}/data`;
   await pMkdirp(`${conf.outDir}/data/${conf.albumsDir}`);
   const dataPaths = getDataPaths(paths, baseUrl, conf.albumsDir, conf.outDir);
-  const dataItems = await Promise.all(dataPaths.map(fetchData));
+  const dataItems = await fetchSequentially(dataPaths);
   await Promise.all(dataPaths.map(createAlbumFolders(conf.albumsDir)));
   await Promise.all(dataItems.map(writeData));
 };

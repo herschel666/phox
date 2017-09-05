@@ -1,7 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import Frame from '../components/frame';
-import { port } from '../phox.config';
+import { hostname, port } from '../phox.config';
 
 const Index = ({ content, albums }) => (
   <Frame title="Simple example :: phox">
@@ -24,7 +24,7 @@ const Index = ({ content, albums }) => (
 
 Index.getInitialProps = async ({ req }) => {
   // Only use complete URL on the server-side
-  const host = Boolean(req) ? `http://localhost:${port}` : '';
+  const host = Boolean(req) ? `http://${hostname}:${port}` : '';
   const res = await fetch(`${host}/data/index.json`);
   return await res.json();
 };

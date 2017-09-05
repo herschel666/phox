@@ -4,20 +4,15 @@ import {
   Image,
   Album,
   RequestHandler,
-  LinkProps,
+  PageRef,
 } from '../definitions/global';
 
-interface Sibling {
-  title: string;
-  linkProps: LinkProps;
-}
-
-const getImageSibling = (
+export const getImageSibling = (
   albumsDir: string,
   album: Album,
   image: Image,
   dir: number
-): Sibling | null => {
+): PageRef | null => {
   const imageIndex = album.images.indexOf(image);
   const siblingIndex = imageIndex + dir;
   if (siblingIndex === -1 || siblingIndex === album.images.length) {

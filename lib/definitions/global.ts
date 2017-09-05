@@ -74,7 +74,12 @@ export interface LinkProps {
   };
 }
 
-export interface Content {
+export interface PageRef {
+  title: string;
+  linkProps: LinkProps;
+}
+
+export interface Page {
   meta: SomeObject;
   name: string;
   path: string;
@@ -89,23 +94,25 @@ export interface Image {
 }
 
 export interface Album {
-  content: Content;
+  content: Page;
   images: Image[];
-}
-
-export interface Page {
-  meta: SomeObject;
-  name: string;
-  body: string;
-}
-
-export interface Pages {
-  [path: string]: Page;
 }
 
 export interface Data {
   albums: Album[];
-  pages: Pages;
+  pages: Page[];
+}
+
+export interface FrontpageApiData {
+  albums: PageRef[];
+  content: Page;
+}
+
+export interface ImageApiData {
+  image: Image;
+  next: PageRef;
+  prev: PageRef;
+  back: PageRef;
 }
 
 export interface ExportPathMap {

@@ -2,11 +2,11 @@ import * as express from 'express';
 import * as next from 'next';
 import getConfig from './config';
 import getData from './get-data';
-import commonRoute from './routes/common';
-import frontpageDataRoute from './routes/frontpage-data';
-import albumDataRoute from './routes/album-data';
-import imageDataRoute from './routes/image-data';
-import { Data } from './definitions/global';
+import commonHandler from './handlers/common';
+import frontpageDataHandler from './handlers/frontpage-data';
+import albumDataHandler from './handlers/album-data';
+import imageDataHandler from './handlers/image-data';
+import { Data, Page } from './definitions/global';
 
 export type Handle = (
   req: express.Request,
@@ -19,31 +19,34 @@ export default async (app: next.Server, handle: Handle) => {
   return getData(conf).then(({ albums, pages }: Data) => {
     const server = express();
 
-    server.get('/', commonRoute(app, '/index'));
+    server.get('/', commonHandler(app, '/index'));
 
-    server.get(`/${conf.albumsDir}/:album/`, commonRoute(app, '/album'));
+    server.get(`/${conf.albumsDir}/:album/`, commonHandler(app, '/album'));
 
-    server.get(`/${conf.albumsDir}/:album/:image/`, commonRoute(app, '/image'));
+    server.get(
+      `/${conf.albumsDir}/:album/:image/`,
+      commonHandler(app, '/image')
+    );
 
-    server.get('/:page/', commonRoute(app, '/default'));
+    server.get('/:page/', commonHandler(app, '/default'));
 
     server.get(
       '/data/index.json',
-      frontpageDataRoute(pages.index, conf.albumsDir, albums, app)
+      frontpageDataHandler(pages, albums, conf.albumsDir)
     );
 
     server.get(
       `/data/${conf.albumsDir}/(:album).json`,
-      albumDataRoute(albums, app)
+      albumDataHandler(albums)
     );
 
     server.get(
       `/data/${conf.albumsDir}/(:album)/(:image).json`,
-      imageDataRoute(conf.albumsDir, albums, app)
+      imageDataHandler(conf.albumsDir, albums, app)
     );
 
     server.get('/data/(:page).json', (req, res) =>
-      res.json(pages[req.params.page])
+      res.json(pages.find((page: Page) => page.name === req.params.page))
     );
 
     server.get('*', handle);

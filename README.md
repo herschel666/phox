@@ -171,38 +171,24 @@ The config inside `./phox.config.js` is also respected by `bin/phox`.
 
 ## Exporting the static site
 
-`phox/export` provides two functions to enable you to easily export your site.
+`phox/export` provides a function to easily get the `exportPathMap`, that Next requires to export the static page.
 
-### `getPathMap`
-
-Gathers all the pages of your site and returns a path map, which Next needs to build the static site.
-
-### `writeData`
-
-Takes the path map and writes all the JSON-data from **phox**-HTTP-API into `<outDir>/data`, so it's still available when the site is exported and runs statically.
-
-### Usage of the two functions
-
-Both functions are used in your [`./next.config.js`](https://github.com/zeit/next.js#custom-configuration) inside the asynchronuos `exportPathMap`-method.
-
-An example `next.config.js` might look like this.
+### Usage
 
 ```js
-const { getPathMap, writeData } = require('phox/export');
+const getPathMap = require('phox/export');
 
 module.exports = {
     async exportPathMap() {
-        const paths = await getPathMap();
-        await writeData(paths);
-        return paths;
+        return await getPathMap();
     },
 };
 ```
 
-No run …
+Now run …
 
 ```shell
-$ npm run export
+$ npx phox
 ```
 
 … in your terminal and you're done.

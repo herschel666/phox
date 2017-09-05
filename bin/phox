@@ -13,6 +13,7 @@ const imageminJpegtran = require('imagemin-jpegtran');
 const imageminPngquant = require('imagemin-pngquant');
 const { version } = require('../package.json');
 const getConfig = require('../lib/config').default;
+const writeApiData = require('../lib/write-api-data').default;
 const { log } = require('../lib/util');
 
 const CWD = process.cwd();
@@ -100,8 +101,7 @@ const main = async () => {
 
     log('Exporting the site ...');
     await pExec(`npx next export -o ${outDir}`);
-
-    await delay(2000);
+    await writeApiData(config);
 
     log('Minifying the images ...');
     await minifyImages();

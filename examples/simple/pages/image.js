@@ -2,6 +2,7 @@ import path from 'path';
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import Frame from '../components/frame';
+import { port } from '../phox.config';
 
 const titleWithFallback = title => {
   return title || 'No title';
@@ -48,7 +49,7 @@ const Image = ({ image, back, next, prev }) => (
 );
 
 Image.getInitialProps = async ({ query, req }) => {
-  const host = Boolean(req) ? 'http://localhost:3000' : '';
+  const host = Boolean(req) ? `http://localhost:${port}` : '';
   const { album, image } = query;
   const res = await fetch(
     `${host}/${path.join('data/albums', album, image)}.json`

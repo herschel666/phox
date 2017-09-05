@@ -2,6 +2,7 @@ import path from 'path';
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import Frame from '../components/frame';
+import { port } from '../phox.config';
 
 const Default = ({ meta, body }) => (
   <Frame title={`${meta.title} :: phox`} description={meta.description}>
@@ -17,7 +18,7 @@ const Default = ({ meta, body }) => (
 );
 
 Default.getInitialProps = async ({ query, req }) => {
-  const host = Boolean(req) ? 'http://localhost:3000' : '';
+  const host = Boolean(req) ? `http://localhost:${port}` : '';
   const { page } = query;
   const url = `${host}/${path.join('data', page)}.json`;
   const res = await fetch(url);

@@ -2,6 +2,7 @@ import path from 'path';
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import Frame from '../components/frame';
+import { port } from '../phox.config';
 
 const Album = ({ content, images, url }) => (
   <Frame title={`${content.meta.title} :: phox`}>
@@ -37,7 +38,7 @@ const Album = ({ content, images, url }) => (
 );
 
 Album.getInitialProps = async ({ query, req }) => {
-  const host = Boolean(req) ? 'http://localhost:3000' : '';
+  const host = Boolean(req) ? `http://localhost:${port}` : '';
   const { album } = query;
   const res = await fetch(`${host}/${path.join('data/albums', album)}.json`);
   return await res.json();

@@ -1,5 +1,9 @@
 language: node_js
 
+env:
+  global:
+    - secure: "J9qZwC9K1bpiyXmtyyZLHnWutUh9ZLw5mqplIBQ3Nf3tKCP3TlMYaSnxi4v81i58/Sw+syd2IVRKXdMcUYaHUUD66/ofuVMD7IRjRtIzBjIX06f7uV0gfqnoz47Vuczo2zu/ftqg6Gx9uIYimnMSwLD7V93sCRfFyBhhvP7wtlWYwgIfKxeG/0QNxxLqdQ8B/sV+8wOAHksFg4xDrPaW2UFRlQgPjMxsVY9CuabqZuZIp3mxeY0cYS6liNPNkrDfYNh975ZViUzDxY9X/AtaiEZow1QpIG67CArlZvwYdDCjAcdfLXgrs8TLAXKCQi8X7TO5OPD5R6hEIfiWhWj0/x2e3kAhU7tts4RoB9KDRoFJg6I9EdgDg+mPTIh1und6Eh6KBdim5mrowHD7nL+z+UpFkdRLbKggEGLEuYKW2zCZEVYOUpRDMOmCw3Z7Spzcb75zvVTL8cBgAjQhvqxNwcM1J+NMN7ZXEbcdsNPgD2Jr/QaOA6gpDjqZZmhPSMK8w+MRqIq54VPvRbjilwKenXqLurMtZuLni47yE0NzI30kkrXQT2a16KOlwvZeh1mzsnQ2RvUh8kPAbPVlJLP0G53h9eOiQANI/p7qBgfx6Ah5HPIy+bV3aAjWw0pok1u0pJVRJarDqb1MiEaVLCHWDznshX4o1C/e4SDPjzQ1EF0="
+
 cache:
   yarn: true
   directories:
@@ -8,3 +12,9 @@ cache:
 branches:
   only:
     - master
+
+deploy:
+  provider: script
+  script: script/deploy-simple-example
+  on:
+    branch: master

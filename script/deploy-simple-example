@@ -2,10 +2,8 @@
 
 set -ev
 
-yarn link
 cd examples/simple
 yarn
-yarn link phox
 npx phox
 zip -r website.zip out
 curl -H "Content-Type: application/zip" \

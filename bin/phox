@@ -86,18 +86,20 @@ const onError = err => {
   console.error(err.stack);
 };
 
+process.env.NODE_ENV = 'production';
+
 const main = async () => {
-  log('Cleaning up ...');
-  rimraf.sync(outDir);
-
-  log('Starting dev-server ...');
-  const { pid } = spawn('node', ['server.js']);
-
-  await delay(2000);
-
   try {
+    log('Cleaning up ...');
+    rimraf.sync(outDir);
+
     log('Building the site ...');
     await pExec('npx next build');
+
+    log('Starting dev-server ...');
+    const { pid } = spawn('node', ['server.js']);
+
+    await delay(2000);
 
     log('Exporting the site ...');
     await pExec(`npx next export -o ${outDir}`);

@@ -7,7 +7,8 @@
     "clean": "rm -f ./{lib,lib/definitions,lib/routes,}/*.js",
     "dev": "tsc --watch",
     "prepublishOnly": "npm-run-all clean build",
-    "test": "tslint --type-check --format stylish --project tsconfig.json"
+    "lint": "tslint --type-check --format stylish --project tsconfig.json",
+    "test": "npm run lint && npm run build"
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",

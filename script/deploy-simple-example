@@ -2,9 +2,11 @@
 
 set -ev
 
+yarn link
 cd examples/simple
 yarn
-NODE_ENV=production yarn run export
+yarn link phox
+npx phox
 zip -r website.zip out
 curl -H "Content-Type: application/zip" \
      -H "Authorization: Bearer $NETLIFY_TOKEN" \

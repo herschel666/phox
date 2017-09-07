@@ -178,7 +178,7 @@ There are the following options.
 | outDir     | string | 'out'       | Location of the exported, static site. |
 | port       | number | 3000        | Port of the **phox**-HTTP-API |
 | hostname   | string | 'localhost' | Hostname of the **phox**-HTTP-API |
-| server     | string | 'servre.js' | Filename of the server file |
+| server     | string | 'server.js' | Filename of the server file |
 
 The config inside `./phox.config.js` is also respected by `bin/phox`.
 

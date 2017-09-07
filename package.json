@@ -45,18 +45,19 @@
     "mkdirp": "0.5.1",
     "next": "3.2.1",
     "node-iptc": "1.0.4",
-    "npm-bump": "0.0.22",
-    "npm-run-all": "4.1.1",
     "pretty-ms": "3.0.0",
     "probe-image-size": "3.1.0",
     "rimraf": "2.6.1",
-    "tslint": "5.7.0",
-    "tslint-microsoft-contrib": "5.0.1",
-    "typescript": "2.5.2",
     "utf8": "2.1.2"
   },
   "bin": {
     "phox": "./bin/phox.js"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "npm-bump": "0.0.22",
+    "npm-run-all": "4.1.1",
+    "tslint": "5.7.0",
+    "tslint-microsoft-contrib": "^5.0.1",
+    "typescript": "^2.5.2"
+  }
 }

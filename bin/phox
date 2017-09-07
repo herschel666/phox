@@ -75,20 +75,10 @@ const minifyImages = async () => {
   );
 };
 
-const onSuccess = () => {
-  const ms = Date.now() - now;
-  const duration = prettyMs(ms);
-  log(`Successfully built your site in ${duration}.`);
-};
-
-const onError = err => {
-  console.error(err.message);
-  console.error(err.stack);
-};
-
 process.env.NODE_ENV = 'production';
 
 const main = async () => {
+  let server = null;
   try {
     log('Cleaning up ...');
     rimraf.sync(outDir);
@@ -96,10 +86,10 @@ const main = async () => {
     log('Building the site ...');
     await pExec('npx next build');
 
-    log('Starting dev-server ...');
-    const { pid } = spawn('node', ['server.js']);
+    log('Starting the dev-server ...');
+    server = spawn('node', ['server.js']);
 
-    await delay(2000);
+    await delay(1000);
 
     log('Exporting the site ...');
     await pExec(`npx next export -o ${outDir}`);
@@ -107,19 +97,34 @@ const main = async () => {
 
     log('Minifying the images ...');
     await minifyImages();
-  } catch (err) {
-    log('Something went wrong while phoxing ...');
-    console.error(err.message);
-    console.log(err.stack);
-    process.exit(1);
-  } finally {
-    log('Shutting down dev-server ...');
-    try {
-      process.kill(pid);
-    } catch (e) {}
+  } catch (error) {
+    return { server, error };
   }
+  return { server };
+};
+
+const checkResult = ({ server, error }) => {
+  const exitCode = error ? 1 : 0;
+  if (error) {
+    log('Something went wrong while phoxing ...');
+    console.error('  ', error.message);
+    console.log('  ', error.stack);
+    return server;
+  }
+  const ms = Date.now() - now;
+  const duration = prettyMs(ms);
+  log(`Successfully built your site in ${duration}.`);
+  return { server, exitCode };
+};
+
+const killServer = async ({ server, exitCode }) => {
+  if (server) {
+    process.kill(server.pid);
+    await new Promise(resolve => server.on('close', resolve));
+  }
+  process.exit(exitCode);
 };
 
 main()
-  .then(onSuccess)
-  .catch(onError);
+  .then(checkResult)
+  .then(killServer);

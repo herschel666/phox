@@ -34,8 +34,9 @@ interface CheckResult {
 const CWD = process.cwd();
 
 const { version } = (() => {
+  const fileName = path.join(__dirname, '..', 'package.json');
   try {
-    return JSON.parse(readFileSync('../package.json', 'utf8'));
+    return JSON.parse(readFileSync(fileName, 'utf8'));
   } catch {
     return { version: 'unknown' };
   }

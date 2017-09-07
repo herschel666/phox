@@ -21,12 +21,16 @@
   },
   "homepage": "https://github.com/herschel666/phox#readme",
   "dependencies": {
+    "@types/delay": "2.0.0",
     "@types/express": "4.0.37",
     "@types/globby": "6.1.0",
     "@types/marked": "0.3.0",
+    "@types/minimist": "1.2.0",
     "@types/mkdirp": "0.5.1",
     "@types/next": "2.4.2",
     "@types/node": "8.0.26",
+    "@types/pretty-ms": "3.0.0",
+    "@types/rimraf": "2.0.2",
     "@types/utf8": "2.1.6",
     "delay": "2.0.0",
     "exif": "0.6.0",
@@ -52,7 +56,7 @@
     "utf8": "2.1.2"
   },
   "bin": {
-    "phox": "./bin/phox"
+    "phox": "./bin/phox.js"
   },
   "devDependencies": {}
 }

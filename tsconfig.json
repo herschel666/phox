@@ -6,5 +6,5 @@
     "allowJs": true,
     "noImplicitAny": true
   },
-  "include": ["./lib/**/*", "./export.ts", "./server.ts"]
+  "include": ["./lib/**/*", "./export.ts", "./server.ts", "./bin/phox.ts"]
 }

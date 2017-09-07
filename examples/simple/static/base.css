@@ -1,0 +1,22 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font: normal 18px/1.4 sans-serif;
+  color: #444;
+  background: white;
+}
+
+a {
+  color: #dd5705;
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+  outline: none;
+}

@@ -51,6 +51,7 @@
     "no-void-expression": false,
     "prefer-method-signature": false,
     "interface-name": [true, "never-prefix"],
-    "newline-before-return": false
+    "newline-before-return": false,
+    "no-multiline-string": false
   }
 }

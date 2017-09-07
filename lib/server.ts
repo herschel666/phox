@@ -49,7 +49,11 @@ export default async (app: next.Server, handle: Handle) => {
       res.json(pages.find((page: Page) => page.name === req.params.page))
     );
 
-    server.get('*', handle);
+    // tslint:disable-next-line:no-unnecessary-callback-wrapper
+    server.get('*', (req, res) => {
+      // tslint:disable-next-line:no-floating-promises
+      handle(req, res);
+    });
 
     return server;
   });

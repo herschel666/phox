@@ -56,6 +56,7 @@ export interface Config {
   outDir?: string;
   port?: number;
   hostname?: string;
+  server?: string;
 }
 
 export interface FrontMatter {

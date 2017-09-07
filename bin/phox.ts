@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import * as path from 'path';
-import { readFileSync } from 'fs';
+import { readFileSync, stat } from 'fs';
 import { spawn, exec, ChildProcess } from 'child_process';
 import { promisify } from 'util';
 import * as rimraf from 'rimraf';
@@ -17,12 +17,12 @@ import writeApiData from '../lib/write-api-data';
 import { log } from '../lib/util';
 
 interface Main {
-  server: ChildProcess | null;
+  server?: ChildProcess | null;
   error?:
     | Error
     | {
         message: string;
-        stack: string;
+        stack?: string;
       };
 }
 
@@ -34,9 +34,10 @@ interface CheckResult {
 const CWD = process.cwd();
 
 const { version } = (() => {
+  const fileName = path.join(__dirname, '..', 'package.json');
   try {
-    return JSON.parse(readFileSync('../package.json', 'utf8'));
-  } catch (e) {
+    return JSON.parse(readFileSync(fileName, 'utf8'));
+  } catch {
     return { version: 'unknown' };
   }
 })();
@@ -59,8 +60,8 @@ Usage
   $ npx phox
 
 Options
-  --help, -h         Show this Help section
-  --version, -V      Displays the phox version you're currently using
+  --help, -h     Show this Help section
+  --version, -V  Displays the phox version you're currently using
 
 To configure the build, add a phox.config.js to the root of your
 project and put the desired options into it.
@@ -78,7 +79,15 @@ if (argv.version) {
 const config = getConfig();
 const outDir = path.join(CWD, config.outDir);
 const pExec = promisify(exec);
+const pStat = promisify(stat);
 const now = Date.now();
+
+const NO_SERVER_JS_ERR = `
+./${config.server} is missing.
+
+Visit https://github.com/herschel666/phox#setup
+to learn how to set up the local dev-server.
+`;
 
 const minifyImages = async () => {
   const plugins = [imageminJpegtran(), imageminPngquant({ quality: '65-80' })];
@@ -93,11 +102,27 @@ const minifyImages = async () => {
   );
 };
 
+const serverJsExists = async (): Promise<boolean> => {
+  try {
+    await pStat(config.server);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 process.env.NODE_ENV = 'production';
 
 const main = async (): Promise<Main> => {
   let server = null;
   try {
+    const hasServerJs = await serverJsExists();
+    if (!hasServerJs) {
+      return {
+        error: { message: NO_SERVER_JS_ERR },
+      };
+    }
+
     log('Cleaning up ...');
     rimraf.sync(outDir);
 
@@ -105,7 +130,7 @@ const main = async (): Promise<Main> => {
     await pExec('npx next build');
 
     log('Starting the dev-server ...');
-    server = spawn('node', ['server.js']);
+    server = spawn('node', [config.server]);
 
     // Otherwise the TSC doesn't recognize it
     // as a promise ... #FML
@@ -128,8 +153,10 @@ const checkResult = ({ server, error }: Main): CheckResult => {
   if (error) {
     log('Something went wrong while phoxing ...');
     console.error('  ', error.message);
-    // tslint:disable-next-line:no-console
-    console.log('  ', error.stack);
+    if (error.stack) {
+      // tslint:disable-next-line:no-console
+      console.log('  ', error.stack);
+    }
   } else {
     const ms = Date.now() - now;
     const duration = prettyMs(ms);

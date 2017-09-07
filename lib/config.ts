@@ -15,6 +15,7 @@ export const defaultConfig = {
   outDir: 'out',
   port: 3000,
   hostname: 'localhost',
+  server: 'server.js',
 };
 
 export default (): Config => ({

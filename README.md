@@ -83,13 +83,25 @@ $ npm run dev
 
 The site is now available on http://localhost:3000/.
 
-When everything is ready, export the site so it can be deployed to a static hosting provider.
+When everything is up and running and ready to be released, set up a `next.config.js` in the project's root:
+
+```js
+const getPathMap = require('phox/export');
+
+module.exports = {
+    async exportPathMap() {
+        return await getPathMap();
+    },
+};
+```
+
+Now run …
 
 ```shell
 $ npm run export
 ```
 
-The static site will be in the `./out`-folder.
+That's it. The static site will be in the `./out`-folder.
 
 ## Albums
 
@@ -166,32 +178,9 @@ There are the following options.
 | outDir     | string | 'out'       | Location of the exported, static site. |
 | port       | number | 3000        | Port of the **phox**-HTTP-API |
 | hostname   | string | 'localhost' | Hostname of the **phox**-HTTP-API |
+| server     | string | 'server.js' | Filename of the server file |
 
 The config inside `./phox.config.js` is also respected by `bin/phox`.
-
-## Exporting the static site
-
-`phox/export` provides a function to easily get the `exportPathMap`, that Next requires to export the static page.
-
-### Usage
-
-```js
-const getPathMap = require('phox/export');
-
-module.exports = {
-    async exportPathMap() {
-        return await getPathMap();
-    },
-};
-```
-
-Now run …
-
-```shell
-$ npx phox
-```
-
-… in your terminal and you're done.
 
 ## **phox**-HTTP-API
 

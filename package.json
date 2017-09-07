@@ -52,7 +52,7 @@
     "rimraf": "2.6.1",
     "tslint": "5.7.0",
     "tslint-microsoft-contrib": "5.0.1",
-    "typescript": "2.4.2",
+    "typescript": "2.5.2",
     "utf8": "2.1.2"
   },
   "bin": {

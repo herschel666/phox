@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"@types/delay@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@types/delay/-/delay-2.0.0.tgz#d891f3aa101015ca0f4e9d0d38fd5a4958153ad8"
+
 "@types/express-serve-static-core@*":
   version "4.0.50"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.0.50.tgz#c5a139b5d29d2305aae6d982f69cef36120beacf"
@@ -40,6 +44,10 @@
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.1.tgz#b683eb60be358304ef146f5775db4c0e3696a550"
 
+"@types/minimist@1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
+
 "@types/mkdirp@0.5.1":
   version "0.5.1"
   resolved "https://registry.yarnpkg.com/@types/mkdirp/-/mkdirp-0.5.1.tgz#ea887cd024f691c1ca67cce20b7606b053e43b0f"
@@ -57,9 +65,20 @@
   version "8.0.26"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.26.tgz#4d58be925306fd22b1141085535a0268b8beb189"
 
+"@types/pretty-ms@3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@types/pretty-ms/-/pretty-ms-3.0.0.tgz#c44af8efa730ac2297e3b57dbe7e4d4aeb61d7e4"
+
 "@types/react@*":
   version "16.0.5"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.5.tgz#d713cf67cc211dea20463d2a0b66005c22070c4b"
+
+"@types/rimraf@2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/rimraf/-/rimraf-2.0.2.tgz#7f0fc3cf0ff0ad2a99bb723ae1764f30acaf8b6e"
+  dependencies:
+    "@types/glob" "*"
+    "@types/node" "*"
 
 "@types/serve-static@*":
   version "1.7.32"
@@ -4006,16 +4025,20 @@ performance-now@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-0.2.0.tgz#33ef30c5c77d4ea21c5a53869d91b56d8f2555e5"
 
-phox@0.1.0-alpha.16:
-  version "0.1.0-alpha.16"
-  resolved "https://registry.yarnpkg.com/phox/-/phox-0.1.0-alpha.16.tgz#a03c8fe448204001f8f360211b02faa0a6d5a0e0"
+phox@0.1.0-alpha.17:
+  version "0.1.0-alpha.17"
+  resolved "https://registry.yarnpkg.com/phox/-/phox-0.1.0-alpha.17.tgz#dc9c90c9271d2f2e34c83b84e9d2133e595d2242"
   dependencies:
+    "@types/delay" "2.0.0"
     "@types/express" "4.0.37"
     "@types/globby" "6.1.0"
     "@types/marked" "0.3.0"
+    "@types/minimist" "1.2.0"
     "@types/mkdirp" "0.5.1"
     "@types/next" "2.4.2"
     "@types/node" "8.0.26"
+    "@types/pretty-ms" "3.0.0"
+    "@types/rimraf" "2.0.2"
     "@types/utf8" "2.1.6"
     delay "2.0.0"
     exif "0.6.0"
@@ -4037,7 +4060,7 @@ phox@0.1.0-alpha.16:
     rimraf "2.6.1"
     tslint "5.7.0"
     tslint-microsoft-contrib "5.0.1"
-    typescript "2.4.2"
+    typescript "2.5.2"
     utf8 "2.1.2"
 
 pify@^2.0.0, pify@^2.3.0:
@@ -5143,9 +5166,9 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@2.4.2:
-  version "2.4.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.4.2.tgz#f8395f85d459276067c988aa41837a8f82870844"
+typescript@2.5.2:
+  version "2.5.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.5.2.tgz#038a95f7d9bbb420b1bf35ba31d4c5c1dd3ffe34"
 
 ua-parser-js@^0.7.9:
   version "0.7.14"

@@ -4,21 +4,18 @@ import Frame from '../components/frame';
 import { hostname, port } from '../phox.config';
 
 const Index = ({ content, albums }) => (
-  <Frame title="Simple example :: phox">
-    <div>
-      <h1>{content.meta.title}</h1>
-      <div dangerouslySetInnerHTML={{ __html: content.body }} />
-      <hr />
-      <ul>
-        {albums.map(({ title, linkProps }, i) => (
-          <li key={i}>
-            <Link {...linkProps}>
-              <a>{title}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+  <Frame title="Simple example :: phox" headline={content.meta.title}>
+    <div dangerouslySetInnerHTML={{ __html: content.body }} />
+    <hr />
+    <ul>
+      {albums.map(({ title, linkProps }, i) => (
+        <li key={i}>
+          <Link {...linkProps}>
+            <a>{title}</a>
+          </Link>
+        </li>
+      ))}
+    </ul>
   </Frame>
 );
 

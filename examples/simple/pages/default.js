@@ -5,15 +5,16 @@ import Frame from '../components/frame';
 import { hostname, port } from '../phox.config';
 
 const Default = ({ meta, body }) => (
-  <Frame title={`${meta.title} :: phox`} description={meta.description}>
-    <div>
-      <h1>{meta.title}</h1>
-      <p dangerouslySetInnerHTML={{ __html: body }} />
-      <hr />
-      <Link href="/">
-        <a>« Home</a>
-      </Link>
-    </div>
+  <Frame
+    title={`${meta.title} :: phox`}
+    description={meta.description}
+    headline={meta.title}
+  >
+    <p dangerouslySetInnerHTML={{ __html: body }} />
+    <hr />
+    <Link href="/">
+      <a>« Home</a>
+    </Link>
   </Frame>
 );
 

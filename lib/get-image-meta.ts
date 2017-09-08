@@ -102,9 +102,11 @@ const getDetailsFromMeta = (exif: Meta, iptc: Meta): PhotoMeta => ({
 });
 
 export default async (filePath: string): Promise<PhotoMeta> => {
-  const exif = await getExifData(filePath);
-  const iptc = await getIptcData(filePath);
-  const orientation = await getOrientation(filePath);
+  const [exif, iptc, orientation] = await Promise.all([
+    getExifData(filePath),
+    getIptcData(filePath),
+    getOrientation(filePath),
+  ]);
   const meta = getDetailsFromMeta(exif, iptc);
   return { ...meta, orientation };
 };

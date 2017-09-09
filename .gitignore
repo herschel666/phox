@@ -128,4 +128,5 @@ crashlytics-build.properties
 
 ## Project
 *.js
+*.js.snap
 .next/

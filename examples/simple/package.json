@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "node server.js"
   },
-  "keywords": ["next", "phox"],
+  "keywords": [
+    "next",
+    "phox"
+  ],
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
   "dependencies": {

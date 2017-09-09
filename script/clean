@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+set -ev
+
+rm -f ./{bin,lib,lib/definitions,lib/handlers,test,test/export,test/server,}/*.js
+rm -f ./test/**/__snapshots__/*.js.snap

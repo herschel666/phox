@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+set -ev
+
+yarn run clean
+yarn run lint
+./script/test-server
+./script/test-export

@@ -6,5 +6,19 @@
     "allowJs": true,
     "noImplicitAny": true
   },
-  "include": ["./lib/**/*", "./export.ts", "./server.ts", "./bin/phox.ts"]
+  "include": [
+    "./lib/**/*",
+    "./export.ts",
+    "./server.ts",
+    "./bin/phox.ts",
+    "./test/**/*.ts"
+  ],
+  "exclude": ["./examples/"],
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "skipBabel": true
+      }
+    }
+  }
 }

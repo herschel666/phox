@@ -2,7 +2,13 @@
 
 set -ev
 
+EMPTY=""
+
 yarn run clean
 yarn run lint
-./script/test-server
-./script/test-export
+if [[ "${TEST_TYPE:-$EMPTY}" == "" ]]; then
+  ./script/test-server
+  ./script/test-export
+else
+  ./script/test-$TEST_TYPE
+fi

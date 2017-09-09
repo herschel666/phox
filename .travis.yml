@@ -8,3 +8,6 @@ cache:
 branches:
   only:
     - master
+env:
+  - TEST_TYPE=export
+  - TEST_TYPE=server

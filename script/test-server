@@ -8,15 +8,17 @@ yarn run build
 cd examples/simple
 yarn
 cp ../../server.js node_modules/phox/
-cp -Rv ../../lib/ node_modules/phox/lib/
+cp -fRv ../../lib node_modules/phox/
 node server.js > /dev/null 2>&1 &
 PID=$!
 sleep 5
 cd ../..
-if [ "$1" == "-u" ]; then
+if [[ "$1" == "-u" ]]; then
   npx jest -u --testRegex="\/server\/" || EXIT_CODE=1
 else
   npx jest --testRegex="\/server\/" || EXIT_CODE=1
 fi
 kill $PID
-exit $EXIT_CODE
+if [[ "$EXIT_CODE" == "1" ]]; then
+  exit $EXIT_CODE
+fi

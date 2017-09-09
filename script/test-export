@@ -10,8 +10,8 @@ yarn
 yarn add serve
 cp ../../server.js node_modules/phox/
 cp ../../export.js node_modules/phox/
-cp -Rv ../../lib/ node_modules/phox/lib/
-cp -Rv ../../bin/ node_modules/phox/bin/
+cp -fRv ../../lib node_modules/phox/
+cp -fRv ../../bin node_modules/phox/
 node ./node_modules/phox/bin/phox
 npx serve -n -p 9999 -S -u ./out > /dev/null 2>&1 &
 PID=$!
@@ -26,4 +26,6 @@ kill $PID
 cd examples/simple
 yarn remove serve
 cd ../..
-exit $EXIT_CODE
+if [[ "$EXIT_CODE" == "1" ]]; then
+  exit $EXIT_CODE
+fi

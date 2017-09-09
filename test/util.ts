@@ -21,7 +21,7 @@ export const json = ['/data/index.json'].concat(
 export const url = (pathname: string): string =>
   `http://127.0.0.1:9999${pathname}`;
 
-export const unifiyBuildId = (snapshot: string): string =>
+export const ignoreThingies = (snapshot: string): string =>
   snapshot
     .replace(/_next\/[0-9a-z-]+/g, '_next/snapshot')
     .replace(/"buildId":\d+/g, '"buildId":snapshot')

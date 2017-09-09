@@ -73,14 +73,10 @@
     },
     "testRegex": "(/test/.*|(\\.|/)(test|spec))\\.tsx?$",
     "testPathIgnorePatterns": [
-      "__snapshots__"
+      "node_modules",
+      "__snapshots__",
+      "test/.*/.*\\.js$"
     ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"]
   }
 }

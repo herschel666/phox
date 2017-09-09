@@ -50,8 +50,6 @@ const argv = minimist(process.argv.slice(2), {
   },
 });
 
-const resolve = Promise.resolve.bind(Promise);
-
 if (argv.help) {
   process.stdout.write(`
 🦊  Build & export your awesome photo site! 🦊
@@ -132,9 +130,7 @@ const main = async (): Promise<Main> => {
     log('Starting the dev-server ...');
     server = spawn('node', [config.server]);
 
-    // Otherwise the TSC doesn't recognize it
-    // as a promise ... #FML
-    await delay(1000).then(resolve);
+    await delay(1000);
 
     log('Exporting the site ...');
     await pExec(`npx next export -o ${outDir}`);

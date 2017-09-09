@@ -26,4 +26,6 @@ export const unifiyBuildId = (snapshot: string): string =>
     .replace(/_next\/[0-9a-z-]+/g, '_next/snapshot')
     .replace(/"buildId":\d+/g, '"buildId":snapshot')
     .replace(/"buildId":"[^"]+"/g, '"buildId":"snapshot"')
-    .replace(/"hash":"[^"]+"/g, '"hash":"snapshot"');
+    .replace(/"hash":"[^"]+"/g, '"hash":"snapshot"')
+    .replace(/\/\*#\ssourceMappingURL[^*]+\*\//g, '')
+    .replace(/\/\*@\sourceURL=[^*]+\*\//g, '');

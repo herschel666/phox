@@ -1,0 +1,21 @@
+---
+extends: airbnb
+env:
+  browser: true
+
+plugins:
+  - react
+
+rules:
+  react/jsx-filename-extension:
+    - 1
+    - extensions:
+      - .js
+  comma-dangle:
+    - error
+    - arrays: always-multiline
+      objects: always-multiline
+      imports: always-multiline
+      exports: always-multiline
+      functions: never
+  indent: 2

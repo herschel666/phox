@@ -1,13 +1,14 @@
+import React from 'react';
 import path from 'path';
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import Frame from '../components/frame';
 import { hostname, port } from '../phox.config';
+import * as types from '../prop-types';
 
-const titleWithFallback = title => {
-  return title || 'No title';
-};
+const titleWithFallback = title => title || 'No title';
 
+// eslint-disable react/no-danger
 const Image = ({ image, back, next, prev }) => (
   <Frame
     title={`Photo "${titleWithFallback(image.meta.title)}" :: phox`}
@@ -46,14 +47,23 @@ const Image = ({ image, back, next, prev }) => (
     )}
   </Frame>
 );
+// eslint-enable react/no-danger
 
 Image.getInitialProps = async ({ query, req }) => {
-  const host = Boolean(req) ? `http://${hostname}:${port}` : '';
+  // Only use complete URL on the server-side
+  const host = req ? `http://${hostname}:${port}` : '';
   const { album, image } = query;
   const res = await fetch(
     `${host}/${path.join('data/albums', album, image)}.json`
   );
-  return await res.json();
+  return res.json();
+};
+
+Image.propTypes = {
+  image: types.image.isRequired,
+  back: types.pageRef.isRequired,
+  next: types.pageRef.isRequired,
+  prev: types.pageRef.isRequired,
 };
 
 export default Image;

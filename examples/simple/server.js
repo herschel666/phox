@@ -1,3 +1,4 @@
+// eslint-disable-next-line import/no-unresolved
 const createServer = require('phox/server');
 const next = require('next');
 const { port } = require('./phox.config');
@@ -11,8 +12,11 @@ app
   .prepare()
   .then(() => createServer(app, handle))
   .then(server =>
-    server.listen(port, err => {
-      if (err) throw err;
+    // prettier-ignore
+    server.listen(port, (err) => {
+      if (err) {
+        throw err;
+      }
       console.log('🦊');
     })
   );

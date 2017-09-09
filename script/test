@@ -5,7 +5,8 @@ set -ev
 EMPTY=""
 
 yarn run clean
-yarn run lint
+yarn run lint:phox
+yarn run lint:examples
 if [[ "${TEST_TYPE:-$EMPTY}" == "" ]]; then
   ./script/test-server
   ./script/test-export

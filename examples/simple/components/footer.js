@@ -29,27 +29,29 @@ export default () => (
         display: inline-block;
       }
 
-      span,
+      .item,
       nav a {
         display: inline-block;
         margin-right: 16px;
       }
 
-      span {
+      .item {
         color: black;
       }
 
-      b {
+      .fox {
         padding-left: 8px;
         user-select: none;
         filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.9));
       }
     `}</style>
-    <span>&copy; {year}</span>
-    <span>
-      <a href="https://npm.im/phox" target="_blank">
+    <span className="item">&copy; {year}</span>
+    <span className="item">
+      <a href="https://npm.im/phox" target="_blank" rel="noopener noreferrer">
         Built with phox
-      </a>&nbsp;<b>🦊</b>
+      </a>&nbsp;<span aria-label="Fox emoji" role="img" className="fox">
+        🦊
+      </span>
     </span>
     <nav>
       <Link {...getDefaultLink('about')}>

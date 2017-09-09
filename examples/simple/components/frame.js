@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
-import Link from 'next/link';
 import Footer from './footer';
 import Header from './header';
 
@@ -34,6 +33,10 @@ const Frame = ({ title, headline, description, children }) => (
     </div>
   </div>
 );
+
+Frame.defaultProps = {
+  description: null,
+};
 
 Frame.propTypes = {
   title: PropTypes.string.isRequired,

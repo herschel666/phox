@@ -1,10 +1,14 @@
+import React from 'react';
 import path from 'path';
+import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
 import Link from 'next/link';
 import Frame from '../components/frame';
 import { hostname, port } from '../phox.config';
+import * as types from '../prop-types';
 
-const Album = ({ content, images, url }) => (
+// eslint-disable react/no-danger
+const Album = ({ content, images }) => (
   <Frame title={`${content.meta.title} :: phox`} headline={content.meta.title}>
     &laquo;{' '}
     <Link href="/">
@@ -13,8 +17,8 @@ const Album = ({ content, images, url }) => (
     <hr />
     <div dangerouslySetInnerHTML={{ __html: content.body }} />
     <ul>
-      {images.map(({ filePath, detailLinkProps, meta }, i) => (
-        <li key={i}>
+      {images.map(({ filePath, detailLinkProps, meta }) => (
+        <li key={filePath}>
           <figure>
             <Link {...detailLinkProps}>
               <a>
@@ -32,12 +36,19 @@ const Album = ({ content, images, url }) => (
     </ul>
   </Frame>
 );
+// eslint-enable react/no-danger
 
 Album.getInitialProps = async ({ query, req }) => {
-  const host = Boolean(req) ? `http://${hostname}:${port}` : '';
+  // Only use complete URL on the server-side
+  const host = req ? `http://${hostname}:${port}` : '';
   const { album } = query;
   const res = await fetch(`${host}/${path.join('data/albums', album)}.json`);
-  return await res.json();
+  return res.json();
+};
+
+Album.propTypes = {
+  content: types.page.isRequired,
+  images: PropTypes.arrayOf(types.image).isRequired,
 };
 
 export default Album;

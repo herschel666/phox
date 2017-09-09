@@ -4,7 +4,6 @@ import * as marked from 'marked';
 import nodeIptc = require('node-iptc');
 import getImageSize = require('probe-image-size');
 import { decode } from 'utf8';
-import * as format from 'date-fns/format';
 import { pReadFile } from './util';
 import {
   GPS,
@@ -67,7 +66,9 @@ const getCreationDateFromString = (date: string): string => {
   const year = date.slice(0, 4);
   const month = date.slice(4, 6);
   const day = date.slice(6);
-  return format(new Date(`${year}-${month}-${day}`), 'YYYY-MM-DDTHH:mm:ss');
+  return new Date(`${year}-${month}-${day}`)
+    .toUTCString()
+    .replace(/GMT.*$/, 'GMT');
 };
 
 const coordToDecimal = (gps: GPS): LatLng => {

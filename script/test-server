@@ -8,7 +8,7 @@ yarn run build
 cd examples/simple
 yarn
 cp ../../server.js node_modules/phox/
-cp -r ../../lib/ node_modules/phox/lib/
+cp -Rv ../../lib/ node_modules/phox/lib/
 node server.js > /dev/null 2>&1 &
 PID=$!
 sleep 5

@@ -66,7 +66,9 @@ const getCreationDateFromString = (date: string): string => {
   const year = date.slice(0, 4);
   const month = date.slice(4, 6);
   const day = date.slice(6);
-  return String(new Date(`${year}-${month}-${day}`));
+  return new Date(`${year}-${month}-${day}`)
+    .toUTCString()
+    .replace(/GMT.*$/, 'GMT');
 };
 
 const coordToDecimal = (gps: GPS): LatLng => {

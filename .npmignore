@@ -134,5 +134,7 @@ crashlytics-build.properties
 .next/
 examples/
 script/
+test/
 tsconfig.json
 tslint.json
+yarn-error.log

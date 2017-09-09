@@ -1,8 +1,10 @@
 
-Phox
+🦊 Phox
 ====
 
 > Create a photo blog powered by Next. 🖼
+
+[![Build Status](https://travis-ci.org/herschel666/phox.svg?branch=master)](https://travis-ci.org/herschel666/phox)
 
 **phox**  let's you create a static photo blog with automatic detail pages for every image and EXIF-/IPTC-extraction. Maintain your contents in Markdown and write your views with React.
 

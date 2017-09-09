@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -ev
+
+EMPTY=""
+
+yarn run clean
+yarn run lint
+if [[ "${TEST_TYPE:-$EMPTY}" == "" ]]; then
+  ./script/test-server
+  ./script/test-export
+else
+  ./script/test-$TEST_TYPE
+fi

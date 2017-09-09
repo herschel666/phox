@@ -52,6 +52,7 @@
     "prefer-method-signature": false,
     "interface-name": [true, "never-prefix"],
     "newline-before-return": false,
-    "no-multiline-string": false
+    "no-multiline-string": false,
+    "await-promise": false
   }
 }

@@ -91,5 +91,6 @@
     "singleQuote": true,
     "trailingComma": "es5",
     "jsxBracketSameLine": false
-  }
+  },
+  "typings": "./index.d.ts"
 }

@@ -200,6 +200,18 @@ Returns the contents of arbitrary pages.
 
 _Note: if you set a custom value for `albumsDir` in the configuration, the HTTP-endpoint for albums & images will change accordingly._
 
+## Watching file changes
+
+There's no file-watching & automatic reloading built into **phox** and I currently have no plans on implementing it. But it's possible to get this with [`nodemon`](https://npm.im/nodemon). Install this module globally and use it for running the **phox**-server, by using the following command:
+
+```bash
+$ nodemon -w ./content/ -w ./static/albums/ -e md,jpg server.js
+```
+
+This tells `nodemon` to watch the folders, that contain your markdown files and your photos. It also tells `nodemon` to listen to `*.md`- and `*.jpg`-files only. Every change inside these two folders will make the **phox**-server reload.
+
+_Note: If you've changed the `contentDir`-, the `albumsDir`- and/or the `server`-properties in your `phox.config.js`, you have to adjust the `nodemon`-command accordingly. Otherwise `nodemon` watches folders, that do not exist, and/or executes a JS-file, that does not exist._
+
 ## Contributing
 
 If you have a question or found a bug, feel free [to open an issue](https://github.com/herschel666/phox/issues). If you have an idea, what is wrong, you're highly encouraged, to open a pull request.

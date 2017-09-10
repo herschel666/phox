@@ -6,7 +6,7 @@ import commonHandler from './handlers/common';
 import frontpageDataHandler from './handlers/frontpage-data';
 import albumDataHandler from './handlers/album-data';
 import imageDataHandler from './handlers/image-data';
-import { Data, Page } from './definitions/global';
+import { Server, Page } from './definitions/global';
 
 export type Handle = (
   req: express.Request,
@@ -14,47 +14,54 @@ export type Handle = (
   parsedUrl?: next.UrlLike
 ) => Promise<void>;
 
-export default async (app: next.Server, handle: Handle) => {
-  const conf = getConfig();
-  return getData(conf).then(({ albums, pages }: Data) => {
-    const server = express();
+const config = getConfig();
+const quiet = true;
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev, quiet });
+const handle = app.getRequestHandler();
 
-    server.get('/', commonHandler(app, '/index'));
+export default async (): Promise<Server> => {
+  await app.prepare();
+  const { albums, pages } = await getData(config);
+  const server = express();
 
-    server.get(`/${conf.albumsDir}/:album/`, commonHandler(app, '/album'));
+  server.get('/', commonHandler(app, '/index'));
 
-    server.get(
-      `/${conf.albumsDir}/:album/:image/`,
-      commonHandler(app, '/image')
-    );
+  server.get(`/${config.albumsDir}/:album/`, commonHandler(app, '/album'));
 
-    server.get('/:page/', commonHandler(app, '/default'));
+  server.get(
+    `/${config.albumsDir}/:album/:image/`,
+    commonHandler(app, '/image')
+  );
 
-    server.get(
-      '/data/index.json',
-      frontpageDataHandler(pages, albums, conf.albumsDir)
-    );
+  server.get('/:page/', commonHandler(app, '/default'));
 
-    server.get(
-      `/data/${conf.albumsDir}/(:album).json`,
-      albumDataHandler(albums)
-    );
+  server.get(
+    '/data/index.json',
+    frontpageDataHandler(pages, albums, config.albumsDir)
+  );
 
-    server.get(
-      `/data/${conf.albumsDir}/(:album)/(:image).json`,
-      imageDataHandler(conf.albumsDir, albums, app)
-    );
+  server.get(
+    `/data/${config.albumsDir}/(:album).json`,
+    albumDataHandler(albums)
+  );
 
-    server.get('/data/(:page).json', (req, res) =>
+  server.get(
+    `/data/${config.albumsDir}/(:album)/(:image).json`,
+    imageDataHandler(config.albumsDir, albums, app)
+  );
+
+  server.get(
+    '/data/(:page).json',
+    (req: express.Request, res: express.Response) =>
       res.json(pages.find((page: Page) => page.name === req.params.page))
-    );
+  );
 
-    // tslint:disable-next-line:no-unnecessary-callback-wrapper
-    server.get('*', (req, res) => {
-      // tslint:disable-next-line:no-floating-promises
-      handle(req, res);
-    });
-
-    return server;
+  // tslint:disable-next-line:no-unnecessary-callback-wrapper
+  server.get('*', (req: express.Request, res: express.Response) => {
+    // tslint:disable-next-line:no-floating-promises
+    handle(req, res);
   });
+
+  return { server, app };
 };

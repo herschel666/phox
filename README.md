@@ -38,10 +38,10 @@ Set up a `server.js` in your project-root.
 const createServer = require('phox/server');
 
 createServer().then(({ server }) =>
-  server.listen(3000, (err) => {
-      if (err) throw err;
-      console.log('Server running on port 3000 ...');
-  }));
+    server.listen(3000, (err) => {
+        if (err) throw err;
+        console.log('Server running on port 3000 ...');
+    }));
 ```
 
 Create content and pages. The folder structure should look like this:

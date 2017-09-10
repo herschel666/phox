@@ -184,7 +184,7 @@ The config inside `./phox.config.js` is also respected by `bin/phox`.
 
 ### `/data/index.json`
 
-Returns the frontpage's contents and al list of all the albums with title & `<Link />`-props.
+Returns the frontpage's contents and a list of all the albums with metadata & `<Link />`-props.
 
 ### `/data/albums/(:album).json`
 

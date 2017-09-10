@@ -13,7 +13,10 @@ export const getFrontpageApiData = (
 ): FrontpageApiData => {
   const albumList = albums.map((album: Album) => ({
     linkProps: getAlbumLinkProps(albumsDir, album.content.name),
-    title: album.content.meta.title,
+    meta: {
+      ...album.content.meta,
+      name: album.content.name,
+    },
   }));
   const content = pages.find((page: Page) => page.name === 'frontpage');
   return { albums: albumList, content };

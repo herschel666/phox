@@ -7,7 +7,7 @@
     "clean": "./script/clean",
     "dev": "tsc --watch",
     "prepublishOnly": "npm-run-all clean build",
-    "lint:examples": "eslint --quiet ./examples/**/*.js",
+    "lint:examples": "eslint --quiet './examples/simple/'",
     "lint:phox": "tslint --type-check --format stylish --project tsconfig.json",
     "test": "./script/test"
   },

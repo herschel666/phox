@@ -7,7 +7,6 @@ EXIT_CODE=0
 yarn run build
 cd examples/simple
 yarn
-yarn add serve
 cp ../../server.js node_modules/phox/
 cp ../../export.js node_modules/phox/
 cp -fRv ../../lib node_modules/phox/
@@ -23,9 +22,6 @@ else
   npx jest --testRegex="\/export\/" || EXIT_CODE=1
 fi
 kill $PID
-cd examples/simple
-yarn remove serve
-cd ../..
 if [[ "$EXIT_CODE" == "1" ]]; then
   exit $EXIT_CODE
 fi

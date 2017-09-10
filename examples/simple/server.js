@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-unresolved
 const createServer = require('phox/server');
 const { port } = require('./phox.config');
 

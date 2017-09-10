@@ -6,10 +6,7 @@
   "scripts": {
     "dev": "node server.js"
   },
-  "keywords": [
-    "next",
-    "phox"
-  ],
+  "keywords": ["next", "phox"],
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
   "dependencies": {
@@ -19,5 +16,8 @@
     "prop-types": "15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
+  },
+  "devDependencies": {
+    "serve": "6.0.6"
   }
 }

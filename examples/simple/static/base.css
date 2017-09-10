@@ -20,3 +20,8 @@ a:focus {
   text-decoration: underline;
   outline: none;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}

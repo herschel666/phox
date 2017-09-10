@@ -1,12 +1,11 @@
 import React from 'react';
 import path from 'path';
 import fetch from 'isomorphic-fetch';
-import Link from 'next/link';
-import Frame from '../components/frame';
+import Frame from '../src/components/frame';
+import ImageNav from '../src/components/image-nav';
 import { hostname, port } from '../phox.config';
-import * as types from '../prop-types';
-
-const titleWithFallback = title => title || 'No title';
+import * as types from '../src/prop-types';
+import { titleWithFallback } from '../src/util';
 
 // eslint-disable react/no-danger
 const Image = ({ image, back, next, prev }) => (
@@ -14,37 +13,24 @@ const Image = ({ image, back, next, prev }) => (
     title={`Photo "${titleWithFallback(image.meta.title)}" :: phox`}
     headline={titleWithFallback(image.meta.title)}
   >
-    {prev ? (
-      <Link {...prev.linkProps}>
-        <a>{`« ${titleWithFallback(prev.title)} `}</a>
-      </Link>
-    ) : (
-      '_ '
-    )}
-    |
-    <Link {...back.linkProps}>
-      <a style={{ padding: '0 1em' }}>{`Back to album "${back.title}"`}</a>
-    </Link>
-    |
-    {next ? (
-      <Link {...next.linkProps}>
-        <a>{` ${titleWithFallback(next.title)} »`}</a>
-      </Link>
-    ) : (
-      ' _'
-    )}
-    <hr />
-    <img
-      src={`/${image.filePath}`}
-      alt={image.meta.title}
-      style={{ maxWidth: '100%' }}
-    />
-    {image.meta.description && (
-      <div>
-        <hr />
-        <div dangerouslySetInnerHTML={{ __html: image.meta.description }} />
-      </div>
-    )}
+    <style jsx>{`
+      figure {
+        margin: 36px 0 0 0;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    `}</style>
+    <ImageNav {...{ back, prev, next }} />
+    <figure>
+      <img src={`/${image.filePath}`} alt={image.meta.title} />
+      {image.meta.description && (
+        <figcaption
+          dangerouslySetInnerHTML={{ __html: image.meta.description }}
+        />
+      )}
+    </figure>
   </Frame>
 );
 // eslint-enable react/no-danger
@@ -59,11 +45,16 @@ Image.getInitialProps = async ({ query, req }) => {
   return res.json();
 };
 
+Image.defaultProps = {
+  next: null,
+  prev: null,
+};
+
 Image.propTypes = {
   image: types.image.isRequired,
   back: types.pageRef.isRequired,
-  next: types.pageRef.isRequired,
-  prev: types.pageRef.isRequired,
+  next: types.pageRef,
+  prev: types.pageRef,
 };
 
 export default Image;

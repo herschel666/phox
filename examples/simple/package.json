@@ -14,7 +14,6 @@
   "license": "MIT",
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
-    "next": "^3.2.1",
     "phox": "0.1.0-alpha.17",
     "prop-types": "15.5.10",
     "react": "^15.6.1",

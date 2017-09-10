@@ -104,13 +104,18 @@ export interface Album {
   images: Image[];
 }
 
+export interface FrontpageAlbum {
+  meta: SomeObject;
+  linkProps: LinkProps;
+}
+
 export interface Data {
   albums: Album[];
   pages: Page[];
 }
 
 export interface FrontpageApiData {
-  albums: PageRef[];
+  albums: FrontpageAlbum[];
   content: Page;
 }
 

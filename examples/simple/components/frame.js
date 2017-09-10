@@ -22,6 +22,7 @@ const Frame = ({ title, headline, description, children }) => (
     `}</style>
     <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" type="image/ico" href="/static/favicon.ico" />
       <title>{title}</title>
       {description && <meta name="description" content={description} />}
       <link href="/static/base.css" rel="stylesheet" />

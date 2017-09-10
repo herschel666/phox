@@ -91,5 +91,15 @@
     "singleQuote": true,
     "trailingComma": "es5",
     "jsxBracketSameLine": false
-  }
+  },
+  "keywords": [
+    "next",
+    "static site generator",
+    "react",
+    "gallery",
+    "photo",
+    "album",
+    "spa"
+  ],
+  "files": ["export.js", "server.js"]
 }

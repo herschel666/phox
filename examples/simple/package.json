@@ -8,7 +8,12 @@
   },
   "keywords": [
     "next",
-    "phox"
+    "phox",
+    "gallery",
+    "album",
+    "photos",
+    "react",
+    "react-dom"
   ],
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",

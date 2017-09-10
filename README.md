@@ -36,19 +36,12 @@ Set up a `server.js` in your project-root.
 
 ```js
 const createServer = require('phox/server');
-const next = require('next');
 
-const quiet = true;
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev, quiet });
-const handle = app.getRequestHandler();
-
-app.prepare()
-    .then(() => createServer(app, handle))
-    .then(server =>
-        server.listen(3000, (err) => {
-            if (err) throw err;
-        }));
+createServer().then(({ server }) =>
+  server.listen(3000, (err) => {
+      if (err) throw err;
+      console.log('Server running on port 3000 ...');
+  }));
 ```
 
 Create content and pages. The folder structure should look like this:
@@ -93,7 +86,7 @@ const getPathMap = require('phox/export');
 
 module.exports = {
     async exportPathMap() {
-        return await getPathMap();
+        return getPathMap();
     },
 };
 ```

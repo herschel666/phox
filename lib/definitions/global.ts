@@ -50,6 +50,11 @@ export interface Coords {
 
 export type App = next.Server;
 
+export interface Server {
+  app: App;
+  server: express.Application;
+}
+
 export interface Config {
   contentDir?: string;
   albumsDir?: string;

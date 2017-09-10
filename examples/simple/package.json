@@ -8,13 +8,17 @@
   },
   "keywords": [
     "next",
-    "phox"
+    "phox",
+    "gallery",
+    "album",
+    "photos",
+    "react",
+    "react-dom"
   ],
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
-    "next": "^3.2.1",
     "phox": "0.1.0-alpha.17",
     "prop-types": "15.5.10",
     "react": "^15.6.1",

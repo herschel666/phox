@@ -18,7 +18,7 @@
 Install the requirements:
 
 ```shell
-$ npm install phox next react react-dom --save
+$ npm install phox react react-dom --save
 ```
 
 Add a `scripts`-block to your `package.json`, like …

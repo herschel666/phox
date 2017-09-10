@@ -1,9 +1,9 @@
 import React from 'react';
 import path from 'path';
 import fetch from 'isomorphic-fetch';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
-import Frame from '../components/frame';
+import Frame from '../src/components/frame';
+import HomeLink from '../src/components/home-link';
 import { hostname, port } from '../phox.config';
 
 // eslint-disable react/no-danger
@@ -13,11 +13,8 @@ const Default = ({ meta, body }) => (
     description={meta.description}
     headline={meta.title}
   >
+    <HomeLink />
     <p dangerouslySetInnerHTML={{ __html: body }} />
-    <hr />
-    <Link href="/">
-      <a>« Home</a>
-    </Link>
   </Frame>
 );
 // eslint-enable react/no-danger

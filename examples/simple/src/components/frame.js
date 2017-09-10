@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
+import { MAX_WIDTH, BREAKPOINT_MEDIUM } from '../constants';
 import Footer from './footer';
 import Header from './header';
 
@@ -15,9 +16,20 @@ const Frame = ({ title, headline, description, children }) => (
         min-height: 100vh;
         flex-grow: 1;
       }
+
       main {
-        padding: 18px;
+        width: calc(100% - 36px);
+        max-width: ${MAX_WIDTH};
+        padding: 18px 0;
+        margin: 0 18px;
         flex: 1;
+      }
+
+      @media screen and (min-width: ${BREAKPOINT_MEDIUM}) {
+        main {
+          margin-left: auto;
+          margin-right: auto;
+        }
       }
     `}</style>
     <Head>

@@ -2,38 +2,28 @@ import React from 'react';
 import path from 'path';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-fetch';
-import Link from 'next/link';
-import Frame from '../components/frame';
+import Frame from '../src/components/frame';
+import List from '../src/components/list';
+import HomeLink from '../src/components/home-link';
+import AlbumTile from '../src/components/album-tile';
 import { hostname, port } from '../phox.config';
-import * as types from '../prop-types';
+import * as types from '../src/prop-types';
 
 // eslint-disable react/no-danger
 const Album = ({ content, images }) => (
   <Frame title={`${content.meta.title} :: phox`} headline={content.meta.title}>
-    &laquo;{' '}
-    <Link href="/">
-      <a>Home</a>
-    </Link>
-    <hr />
+    <HomeLink />
     <div dangerouslySetInnerHTML={{ __html: content.body }} />
-    <ul>
+    <List>
       {images.map(({ filePath, detailLinkProps, meta }) => (
-        <li key={filePath}>
-          <figure>
-            <Link {...detailLinkProps}>
-              <a>
-                <img
-                  src={`/${filePath}`}
-                  alt={meta.object_name}
-                  style={{ maxWidth: '100%' }}
-                />
-              </a>
-            </Link>
-            <figcaption>{meta.object_name}</figcaption>
-          </figure>
-        </li>
+        <AlbumTile
+          key={filePath}
+          linkProps={detailLinkProps}
+          src={`/${filePath}`}
+          title={meta.title}
+        />
       ))}
-    </ul>
+    </List>
   </Frame>
 );
 // eslint-enable react/no-danger

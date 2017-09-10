@@ -17,10 +17,10 @@ export const linkProps = PropTypes.shape({
   },
 });
 
-export const pageRef = {
+export const pageRef = PropTypes.shape({
   title: PropTypes.string.isRequired,
   linkProps: linkProps.isRequired,
-};
+});
 
 export const photoMeta = PropTypes.shape({
   aperture: PropTypes.string,

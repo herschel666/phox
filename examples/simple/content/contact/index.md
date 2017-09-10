@@ -8,4 +8,4 @@ Questions about [phox](https://npm.im/phox) or want to contribute??
 ## Drop me a line …
 
 - 🦆 [Mention me on twitter](https://twitter.com/Herschel_R)
-- 📧 [reallypleasejustmentionmeon@twitter.com](mailto:contact@example.org)
+- 📄 [Open an issue](https://github.com/herschel666/phox/issues)

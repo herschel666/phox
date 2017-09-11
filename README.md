@@ -9,7 +9,7 @@
 
 **phox**  let's you create a static photo blog with automatic detail pages for every image and EXIF-/IPTC-extraction. Maintain your contents in Markdown and write your views with React.
 
-**Warning**: **phox** is still a release-candidate, breaking changes may occur.
+**Warning**: **phox** is still in alpha state, breaking changes may occur.
 
 ## How to use
 

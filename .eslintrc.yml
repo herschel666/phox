@@ -11,6 +11,7 @@ rules:
     - 1
     - extensions:
       - .js
+  jsx-a11y/href-no-hash: off
   comma-dangle:
     - error
     - arrays: always-multiline

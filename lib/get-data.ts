@@ -32,7 +32,7 @@ const getMetaFromImage = async (image: Image): Promise<Image> => {
   return { ...image, meta };
 };
 
-const getImages = async (
+export const getImages = async (
   albumsDir: string,
   albumName: string
 ): Promise<Image[]> => {
@@ -42,8 +42,7 @@ const getImages = async (
   return await Promise.all(images.map(getMetaFromImage));
 };
 
-const getPageContent = async (
-  contentDir: string,
+export const getPageContent = async (
   pagePath: string,
   pathPrefix: string = ''
 ): Promise<Page> => {
@@ -58,21 +57,15 @@ const getPageContent = async (
   };
 };
 
-const gatherAlbumData = (albumsDir: string, contentDir: string) => async (
-  file: string
+const getAlbums = (albumsDir: string) => async (
+  albumFile: string
 ): Promise<Album> => {
-  const albumName = file
-    .split(path.sep)
-    .splice(-2)
-    .shift();
+  const albumName = getDirName(albumFile);
   const [content, images] = await Promise.all([
-    getPageContent(contentDir, file, `${albumsDir}/`),
+    getPageContent(albumFile, `${albumsDir}/`),
     getImages(albumsDir, albumName),
   ]);
-  return {
-    content,
-    images,
-  };
+  return { content, images };
 };
 
 const getPages = async (
@@ -82,16 +75,14 @@ const getPages = async (
 ): Promise<Page[]> => {
   const files = await globby(pagesGlob, { ignore: albumsGlob });
   return await Promise.all(
-    files.map(async (file: string) => getPageContent(contentDir, file))
+    files.map(async (file: string) => getPageContent(file))
   );
 };
 
 export default async (config: Config): Promise<Data> => {
   const patterns = util.getGlobPatterns(config);
   const albumFiles = await globby(patterns.albums);
-  const albums = await Promise.all(
-    albumFiles.map(gatherAlbumData(config.albumsDir, config.contentDir))
-  );
+  const albums = await Promise.all(albumFiles.map(getAlbums(config.albumsDir)));
   const pages = await getPages(
     patterns.pages,
     patterns.albums,

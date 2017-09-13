@@ -1,10 +1,21 @@
-import { RequestHandler, Album } from '../definitions/global';
+import { getPageContent, getImages } from '../get-data';
+import { RequestHandler, Config, AlbumApiData } from '../definitions/global';
 
-const getAlbumApiData = (albums: Album[], name: string): Album =>
-  albums.find(({ content }: Album) => content.name === name);
+export const getAlbumApiData = async (
+  config: Config,
+  albumName: string
+): Promise<AlbumApiData | null> => {
+  const albumDir = `${config.contentDir}/${config.albumsDir}/${albumName}/`;
+  const albumFile = `${albumDir}index.md`;
+  const [content, images] = await Promise.all([
+    getPageContent(albumFile, `${config.albumsDir}/`),
+    getImages(config.albumsDir, albumName),
+  ]);
+  return { content, images };
+};
 
-export default (albums: Album[]): RequestHandler => (req, res) => {
-  const album = getAlbumApiData(albums, req.params.album);
+export default (config: Config): RequestHandler => async (req, res) => {
+  const album = await getAlbumApiData(config, req.params.album);
   if (!album) {
     res.status(404).json({ message: 'Not found' });
     return;

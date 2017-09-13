@@ -1,62 +1,85 @@
+import * as path from 'path';
 import { getDetailLinkProps, getAlbumLinkProps } from '../util';
+import { getPageContent, getImages } from '../get-data';
 import {
-  App,
+  Config,
   Image,
-  Album,
   RequestHandler,
+  ImageApiData,
   PageRef,
 } from '../definitions/global';
 
 export const getImageSibling = (
   albumsDir: string,
-  album: Album,
-  image: Image,
-  dir: number
+  albumName: string,
+  images: Image[],
+  imageIndex: number,
+  direction: number
 ): PageRef | null => {
-  const imageIndex = album.images.indexOf(image);
-  const siblingIndex = imageIndex + dir;
-  if (siblingIndex === -1 || siblingIndex === album.images.length) {
+  const siblingIndex = imageIndex + direction;
+  if (siblingIndex === -1 || siblingIndex === images.length) {
     return null;
   }
-  const sibling = album.images[siblingIndex];
+  const sibling = images[siblingIndex];
   return {
     title: sibling.meta.title || '',
-    linkProps: getDetailLinkProps(
-      albumsDir,
-      album.content.name,
-      sibling.filePath
-    ),
+    linkProps: getDetailLinkProps(albumsDir, albumName, sibling.filePath),
   };
 };
 
-export default (
-  albumsDir: string,
-  albums: Album[],
-  app: App
-): RequestHandler => (req, res) => {
-  const notFound = { message: 'Not found' };
-  const album = albums.find(({ content }) => content.name === req.params.album);
-
+export const getImageApiData = async (
+  config: Config,
+  albumName: string,
+  imageName: string
+): Promise<ImageApiData | null> => {
+  const albumDir = path.join(config.contentDir, config.albumsDir, albumName);
+  const album = await getPageContent(
+    `${albumDir}/index.md`,
+    `${config.albumsDir}/`
+  );
   if (!album) {
-    res.status(404).json(notFound);
-    return;
+    return null;
   }
+  const images = await getImages(config.albumsDir, albumName);
+  const image = images.find(
+    ({ fileName }: Image) => fileName.split('.').shift() === imageName
+  );
+  if (!image) {
+    return null;
+  }
+  const imageIndex = images.indexOf(image);
+  const prev = getImageSibling(
+    config.albumsDir,
+    albumName,
+    images,
+    imageIndex,
+    -1
+  );
+  const next = getImageSibling(
+    config.albumsDir,
+    albumName,
+    images,
+    imageIndex,
+    1
+  );
+  const back = {
+    title: album && album.meta.title,
+    linkProps: getAlbumLinkProps(config.albumsDir, album.name),
+  };
+  return { image, next, prev, back };
+};
 
-  const image = album.images.find(
-    ({ fileName }: Image) => fileName.split('.').shift() === req.params.image
+export default (config: Config): RequestHandler => async (req, res) => {
+  const imageApiData = await getImageApiData(
+    config,
+    req.params.album,
+    req.params.image
   );
 
-  if (!image) {
-    res.status(404).json(notFound);
+  if (!imageApiData) {
+    res.status(404).json({ message: 'Not found' });
     return;
   }
 
-  const prev = getImageSibling(albumsDir, album, image, -1);
-  const next = getImageSibling(albumsDir, album, image, 1);
-  const back = {
-    title: album.content.meta.title,
-    linkProps: getAlbumLinkProps(albumsDir, album.content.name),
-  };
-
-  res.json({ image, next, prev, back });
+  res.json(imageApiData);
 };

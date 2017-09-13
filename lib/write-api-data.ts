@@ -48,14 +48,28 @@ const writePagesData = (outDir: string) => async (
 const writeImageData = (
   config: Config,
   album: Album,
+  images: Image[],
   albumFileName: string
 ) => async (image: Image): Promise<void> => {
   const destination = path.join(
     stripFileSuffix(albumFileName),
     `${stripFileSuffix(image.fileName)}.json`
   );
-  const prev = getImageSibling(config.albumsDir, album, image, -1);
-  const next = getImageSibling(config.albumsDir, album, image, 1);
+  const imageIndex = images.indexOf(image);
+  const prev = getImageSibling(
+    config.albumsDir,
+    album.content.name,
+    images,
+    imageIndex,
+    -1
+  );
+  const next = getImageSibling(
+    config.albumsDir,
+    album.content.name,
+    images,
+    imageIndex,
+    1
+  );
   const back = {
     title: album.content.meta.title,
     linkProps: getAlbumLinkProps(config.albumsDir, album.content.name),
@@ -75,7 +89,7 @@ const writeAlbumsData = (config: Config) => async (
   );
   await writeData<Album>(destination, album);
   await Promise.all(
-    album.images.map(writeImageData(config, album, destination))
+    album.images.map(writeImageData(config, album, album.images, destination))
   );
 };
 
@@ -84,7 +98,7 @@ export default async (config: Config): Promise<void> => {
   const albumFolders = albums.map(({ content }: Album) =>
     path.join(config.outDir, 'data', config.albumsDir, content.name)
   );
-  const frontpageApiData = getFrontpageApiData(pages, config.albumsDir, albums);
+  const frontpageApiData = await getFrontpageApiData(config);
   await Promise.all(albumFolders.map(createFolder));
   await Promise.all([
     writeFrontpageData(config.outDir, frontpageApiData),

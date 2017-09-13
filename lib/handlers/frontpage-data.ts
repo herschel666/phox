@@ -1,31 +1,34 @@
-import { getAlbumLinkProps } from '../util';
+import * as globby from 'globby';
+import { getGlobPatterns, getAlbumLinkProps } from '../util';
+import { getPageContent } from '../get-data';
 import {
+  Config,
   RequestHandler,
-  Page,
-  Album,
   FrontpageApiData,
+  Page,
 } from '../definitions/global';
 
-export const getFrontpageApiData = (
-  pages: Page[],
-  albumsDir: string,
-  albums: Album[]
-): FrontpageApiData => {
-  const albumList = albums.map((album: Album) => ({
-    linkProps: getAlbumLinkProps(albumsDir, album.content.name),
+export const getFrontpageApiData = async (
+  config: Config
+): Promise<FrontpageApiData> => {
+  const albumList = await globby(getGlobPatterns(config).albums);
+  const albumData = await Promise.all(
+    albumList.map(async (albumPath: string) =>
+      getPageContent(albumPath, config.albumsDir)
+    )
+  );
+  const albums = albumData.map(({ meta, name }: Page) => ({
+    linkProps: getAlbumLinkProps(config.albumsDir, name),
     meta: {
-      ...album.content.meta,
-      name: album.content.name,
+      ...meta,
+      name,
     },
   }));
-  const content = pages.find((page: Page) => page.name === 'frontpage');
-  return { albums: albumList, content };
+  const content = await getPageContent(`${config.contentDir}/index.md`);
+  return { albums, content };
 };
 
-export default (
-  pages: Page[],
-  albums: Album[],
-  albumsDir: string
-): RequestHandler => (_, res) => {
-  res.json(getFrontpageApiData(pages, albumsDir, albums));
+export default (config: Config): RequestHandler => async (_, res) => {
+  const data = await getFrontpageApiData(config);
+  res.json(data);
 };

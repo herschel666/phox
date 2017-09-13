@@ -126,6 +126,10 @@ export interface ImageApiData {
   back: PageRef;
 }
 
+export type AlbumApiData = Album;
+
+export type PageApiData = Page;
+
 export interface ExportPathMap {
   [x: string]: {
     page: string;

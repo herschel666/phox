@@ -8,6 +8,7 @@ import { pReadFile } from './util';
 import {
   GPS,
   LatLng,
+  Dimensions,
   Orientation,
   Meta,
   PhotoMeta,
@@ -44,11 +45,13 @@ const getIptcData = async (filePath: string): Promise<Meta> => {
   }
 };
 
-const getOrientation = async (filePath: string): Promise<Orientation> => {
+const getDimensions = async (filePath: string): Promise<Dimensions> => {
   const input = createReadStream(filePath);
   let orientation: Orientation = null;
+  let size = null;
   try {
-    const { width, height } = await getImageSize(input);
+    size = await getImageSize(input);
+    const { width, height } = size;
     if (width === height) {
       orientation = ORIENTATION_SQUARE;
     }
@@ -59,7 +62,11 @@ const getOrientation = async (filePath: string): Promise<Orientation> => {
     }
   } catch (e) {} // tslint:disable-line:no-empty
   input.destroy();
-  return orientation;
+  return {
+    width: size.width,
+    height: size.height,
+    orientation,
+  };
 };
 
 const getCreationDateFromString = (date: string): string => {
@@ -86,7 +93,12 @@ const coordToDecimal = (gps: GPS): LatLng => {
   return { lat, lng };
 };
 
-const getDetailsFromMeta = (exif: Meta, iptc: Meta): PhotoMeta => ({
+const getDetailsFromMeta = (
+  exif: Meta,
+  iptc: Meta,
+  dimensions: Dimensions
+): PhotoMeta => ({
+  ...dimensions,
   title: decode(iptc.object_name || ''),
   description: marked(decode(iptc.caption || '')),
   createdAt: iptc.date_created
@@ -100,15 +112,13 @@ const getDetailsFromMeta = (exif: Meta, iptc: Meta): PhotoMeta => ({
   exposureTime: exif.exif.ExposureTime ? Number(exif.exif.ExposureTime) : null,
   flash: Boolean(exif.exif.Flash),
   gps: coordToDecimal(exif.gps),
-  orientation: null,
 });
 
 export default async (filePath: string): Promise<PhotoMeta> => {
-  const [exif, iptc, orientation] = await Promise.all([
+  const [exif, iptc, dimensions] = await Promise.all([
     getExifData(filePath),
     getIptcData(filePath),
-    getOrientation(filePath),
+    getDimensions(filePath),
   ]);
-  const meta = getDetailsFromMeta(exif, iptc);
-  return { ...meta, orientation };
+  return getDetailsFromMeta(exif, iptc, dimensions);
 };

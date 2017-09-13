@@ -8,7 +8,7 @@
   },
   "include": [
     "./index.d.ts",
-    "./lib/**/*",
+    "./lib/**/*.ts",
     "./export.ts",
     "./server.ts",
     "./bin/phox.ts",

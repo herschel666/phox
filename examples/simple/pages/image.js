@@ -8,31 +8,52 @@ import * as types from '../src/prop-types';
 import { titleWithFallback } from '../src/util';
 
 // eslint-disable react/no-danger
-const Image = ({ image, back, next, prev }) => (
-  <Frame
-    title={`Photo "${titleWithFallback(image.meta.title)}" :: phox`}
-    headline={titleWithFallback(image.meta.title)}
-  >
-    <style jsx>{`
-      figure {
-        margin: 36px 0 0 0;
-      }
-      img {
-        max-width: 100%;
-        height: auto;
-      }
-    `}</style>
-    <ImageNav {...{ back, prev, next }} />
-    <figure>
-      <img src={`/${image.filePath}`} alt={image.meta.title} />
-      {image.meta.description && (
-        <figcaption
-          dangerouslySetInnerHTML={{ __html: image.meta.description }}
-        />
-      )}
-    </figure>
-  </Frame>
-);
+const Image = ({ image, back, next, prev }) => {
+  const ratio = image.meta.height / image.meta.width;
+  return (
+    <Frame
+      title={`Photo "${titleWithFallback(image.meta.title)}" :: phox`}
+      headline={titleWithFallback(image.meta.title)}
+    >
+      <style jsx>{`
+        figure {
+          margin: 36px 0 0 0;
+        }
+
+        span {
+          display: block;
+          position: relative;
+          overflow: hidden;
+          width: 100%;
+          height: 0;
+        }
+
+        img {
+          position: absolute;
+          top: 0;
+          right: 0;
+          bottom: 0;
+          left: 0;
+        }
+      `}</style>
+      <ImageNav {...{ back, prev, next }} />
+      <figure>
+        <span
+          style={{
+            paddingTop: `${(ratio * 100).toFixed(6)}%`,
+          }}
+        >
+          <img src={`/${image.filePath}`} alt={image.meta.title} />
+        </span>
+        {image.meta.description && (
+          <figcaption
+            dangerouslySetInnerHTML={{ __html: image.meta.description }}
+          />
+        )}
+      </figure>
+    </Frame>
+  );
+};
 // eslint-enable react/no-danger
 
 Image.getInitialProps = async ({ query, req }) => {

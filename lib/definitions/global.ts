@@ -28,6 +28,12 @@ export interface LatLng {
   lng?: number;
 }
 
+export interface Dimensions {
+  width: number;
+  height: number;
+  orientation: Orientation;
+}
+
 export interface PhotoMeta {
   aperture: string | null;
   camera: string;
@@ -37,10 +43,12 @@ export interface PhotoMeta {
   flash: boolean;
   focalLength: string | null;
   gps: LatLng;
+  height: number;
   iso: number | null;
   lens: string;
   orientation: Orientation;
   title: string;
+  width: number;
 }
 
 export interface Coords {

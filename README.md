@@ -132,6 +132,9 @@ exif.exif.FocalLength  => focalLength
 exif.exif.ExposureTime => exposureTime
 exif.exif.Flash        => flash
 exif.gps               => gps (transformed to { lat, lng })
+ --                    => orientation ('portrait', 'landscape' or 'square')
+ --                    => width (in px)
+ --                    => height (in px)
 ```
 
 The `description` can hold Markdown! All the metadata for an image is provided by the **phox**-HTTP-API.

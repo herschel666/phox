@@ -34,6 +34,8 @@ export const photoMeta = PropTypes.shape({
   iso: PropTypes.number,
   lens: PropTypes.string,
   title: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
   orientation,
 });
 

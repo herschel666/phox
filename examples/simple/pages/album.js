@@ -21,6 +21,8 @@ const Album = ({ content, images }) => (
           linkProps={detailLinkProps}
           src={`/${filePath}`}
           title={meta.title}
+          width={meta.width}
+          height={meta.height}
         />
       ))}
     </List>

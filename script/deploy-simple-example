@@ -6,7 +6,7 @@ cd examples/simple
 yarn
 npx phox
 
-zip -r website.zip out
+zip -r website.zip ./out
 
 curl -H "Content-Type: application/zip" \
      -H "Authorization: Bearer $NETLIFY_KEY" \

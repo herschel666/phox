@@ -18,8 +18,6 @@ branches:
   only:
     - master
 env:
-  - TEST_TYPE=export
-  - TEST_TYPE=server
   - secure: DoQnI2f732SBcau4MYDWDh6Ul0DSjYK0LqSinaWp2FNapW3rUSpbS6D8ucmI0B7aXIJZTpiDvU5q2THIMBGPg4NPNbvRXEhKiInmIoShXdra9iIVFvKVn52TTJOXdKSs6t0fYE+cqAtbCez58VitfoE+oz/h7MEkIktt5Kd9eFBBDYZQ0Qn9bOcxj02h+gwYPhNh8y+n7QxJJU2JCgUl44f0uCU4yB/AQutjyQ4h0zwFqNmX2zNhGjgb5QV9GLpuq525hLmLVQKhoz28Kr9MLg+Jgv95Ha3TZga8Ou2cl9Om7tH23Ym8kTlKCtjy+xi2TQmQg63SI6Wk+WtYhJ8QYfuQOxllY70VSlLEQWkENiU1zpmVVATAEwhxpSZbMYmF0Qe8Y34dm6DkyPQoL+GMnwpZWnL9s49G7ZnmJci8JvOk48kwgbrBvoBqJCYqGWuU3EyivQCp0OUFdce0RYBhvsNH2dLrChpZUJ5NKr0RGfL1O2F+LD4+CV4GnQJB9GHyd/j4+LNH5p6ePpsh54lvkGr8ztOvtnE9RAoR7JAnB3jTgJOn0ecx6Wj3NQfYD4bhP22d6i9Jji6bCy8FhAhH+tYYIRzTI121IvvzjmtcFPAFxCJb1ZfyCupLJagj4E4Wt3JG5JNZ39i94kWnFlL4Dh+ufSFACP6Fn8sOffJe34c=
 
 deploy:
@@ -27,4 +25,3 @@ deploy:
   script: script/deploy-simple-example
   on:
     branch: master
-    condition: [ -z "$NETLIFY_KEY" ]

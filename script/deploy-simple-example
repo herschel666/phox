@@ -3,12 +3,10 @@
 set -ev
 
 cd examples/simple
-yarn
-npx phox
 
 zip -r website.zip ./out
 
 curl -H "Content-Type: application/zip" \
      -H "Authorization: Bearer $NETLIFY_KEY" \
      --data-binary "@website.zip" \
-     https://api.netlify.com/api/v1/sites/phox/deploys
+     https://api.netlify.com/api/v1/sites/phox.netlify.com/deploys

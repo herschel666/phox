@@ -88,7 +88,11 @@ to learn how to set up the local dev-server.
 `;
 
 const minifyImages = async () => {
-  const plugins = [imageminJpegtran(), imageminPngquant({ quality: '65-80' })];
+  const { progressive, quality } = config.imageOptimization;
+  const plugins = [
+    imageminJpegtran({ progressive }),
+    imageminPngquant({ quality }),
+  ];
   const folder = path.join(outDir, 'static', config.albumsDir);
   const albums = await globby(path.join(folder, '*'));
   await Promise.all(

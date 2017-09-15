@@ -1,3 +1,4 @@
+import * as deepmerge from 'deepmerge';
 import { Config } from './definitions/global';
 
 const userConfig = (() => {
@@ -16,9 +17,10 @@ export const defaultConfig = {
   port: 3000,
   hostname: 'localhost',
   server: 'server.js',
+  imageOptimization: {
+    progressive: true,
+    quality: '65-80',
+  },
 };
 
-export default (): Config => ({
-  ...defaultConfig,
-  ...userConfig,
-});
+export default (): Config => deepmerge({}, defaultConfig, userConfig);

@@ -63,6 +63,11 @@ export interface Server {
   server: express.Application;
 }
 
+export interface ImageOptimization {
+  progressive?: boolean;
+  quality?: string;
+}
+
 export interface Config {
   contentDir?: string;
   albumsDir?: string;
@@ -70,6 +75,7 @@ export interface Config {
   port?: number;
   hostname?: string;
   server?: string;
+  imageOptimization?: ImageOptimization;
 }
 
 export interface FrontMatter {

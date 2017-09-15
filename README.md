@@ -40,6 +40,8 @@ Set up a `server.js` in your project-root.
 const createServer = require('phox/server');
 
 createServer().then(({ server }) =>
+    // phox uses port 3000 by default; see section
+    // "Configuration" to learn how to change that
     server.listen(3000, (err) => {
         if (err) throw err;
         console.log('Server running on port 3000 ...');
@@ -172,14 +174,17 @@ module.exports = {
 
 There are the following options.
 
-| Name | Type | Default | Description |
-| :--- | :---: | :--- | :--- |
-| contentDir | string | 'content'   | Location of your Markdown contents. |
-| albumsDir  | string | 'albums'    | Location of your album folders — Markdown contents & images|
-| outDir     | string | 'out'       | Location of the exported, static site. |
-| port       | number | 3000        | Port of the **phox**-HTTP-API |
-| hostname   | string | 'localhost' | Hostname of the **phox**-HTTP-API |
-| server     | string | 'server.js' | Filename of the server file |
+| Name                | Type      | Default       | Description |
+| :-----------------  | :-------: | :------------ | :---------- |
+| `contentDir`        | `string`  | `'content'`   | Location of your Markdown contents. |
+| `albumsDir`         | `string`  | `'albums'`    | Location of your album folders — Markdown contents & images |
+| `outDir`            | `string`  | `'out'`       | Location of the exported, static site. |
+| `port`              | `number`  | `3000`        | Port of the **phox**-HTTP-API |
+| `hostname`          | `string`  | `'localhost'` | Hostname of the **phox**-HTTP-API |
+| `server`            | `string`  | `'server.js'` | Filename of the server file |
+| `imageOptimization` | `object`  |               | Holds configuration for the image optimization during the export |
+| `imageOptimization.progressive`     | `boolean` | `true`        | Lossless conversion to progressive JPGs. |
+| `imageOptimization.quality`         | `string`  | `'65-80'`     | Quality of PNG-compression ([more infos](https://www.npmjs.com/package/imagemin-pngquant#quality)) |
 
 The config inside `./phox.config.js` is also respected by `bin/phox`.
 

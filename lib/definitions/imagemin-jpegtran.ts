@@ -1,5 +1,10 @@
 declare module 'imagemin-jpegtran' {
-  function imageminJpegtran(): {};
+  interface Options {
+    progressive?: boolean;
+    arithmetic?: boolean;
+  }
+
+  function imageminJpegtran(options?: Options): {};
 
   export = imageminJpegtran;
 }

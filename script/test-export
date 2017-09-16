@@ -8,8 +8,10 @@ yarn run build
 cd examples/simple
 yarn
 cp ../../index.js node_modules/phox/
+cp ../../package.json node_modules/phox/
 cp -fRv ../../lib node_modules/phox/
 cp -fRv ../../bin node_modules/phox/
+rm -f ./node_modules/phox/{server,export}.{ts,js}
 node ./node_modules/phox/bin/phox
 npx serve -n -p 9999 -S -u ./out > /dev/null 2>&1 &
 PID=$!

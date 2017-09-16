@@ -37,7 +37,7 @@ Add a `scripts`-block to your `package.json`, like …
 Set up a `server.js` in your project-root.
 
 ```js
-const createServer = require('phox/server');
+const { createServer } = require('phox');
 
 createServer().then(({ server }) =>
     // phox uses port 3000 by default; see section
@@ -86,7 +86,7 @@ The site is now available on http://localhost:3000/.
 When everything is up and running and ready to be released, set up a `next.config.js` in the project's root:
 
 ```js
-const getPathMap = require('phox/export');
+const { getPathMap } = require('phox');
 
 module.exports = {
     async exportPathMap() {

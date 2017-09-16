@@ -26,14 +26,17 @@ const hasNoExifData = (err: ExifError) => err && err.code === NO_EXIF_SEGMENT;
 const getExifData = async (filePath: string): Promise<Meta> =>
   new Promise((resolve, reject) => {
     const args = { image: filePath };
-    const extractor: ExifImage = new ExifImage(args, (err: any, data: Exif) => {
-      if (isError(err)) {
-        reject({});
-        return;
+    const extractor: ExifImage = new ExifImage(
+      args,
+      (err: any, data?: Exif) => {
+        if (isError(err)) {
+          reject({});
+          return;
+        }
+        const exif = hasNoExifData(err) ? extractor.exifData : data;
+        resolve(exif);
       }
-      const exif = hasNoExifData(err) ? extractor.exifData : data;
-      resolve(exif);
-    });
+    );
   });
 
 const getIptcData = async (filePath: string): Promise<Meta> => {

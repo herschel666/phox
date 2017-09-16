@@ -5,7 +5,7 @@ declare module 'exif' {
     image: string;
   }
 
-  interface Exif {
+  export interface Exif {
     [x: string]: any;
   }
 

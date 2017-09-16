@@ -1,5 +1,5 @@
 import { createReadStream } from 'fs';
-import { ExifImage, TYPE_NO_EXIF_SEGMENT, ExifError } from 'exif';
+import { ExifImage, TYPE_NO_EXIF_SEGMENT, Exif, ExifError } from 'exif';
 import * as marked from 'marked';
 import nodeIptc = require('node-iptc');
 import getImageSize = require('probe-image-size');
@@ -26,7 +26,7 @@ const hasNoExifData = (err: ExifError) => err && err.code === NO_EXIF_SEGMENT;
 const getExifData = async (filePath: string): Promise<Meta> =>
   new Promise((resolve, reject) => {
     const args = { image: filePath };
-    const extractor: ExifImage = new ExifImage(args, (err, data) => {
+    const extractor: ExifImage = new ExifImage(args, (err: any, data: Exif) => {
       if (isError(err)) {
         reject({});
         return;

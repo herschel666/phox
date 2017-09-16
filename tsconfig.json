@@ -4,13 +4,13 @@
     "target": "es2015",
     "jsx": "react",
     "allowJs": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "typeRoots": ["lib/definitions", "node_modules/@types"]
   },
   "include": [
     "./index.d.ts",
     "./lib/**/*.ts",
-    "./export.ts",
-    "./server.ts",
+    "./index.ts",
     "./bin/phox.ts",
     "./test/**/*.ts"
   ],

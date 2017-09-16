@@ -2,6 +2,7 @@
   "name": "phox",
   "version": "0.1.0-alpha.23",
   "description": "Create a photo blog powered by Next.",
+  "main": "index.js",
   "scripts": {
     "build": "tsc",
     "clean": "./script/clean",
@@ -93,5 +94,5 @@
     "trailingComma": "es5",
     "jsxBracketSameLine": false
   },
-  "typings": "./index.d.ts"
+  "typings": "./typings.d.ts"
 }

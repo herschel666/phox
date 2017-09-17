@@ -5,7 +5,8 @@
     "jsx": "react",
     "allowJs": true,
     "noImplicitAny": true,
-    "typeRoots": ["lib/definitions", "node_modules/@types"]
+    "typeRoots": ["lib/definitions", "node_modules/@types"],
+    "lib": ["dom", "es7"]
   },
   "include": [
     "./index.d.ts",

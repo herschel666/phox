@@ -7,7 +7,7 @@ EXIT_CODE=0
 yarn run build
 cd examples/simple
 yarn
-cp ../../server.js node_modules/phox/
+cp ../../index.js node_modules/phox/
 cp -fRv ../../lib node_modules/phox/
 node server.js > /dev/null 2>&1 &
 PID=$!

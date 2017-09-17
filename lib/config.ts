@@ -23,4 +23,4 @@ export const defaultConfig = {
   },
 };
 
-export default (): Config => deepmerge({}, defaultConfig, userConfig);
+export default (): Config => deepmerge(defaultConfig, userConfig);

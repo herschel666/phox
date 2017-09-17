@@ -129,6 +129,8 @@ crashlytics-build.properties
 ## Project
 .vscode
 .editorconfig
+.eslintignore
+.eslintrc.yml
 .nvmrc
 .travis.yml
 .next/
@@ -138,3 +140,4 @@ test/
 tsconfig.json
 tslint.json
 yarn-error.log
+yarn.lock

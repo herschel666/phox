@@ -1,6 +1,6 @@
 {
   "name": "phox",
-  "version": "0.1.0-alpha.23",
+  "version": "0.1.0-alpha.24",
   "description": "Create a photo blog powered by Next.",
   "main": "index.js",
   "scripts": {

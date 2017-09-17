@@ -8,13 +8,13 @@ import albumDataHandler from './handlers/album-data';
 import imageDataHandler from './handlers/image-data';
 import { Server } from './definitions/global';
 
-const config = getConfig();
-const quiet = true;
-const dev = process.env.NODE_ENV !== 'production';
-const app = next({ dev, quiet });
-const handle = app.getRequestHandler();
-
 export default async (): Promise<Server> => {
+  const config = getConfig();
+  const quiet = true;
+  const dev = process.env.NODE_ENV !== 'production';
+  const app = next({ dev, quiet });
+  const handle = app.getRequestHandler();
+
   await app.prepare();
   const server = express();
 

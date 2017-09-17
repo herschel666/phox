@@ -130,7 +130,7 @@ crashlytics-build.properties
 .vscode
 .editorconfig
 .eslintignore
-.eslintrc
+.eslintrc.yml
 .nvmrc
 .travis.yml
 .next/

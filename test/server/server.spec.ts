@@ -22,3 +22,13 @@ describe('Server JSON', async () => {
     )
   );
 });
+
+describe('Misc', async () =>
+  test('Favicon.ico', async () => {
+    const options = {
+      uri: url('/favicon.ico'),
+      simple: false,
+    };
+    const result = await request(options);
+    expect(ignoreThingies(result)).toMatchSnapshot();
+  }));

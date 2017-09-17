@@ -7,7 +7,8 @@ export interface SomeObject {
 
 export type RequestHandler = (
   req: express.Request,
-  res: express.Response
+  res: express.Response,
+  next?: express.NextFunction
 ) => void;
 
 export type Meta = SomeObject;

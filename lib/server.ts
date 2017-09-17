@@ -2,6 +2,7 @@ import * as express from 'express';
 import * as next from 'next';
 import getConfig from './config';
 import commonHandler from './handlers/common';
+import pageHandler from './handlers/page';
 import pageDataHandler from './handlers/page-data';
 import frontpageDataHandler from './handlers/frontpage-data';
 import albumDataHandler from './handlers/album-data';
@@ -27,7 +28,7 @@ export default async (): Promise<Server> => {
     commonHandler(app, '/image')
   );
 
-  server.get('/:page/', commonHandler(app, '/default'));
+  server.get('/:page/', pageHandler(config, app, '/default'));
 
   server.get('/data/index.json', frontpageDataHandler(config));
 

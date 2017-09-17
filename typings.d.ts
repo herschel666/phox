@@ -1,7 +1,7 @@
-import * as Phox from './lib/definitions/global';
+import * as phox from './lib/definitions/global';
 
-export as namespace Phox;
-export default Phox;
+export as namespace phox;
+export default phox;
 
-export function createServer(): Promise<Phox.Server>;
-export function getPathMap(): Promise<Phox.ExportPathMap>;
+export function createServer(): Promise<phox.Server>;
+export function getPathMap(): Promise<phox.ExportPathMap>;

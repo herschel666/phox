@@ -10,8 +10,6 @@
 
 **phox**  let's you create a static photo blog with automatic detail pages for every image and EXIF-/IPTC-extraction. Maintain your contents in Markdown and write your views with React.
 
-**Warning**: **phox** is still in alpha state, breaking changes may occur.
-
 ## Built with phox 🚀
 
  - [ek|photos](https://photos.klg.bz/) — [[source](https://github.com/herschel666/photoblog/)]

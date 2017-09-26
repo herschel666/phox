@@ -12,7 +12,10 @@
 
 **Warning**: **phox** is still in alpha state, breaking changes may occur.
 
-🚀 **[Demo: see phox in action.](https://phox.netlify.com/)**
+## Built with phox 🚀
+
+ - [ek|photos](https://photos.klg.bz/) — [[source](https://github.com/herschel666/photoblog/)]
+ - [Simple Example](https://phox.netlify.com/) — [[source](https://github.com/herschel666/phox/tree/master/examples/simple)]
 
 ## How to use
 

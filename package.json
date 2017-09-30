@@ -12,7 +12,7 @@
     "lint:phox": "tslint --type-check --format stylish --project tsconfig.json",
     "test": "./script/test",
     "semantic-release":
-      "semantic-release pre && npm publish && semantic-release post"
+      "npx semantic-release pre && npm publish && npx semantic-release post"
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",

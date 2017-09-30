@@ -3,7 +3,7 @@
 set -ev
 
 cd examples/simple
-npm update phox
+yarn upgrade phox --cwd examples/simple/
 
 zip -r website.zip ./out
 

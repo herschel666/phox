@@ -1,6 +1,6 @@
 {
   "name": "phox",
-  "version": "0.1.0",
+  "version": "0.1.0-development",
   "description": "Create a photo blog powered by Next.",
   "main": "index.js",
   "scripts": {
@@ -10,13 +10,15 @@
     "prepublishOnly": "npm-run-all clean build",
     "lint:examples": "eslint --quiet './examples/simple/'",
     "lint:phox": "tslint --type-check --format stylish --project tsconfig.json",
-    "test": "./script/test"
+    "test": "./script/test",
+    "semantic-release":
+      "semantic-release pre && npm publish && semantic-release post"
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/herschel666/phox.git"
+    "url": "https://github.com/herschel666/phox.git"
   },
   "bugs": {
     "url": "https://github.com/herschel666/phox/issues"
@@ -52,6 +54,7 @@
     "pretty-ms": "3.0.0",
     "probe-image-size": "3.1.0",
     "rimraf": "2.6.1",
+    "semantic-release-cli": "3.2.0",
     "utf8": "2.1.2"
   },
   "bin": {
@@ -75,7 +78,8 @@
     "ts-jest": "21.0.0",
     "tslint": "5.7.0",
     "tslint-microsoft-contrib": "5.0.1",
-    "typescript": "2.5.2"
+    "typescript": "2.5.2",
+    "semantic-release": "^8.0.3"
   },
   "jest": {
     "transform": {

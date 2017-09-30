@@ -3,6 +3,7 @@
 set -ev
 
 cd examples/simple
+npm update phox
 
 zip -r website.zip ./out
 

@@ -6,6 +6,8 @@ import { LinkProps, Config } from './definitions/global';
 
 export const pReadFile = promisify(readFile);
 
+export const stripSlashes = (s: string): string => s.replace(/^\/*|\/*$/g, '');
+
 export const log = (...args: any[]) => {
   const first = [`🦊  ${args.shift()}`];
   // tslint:disable-next-line:no-console

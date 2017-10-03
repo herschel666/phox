@@ -1,6 +1,7 @@
 import * as express from 'express';
 import * as next from 'next';
 import getConfig from './config';
+import { initCachePurger } from './get-data';
 import commonHandler from './handlers/common';
 import pageHandler from './handlers/page';
 import pageDataHandler from './handlers/page-data';
@@ -15,6 +16,8 @@ export default async (): Promise<Server> => {
   const dev = process.env.NODE_ENV !== 'production';
   const app = next({ dev, quiet });
   const handle = app.getRequestHandler();
+
+  initCachePurger(config);
 
   await app.prepare();
   const server = express();

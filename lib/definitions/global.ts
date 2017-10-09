@@ -48,6 +48,7 @@ export interface PhotoMeta {
   iso: number | null;
   lens: string;
   orientation: Orientation;
+  tags: string[];
   title: string;
   width: number;
 }
@@ -119,6 +120,10 @@ export interface Album {
   images: Image[];
 }
 
+export interface Tags {
+  [x: string]: Image[];
+}
+
 export interface FrontpageAlbum {
   meta: SomeObject;
   linkProps: LinkProps;
@@ -127,6 +132,7 @@ export interface FrontpageAlbum {
 export interface Data {
   albums: Album[];
   pages: Page[];
+  tags: Tags;
 }
 
 export interface FrontpageApiData {
@@ -142,6 +148,11 @@ export interface ImageApiData {
 }
 
 export type AlbumApiData = Album;
+
+export interface TagApiData {
+  title: string;
+  images: Image[];
+}
 
 export type PageApiData = Page;
 

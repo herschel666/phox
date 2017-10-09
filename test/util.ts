@@ -10,6 +10,9 @@ export const html = [
   '/albums/mountains/1-facundo-loza-2194/',
   '/albums/mountains/2-arthur-105596/',
   '/albums/mountains/3-raul-taciu-203095/',
+  '/tag/forest/',
+  '/tag/mountain/',
+  '/tag/windows/',
 ];
 
 export const json = ['/data/index.json'].concat(

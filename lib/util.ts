@@ -8,6 +8,9 @@ export const pReadFile = promisify(readFile);
 
 export const stripSlashes = (s: string): string => s.replace(/^\/*|\/*$/g, '');
 
+export const sortAlphabetically = (a: string, b: string): number =>
+  a.localeCompare(b);
+
 export const log = (...args: any[]) => {
   const first = [`🦊  ${args.shift()}`];
   // tslint:disable-next-line:no-console

@@ -4,7 +4,7 @@ import * as marked from 'marked';
 import nodeIptc = require('node-iptc');
 import getImageSize = require('probe-image-size');
 import { decode } from 'utf8';
-import { pReadFile } from './util';
+import { pReadFile, sortAlphabetically } from './util';
 import {
   GPS,
   LatLng,
@@ -103,6 +103,7 @@ const getDetailsFromMeta = (
 ): PhotoMeta => ({
   ...dimensions,
   title: decode(iptc.object_name || ''),
+  tags: (iptc.keywords || []).map(decode).sort(sortAlphabetically),
   description: marked(decode(iptc.caption || '')),
   createdAt: iptc.date_created
     ? getCreationDateFromString(iptc.date_created)

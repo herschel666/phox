@@ -7,6 +7,7 @@ import pageHandler from './handlers/page';
 import pageDataHandler from './handlers/page-data';
 import frontpageDataHandler from './handlers/frontpage-data';
 import albumDataHandler from './handlers/album-data';
+import tagDataHandler from './handlers/tag-data';
 import imageDataHandler from './handlers/image-data';
 import { Server } from './definitions/global';
 
@@ -31,6 +32,8 @@ export default async (): Promise<Server> => {
     commonHandler(app, '/image')
   );
 
+  server.get('/tag/:tag/', commonHandler(app, '/tag'));
+
   server.get('/:page/', pageHandler(config, app, '/default'));
 
   server.get('/data/index.json', frontpageDataHandler(config));
@@ -44,6 +47,8 @@ export default async (): Promise<Server> => {
     `/data/${config.albumsDir}/(:album)/(:image).json`,
     imageDataHandler(config)
   );
+
+  server.get('/data/tag/(:tag).json', tagDataHandler(config));
 
   server.get('/data/(:page).json', pageDataHandler(config));
 

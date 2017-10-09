@@ -19,17 +19,32 @@ interface PageCache {
 }
 
 interface ImageCache {
-  [pattern: string]: Image;
+  [filePath: string]: Image;
+}
+
+interface TagCache {
+  [name: string]: Image[];
 }
 
 let pageCache: PageCache = {};
 let imageCache: ImageCache = {};
+let tagCache: TagCache = {};
 
 const getDirName = (pathName: string): string =>
   path
     .dirname(pathName)
     .split(path.sep)
     .pop();
+
+const sortTagImages = (images: Image[]): Image[] =>
+  images.sort((a: Image, b: Image): number =>
+    a.meta.title.localeCompare(b.meta.title)
+  );
+
+const sortTagCacheAlphabetically = (t: TagCache): TagCache =>
+  Object.keys(t)
+    .sort(util.sortAlphabetically)
+    .reduceRight((a, b) => ({ [b]: sortTagImages(t[b]), ...a }), {});
 
 const removeFromCache = (cacheType: 'page' | 'image') => (
   filePath: string
@@ -65,6 +80,68 @@ const removeFromCache = (cacheType: 'page' | 'image') => (
   }
 };
 
+const addImageToTagCache = (image: Image): TagCache =>
+  image.meta.tags.reduce(
+    (acc: TagCache, tag: string): TagCache => {
+      if (!Boolean(acc[tag])) {
+        acc[tag] = [image];
+        return acc;
+      }
+
+      const imageIndex = acc[tag].findIndex(
+        (img: Image): boolean => img.filePath === image.filePath
+      );
+
+      if (imageIndex === -1) {
+        acc[tag] = acc[tag].concat(image);
+      } else {
+        acc[tag] = acc[tag]
+          .slice(0, imageIndex)
+          .concat([image].concat(acc[tag].slice(imageIndex + 1)));
+      }
+      return acc;
+    },
+    { ...tagCache }
+  );
+
+const removeImageFromTagCache = (filePath: string): void => {
+  if (!filePath.endsWith('.jpg')) {
+    return;
+  }
+  const relativeFilePath = util.stripSlashes(
+    filePath.replace(process.cwd(), '')
+  );
+
+  tagCache = sortTagCacheAlphabetically(
+    Object.keys(tagCache).reduce(
+      (acc: TagCache, tag: string): TagCache => {
+        const imageIndex = tagCache[tag].findIndex(
+          (img: Image): boolean =>
+            util.stripSlashes(img.filePath) === relativeFilePath
+        );
+
+        if (imageIndex === -1) {
+          return acc;
+        }
+
+        const images = tagCache[tag]
+          .slice(0, imageIndex)
+          .concat(acc[tag].slice(imageIndex + 1));
+
+        if (!images.length) {
+          return acc;
+        }
+
+        return {
+          ...acc,
+          [tag]: images,
+        };
+      },
+      { ...tagCache }
+    )
+  );
+};
+
 const getDataForImage = (albumsDir: string, albumName: string) => (
   file: string
 ): Image => ({
@@ -80,10 +157,12 @@ const getMetaFromImage = async (image: Image): Promise<Image> => {
   }
 
   const meta = await getImageMeta(image.filePath);
+  const imageWithMeta = { ...image, meta };
   imageCache = Object.assign({}, imageCache, {
-    [strippedImagePath]: { ...image, meta },
+    [strippedImagePath]: imageWithMeta,
   });
-  return imageCache[strippedImagePath];
+  tagCache = sortTagCacheAlphabetically(addImageToTagCache(imageWithMeta));
+  return imageWithMeta;
 };
 
 export const getImages = async (
@@ -151,6 +230,28 @@ export const initCachePurger = (config: Config): void => {
   pagesMonitor.on('unlink', removeFromCache('page'));
   imagesMonitor.on('change', removeFromCache('image'));
   imagesMonitor.on('unlink', removeFromCache('image'));
+  imagesMonitor.on('change', removeImageFromTagCache);
+  imagesMonitor.on('unlink', removeImageFromTagCache);
+};
+
+export const getImagesforTag = async (
+  config: Config,
+  tag: string
+): Promise<Image[]> => {
+  if (Boolean(tagCache[tag])) {
+    return tagCache[tag];
+  }
+
+  const { albums } = util.getGlobPatterns(config);
+  const albumFiles = await globby(albums);
+  await Promise.all(
+    albumFiles.map(async (albumFile: string): Promise<void> => {
+      const albumName = getDirName(albumFile);
+      await getImages(config.albumsDir, albumName);
+    })
+  );
+
+  return tagCache[tag] || [];
 };
 
 export default async (config: Config): Promise<Data> => {
@@ -162,5 +263,6 @@ export default async (config: Config): Promise<Data> => {
     patterns.albums,
     config.contentDir
   );
-  return { albums, pages };
+  const tags = tagCache;
+  return { albums, pages, tags };
 };

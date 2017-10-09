@@ -11,8 +11,10 @@ import {
   Album,
   Image,
   Page,
+  Tags,
   FrontpageApiData,
   ImageApiData,
+  TagApiData,
 } from './definitions/global';
 
 const pWriteFile = promisify(writeFile);
@@ -93,12 +95,26 @@ const writeAlbumsData = (config: Config) => async (
   );
 };
 
+const writeTagsData = async (tagFolder: string, tags: Tags): Promise<void[]> =>
+  Promise.all(
+    Object.keys(tags).map(async (tag: string): Promise<void> => {
+      const destination = path.join(tagFolder, `${tag}.json`);
+      const data = {
+        title: tag,
+        images: tags[tag],
+      };
+      await writeData<TagApiData>(destination, data);
+    })
+  );
+
 export default async (config: Config): Promise<void> => {
-  const { albums, pages } = await getData(config);
+  const { albums, pages, tags } = await getData(config);
   const albumFolders = albums.map(({ content }: Album) =>
     path.join(config.outDir, 'data', config.albumsDir, content.name)
   );
+  const tagFolder = path.join(config.outDir, 'data', 'tag');
   const frontpageApiData = await getFrontpageApiData(config);
+  await pMkdirp(tagFolder);
   await Promise.all(albumFolders.map(createFolder));
   await Promise.all([
     writeFrontpageData(config.outDir, frontpageApiData),
@@ -108,5 +124,6 @@ export default async (config: Config): Promise<void> => {
         .map(writePagesData(config.outDir))
     ),
     Promise.all(albums.map(writeAlbumsData(config))),
+    writeTagsData(tagFolder, tags),
   ]);
 };

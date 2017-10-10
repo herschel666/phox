@@ -14,7 +14,7 @@ const Default = ({ meta, body }) => (
     headline={meta.title}
   >
     <HomeLink />
-    <p dangerouslySetInnerHTML={{ __html: body }} />
+    <div dangerouslySetInnerHTML={{ __html: body }} />
   </Frame>
 );
 // eslint-enable react/no-danger

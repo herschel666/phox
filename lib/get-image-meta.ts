@@ -103,7 +103,10 @@ const getDetailsFromMeta = (
 ): PhotoMeta => ({
   ...dimensions,
   title: decode(iptc.object_name || ''),
-  tags: (iptc.keywords || []).map(decode).sort(sortAlphabetically),
+  tags: (iptc.keywords || [])
+    .map(decode)
+    .filter(Boolean)
+    .sort(sortAlphabetically),
   description: marked(decode(iptc.caption || '')),
   createdAt: iptc.date_created
     ? getCreationDateFromString(iptc.date_created)

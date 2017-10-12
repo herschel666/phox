@@ -81,28 +81,28 @@ const removeFromCache = (cacheType: 'page' | 'image') => (
 };
 
 const addImageToTagCache = (image: Image): TagCache =>
-  image.meta.tags.reduce(
-    (acc: TagCache, tag: string): TagCache => {
-      if (!Boolean(acc[tag])) {
-        acc[tag] = [image];
-        return acc;
-      }
-
-      const imageIndex = acc[tag].findIndex(
-        (img: Image): boolean => img.filePath === image.filePath
-      );
-
-      if (imageIndex === -1) {
-        acc[tag] = acc[tag].concat(image);
-      } else {
-        acc[tag] = acc[tag]
-          .slice(0, imageIndex)
-          .concat([image].concat(acc[tag].slice(imageIndex + 1)));
-      }
+  image.meta.tags.filter(Boolean).reduce((
+    acc: TagCache,
+    tag: string
+  ): TagCache => {
+    if (!Boolean(acc[tag])) {
+      acc[tag] = [image];
       return acc;
-    },
-    { ...tagCache }
-  );
+    }
+
+    const imageIndex = acc[tag].findIndex(
+      (img: Image): boolean => img.filePath === image.filePath
+    );
+
+    if (imageIndex === -1) {
+      acc[tag] = acc[tag].concat(image);
+    } else {
+      acc[tag] = acc[tag]
+        .slice(0, imageIndex)
+        .concat([image].concat(acc[tag].slice(imageIndex + 1)));
+    }
+    return acc;
+  }, { ...tagCache });
 
 const removeImageFromTagCache = (filePath: string): void => {
   if (!filePath.endsWith('.jpg')) {

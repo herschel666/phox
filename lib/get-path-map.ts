@@ -58,16 +58,21 @@ const getPages = (pages: string[]): ExportPathMap =>
   );
 
 const getTags = (tags: Tags): ExportPathMap =>
-  Object.keys(tags).reduce(
-    (acc: ExportPathMap, tag: string): ExportPathMap => ({
-      ...acc,
-      [`/tag/${tag}/`]: {
+  Object.keys(tags).reduce((acc: ExportPathMap, tag: string): ExportPathMap => {
+    const tagPage: ExportPathMap = {};
+
+    if (Boolean(tag)) {
+      tagPage[`/tag/${tag}/`] = {
         query: { tag },
         page: '/tag',
-      },
-    }),
-    {}
-  );
+      };
+    }
+
+    return {
+      ...acc,
+      ...tagPage,
+    };
+  }, {});
 
 const getImageQueryFromPath = (image: string) => {
   const parts = image.split('/').filter(Boolean);

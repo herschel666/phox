@@ -13,6 +13,7 @@ export const html = [
   '/tag/forest/',
   '/tag/mountain/',
   '/tag/windows/',
+  '/tag/white-space/',
 ];
 
 export const json = ['/data/index.json'].concat(

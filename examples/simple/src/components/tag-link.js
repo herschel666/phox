@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
 
-const TagLink = ({ tag }) => {
+const TagLink = ({ slug, title }) => {
   const linkProps = {
     href: {
       pathname: '/tag',
-      query: { tag },
+      query: { tag: slug },
     },
     as: {
-      pathname: `/tag/${tag}/`,
+      pathname: `/tag/${slug}/`,
     },
   };
 
@@ -25,14 +25,15 @@ const TagLink = ({ tag }) => {
         }
       `}</style>
       <Link {...linkProps}>
-        <a>{tag}</a>
+        <a>{title}</a>
       </Link>
     </span>
   );
 };
 
 TagLink.propTypes = {
-  tag: PropTypes.string.isRequired,
+  slug: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
 };
 
 export default TagLink;

@@ -12,6 +12,8 @@ import {
   FrontMatter,
   Image,
   Page,
+  Tag,
+  TagApiData,
 } from './definitions/global';
 
 interface PageCache {
@@ -22,13 +24,11 @@ interface ImageCache {
   [filePath: string]: Image;
 }
 
-interface TagCache {
-  [name: string]: Image[];
-}
+type TagCache = TagApiData[];
 
 let pageCache: PageCache = {};
 let imageCache: ImageCache = {};
-let tagCache: TagCache = {};
+let tagCache: TagCache = [];
 
 const getDirName = (pathName: string): string =>
   path
@@ -36,15 +36,29 @@ const getDirName = (pathName: string): string =>
     .split(path.sep)
     .pop();
 
-const sortTagImages = (images: Image[]): Image[] =>
-  images.sort((a: Image, b: Image): number =>
-    a.meta.title.localeCompare(b.meta.title)
-  );
+const sortTagsByTitle = (a: TagApiData, b: TagApiData): number =>
+  a.title.localeCompare(b.title);
+
+const sortImagesByTitle = (a: Image, b: Image): number =>
+  a.meta.title.localeCompare(b.meta.title);
 
 const sortTagCacheAlphabetically = (t: TagCache): TagCache =>
-  Object.keys(t)
-    .sort(util.sortAlphabetically)
-    .reduceRight((a, b) => ({ [b]: sortTagImages(t[b]), ...a }), {});
+  t.sort(sortTagsByTitle).map((tag: TagApiData) => ({
+    ...tag,
+    images: tag.images.sort(sortImagesByTitle),
+  }));
+
+const getIndexOfTagInCache = (slug: string, t: TagCache): number =>
+  t.findIndex((item: TagApiData) => item.slug === slug);
+
+const getIndexOfImageInTagCache = (
+  t: TagCache,
+  tagIndex: number,
+  filePath: string
+): number =>
+  t[tagIndex].images.findIndex(
+    (img: Image): boolean => img.filePath === filePath
+  );
 
 const removeFromCache = (cacheType: 'page' | 'image') => (
   filePath: string
@@ -81,28 +95,35 @@ const removeFromCache = (cacheType: 'page' | 'image') => (
 };
 
 const addImageToTagCache = (image: Image): TagCache =>
-  image.meta.tags.filter(Boolean).reduce((
-    acc: TagCache,
-    tag: string
-  ): TagCache => {
-    if (!Boolean(acc[tag])) {
-      acc[tag] = [image];
+  image.meta.tags.reduce(
+    (acc: TagCache, tag: Tag): TagCache => {
+      const tagIndex = getIndexOfTagInCache(tag.slug, acc);
+
+      if (tagIndex === -1) {
+        const tagCacheItem = {
+          ...tag,
+          images: [image],
+        };
+        return acc.concat(tagCacheItem);
+      }
+
+      const imageIndex = getIndexOfImageInTagCache(
+        acc,
+        tagIndex,
+        image.filePath
+      );
+
+      if (imageIndex === -1) {
+        acc[tagIndex].images = acc[tagIndex].images.concat(image);
+      } else {
+        acc[tagIndex].images = acc[tagIndex].images
+          .slice(0, imageIndex)
+          .concat([image].concat(acc[tagIndex].images.slice(imageIndex + 1)));
+      }
       return acc;
-    }
-
-    const imageIndex = acc[tag].findIndex(
-      (img: Image): boolean => img.filePath === image.filePath
-    );
-
-    if (imageIndex === -1) {
-      acc[tag] = acc[tag].concat(image);
-    } else {
-      acc[tag] = acc[tag]
-        .slice(0, imageIndex)
-        .concat([image].concat(acc[tag].slice(imageIndex + 1)));
-    }
-    return acc;
-  }, { ...tagCache });
+    },
+    [...tagCache]
+  );
 
 const removeImageFromTagCache = (filePath: string): void => {
   if (!filePath.endsWith('.jpg')) {
@@ -113,31 +134,26 @@ const removeImageFromTagCache = (filePath: string): void => {
   );
 
   tagCache = sortTagCacheAlphabetically(
-    Object.keys(tagCache).reduce(
-      (acc: TagCache, tag: string): TagCache => {
-        const imageIndex = tagCache[tag].findIndex(
-          (img: Image): boolean =>
-            util.stripSlashes(img.filePath) === relativeFilePath
-        );
+    tagCache.reduce(
+      (acc: TagCache, tag: TagApiData, i: number): TagCache => {
+        const imageIndex = getIndexOfImageInTagCache(acc, i, relativeFilePath);
 
         if (imageIndex === -1) {
           return acc;
         }
 
-        const images = tagCache[tag]
-          .slice(0, imageIndex)
-          .concat(acc[tag].slice(imageIndex + 1));
-
-        if (!images.length) {
+        if (tag.images.length === 1) {
+          acc[i].images = [];
           return acc;
         }
 
-        return {
-          ...acc,
-          [tag]: images,
-        };
+        acc[i].images = tag.images
+          .slice(0, imageIndex)
+          .concat(tag.images.slice(imageIndex + 1));
+
+        return acc;
       },
-      { ...tagCache }
+      [...tagCache]
     )
   );
 };
@@ -234,24 +250,17 @@ export const initCachePurger = (config: Config): void => {
   imagesMonitor.on('unlink', removeImageFromTagCache);
 };
 
-export const getImagesforTag = async (
+export const getDataforTag = async (
   config: Config,
-  tag: string
-): Promise<Image[]> => {
-  if (Boolean(tagCache[tag])) {
-    return tagCache[tag];
+  tagSlug: string
+): Promise<TagApiData> => {
+  const tagIndex = getIndexOfTagInCache(tagSlug, tagCache);
+
+  if (tagIndex === -1) {
+    return;
   }
 
-  const { albums } = util.getGlobPatterns(config);
-  const albumFiles = await globby(albums);
-  await Promise.all(
-    albumFiles.map(async (albumFile: string): Promise<void> => {
-      const albumName = getDirName(albumFile);
-      await getImages(config.albumsDir, albumName);
-    })
-  );
-
-  return tagCache[tag] || [];
+  return tagCache[tagIndex];
 };
 
 export default async (config: Config): Promise<Data> => {

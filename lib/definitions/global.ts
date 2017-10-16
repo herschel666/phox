@@ -35,6 +35,11 @@ export interface Dimensions {
   orientation: Orientation;
 }
 
+export interface Tag {
+  slug: string;
+  title: string;
+}
+
 export interface PhotoMeta {
   aperture: string | null;
   camera: string;
@@ -48,7 +53,7 @@ export interface PhotoMeta {
   iso: number | null;
   lens: string;
   orientation: Orientation;
-  tags: string[];
+  tags: Tag[];
   title: string;
   width: number;
 }
@@ -120,10 +125,6 @@ export interface Album {
   images: Image[];
 }
 
-export interface Tags {
-  [x: string]: Image[];
-}
-
 export interface FrontpageAlbum {
   meta: SomeObject;
   linkProps: LinkProps;
@@ -132,7 +133,7 @@ export interface FrontpageAlbum {
 export interface Data {
   albums: Album[];
   pages: Page[];
-  tags: Tags;
+  tags: TagApiData[];
 }
 
 export interface FrontpageApiData {
@@ -151,6 +152,7 @@ export type AlbumApiData = Album;
 
 export interface TagApiData {
   title: string;
+  slug: string;
   images: Image[];
 }
 

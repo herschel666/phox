@@ -1,6 +1,7 @@
 import { createReadStream } from 'fs';
 import { ExifImage, TYPE_NO_EXIF_SEGMENT, Exif, ExifError } from 'exif';
 import * as marked from 'marked';
+import * as slug from 'slug';
 import nodeIptc = require('node-iptc');
 import getImageSize = require('probe-image-size');
 import { decode } from 'utf8';
@@ -12,6 +13,7 @@ import {
   Orientation,
   Meta,
   PhotoMeta,
+  Tag,
 } from './definitions/global';
 
 const ORIENTATION_SQUARE = 'square';
@@ -22,6 +24,11 @@ const NO_EXIF_SEGMENT: TYPE_NO_EXIF_SEGMENT = 'NO_EXIF_SEGMENT';
 const isError = (err: ExifError) => err && err.code !== NO_EXIF_SEGMENT;
 
 const hasNoExifData = (err: ExifError) => err && err.code === NO_EXIF_SEGMENT;
+
+const toTagData = (tag: string): Tag => ({
+  slug: slug(tag),
+  title: tag,
+});
 
 const getExifData = async (filePath: string): Promise<Meta> =>
   new Promise((resolve, reject) => {
@@ -106,7 +113,8 @@ const getDetailsFromMeta = (
   tags: (iptc.keywords || [])
     .map(decode)
     .filter(Boolean)
-    .sort(sortAlphabetically),
+    .sort(sortAlphabetically)
+    .map(toTagData),
   description: marked(decode(iptc.caption || '')),
   createdAt: iptc.date_created
     ? getCreationDateFromString(iptc.date_created)

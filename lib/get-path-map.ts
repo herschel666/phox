@@ -3,7 +3,7 @@ import * as globby from 'globby';
 import getConfig from './config';
 import { getGlobPatterns } from './util';
 import getData from './get-data';
-import { Tags, ExportPathMap } from './definitions/global';
+import { ExportPathMap, TagApiData } from './definitions/global';
 
 const removeSlashes = (str: string): string => str.replace(/^\/|\/$/g, '');
 
@@ -57,13 +57,13 @@ const getPages = (pages: string[]): ExportPathMap =>
     {}
   );
 
-const getTags = (tags: Tags): ExportPathMap =>
-  Object.keys(tags).reduce((acc: ExportPathMap, tag: string): ExportPathMap => {
+const getTags = (tags: TagApiData[]): ExportPathMap =>
+  tags.reduce((acc: ExportPathMap, tag: TagApiData): ExportPathMap => {
     const tagPage: ExportPathMap = {};
 
-    if (Boolean(tag)) {
-      tagPage[`/tag/${tag}/`] = {
-        query: { tag },
+    if (Boolean(tag.title)) {
+      tagPage[`/tag/${tag.slug}/`] = {
+        query: { tag: tag.slug },
         page: '/tag',
       };
     }

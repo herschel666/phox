@@ -70,7 +70,11 @@ const Image = ({ image, back, next, prev }) => {
       {image.meta.tags && (
         <dl>
           <dt>Tags</dt>
-          <dd>{image.meta.tags.map(tag => <TagLink key={tag} tag={tag} />)}</dd>
+          <dd>
+            {image.meta.tags.map(tag => (
+              <TagLink key={tag.slug} slug={tag.slug} title={tag.title} />
+            ))}
+          </dd>
         </dl>
       )}
     </Frame>

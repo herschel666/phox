@@ -11,7 +11,6 @@ import {
   Album,
   Image,
   Page,
-  Tags,
   FrontpageApiData,
   ImageApiData,
   TagApiData,
@@ -95,15 +94,14 @@ const writeAlbumsData = (config: Config) => async (
   );
 };
 
-const writeTagsData = async (tagFolder: string, tags: Tags): Promise<void[]> =>
+const writeTagsData = async (
+  tagFolder: string,
+  tags: TagApiData[]
+): Promise<void[]> =>
   Promise.all(
-    Object.keys(tags).map(async (tag: string): Promise<void> => {
-      const destination = path.join(tagFolder, `${tag}.json`);
-      const data = {
-        title: tag,
-        images: tags[tag],
-      };
-      await writeData<TagApiData>(destination, data);
+    tags.map(async (tag: TagApiData): Promise<void> => {
+      const destination = path.join(tagFolder, `${tag.slug}.json`);
+      await writeData<TagApiData>(destination, tag);
     })
   );
 

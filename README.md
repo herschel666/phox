@@ -61,29 +61,30 @@ createServer().then(({ server }) =>
 Create content and pages. The folder structure should look like this:
 
 ```
-content/
-├── albums/
-│   ├── my-awesome-album/
-│   │   ├── index.md
-│   └── my-other-awesome-album/
-│       └── index.md
-├── a-random-page/
-│   ├── index.md
-├── index.md
-pages/
-├── album.js
-├── default.js
-├── image.js
-├── index.js
-├── tag.js
-static/
-└── albums/
-    ├── my-awesome-album/
-    │   ├── image-1.jpg
-    │   ├── image-2.jpg
-    └── my-other-awesome-album/
-        ├── image-1.jpg
-        └── image-2.jpg
+./
+├── content/
+│   ├── albums/
+│   │   ├── my-awesome-album/
+│   │   │   └── index.md
+│   │   └── my-other-awesome-album/
+│   │       └── index.md
+│   ├── a-random-page/
+│   │   └── index.md
+│   └── index.md
+├── pages/
+│   ├── album.js
+│   ├── default.js
+│   ├── image.js
+│   ├── index.js
+│   └── tag.js
+└── static/
+    └── albums/
+        ├── my-awesome-album/
+        │   ├── image-1.jpg
+        │   └── image-2.jpg
+        └── my-other-awesome-album/
+            ├── image-1.jpg
+            └── image-2.jpg
 ```
 
 Start the dev-server:

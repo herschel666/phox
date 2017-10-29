@@ -28,6 +28,7 @@ env:
 deploy:
   - provider: script
     script: yarn semantic-release || echo "😎"
+    skip_cleanup: true
     on:
       branch: master
 

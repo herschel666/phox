@@ -2,14 +2,21 @@
 🦊 Phox
 ====
 
-> Create a photo blog powered by Next. 🖼
+> Create a static photo site powered by Next.js 🖼
 
 [![Build Status](https://travis-ci.org/herschel666/phox.svg?branch=master)](https://travis-ci.org/herschel666/phox)
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Current package version](https://img.shields.io/npm/v/phox.svg)](https://npm.im/phoxg)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 
-**phox**  let's you create a static photo blog with automatic detail pages for every image and EXIF-/IPTC-extraction. Maintain your contents in Markdown and write your views with React.
+## Features
+
+- Automatic detail pages for every photo with contents from EXIF & IPTC metadata
+- Overview pages for every keyword
+- Manage your contents with Markdown files like in Gatsby or Jekyll
+- Server-side rendered HTML for maximum performance
+- Client-side routing for ease of use
+- Image compression during build step
 
 ## Built with phox 🚀
 
@@ -57,22 +64,23 @@ Create content and pages. The folder structure should look like this:
 content/
 ├── albums/
 │   ├── my-awesome-album/
-│   │   └── index.md
+│   │   ├── index.md
 │   └── my-other-awesome-album/
 │       └── index.md
 ├── a-random-page/
-│   └── index.md
-└── index.md
+│   ├── index.md
+├── index.md
 pages/
 ├── album.js
 ├── default.js
 ├── image.js
-└── index.js
+├── index.js
+├── tag.js
 static/
 └── albums/
     ├── my-awesome-album/
     │   ├── image-1.jpg
-    │   └── image-2.jpg
+    │   ├── image-2.jpg
     └── my-other-awesome-album/
         ├── image-1.jpg
         └── image-2.jpg
@@ -130,6 +138,7 @@ The following list shows, which data is currently derived from [EXIF](https://np
 ```
 iptc.object_name       => title
 iptc.caption           => description
+iptc.keywords          => tags
 iptc.date_created      => createdAt
 exif.image.Model       => camera
 exif.exif.LensModel    => lens
@@ -161,9 +170,10 @@ Views are located in the `./pages/`-folder. There are four of them to represent 
 ─ default.js // For arbitrary pages
 ─ image.js   // For the detail pages of images
 ─ index.js   // For the frontpage
+─ tag.js     // For the overview page of a keyword
 ```
 
-Inside their `getInitialProps`-method they can their contents from the respective **phox**-HTTP-API.
+Inside their `getInitialProps`-method they can fetch their contents from the respective **phox**-HTTP-API.
 
 ## Configuration
 
@@ -206,6 +216,10 @@ Returns the contents of the album & a list of all photos, including metadata and
 ### `/data/albums/(:album)/(:image).json`
 
 Returns all the metadata of an image. Additionally there are the title & the `<Link />`-props of the previous and the next image, (if available).
+
+### `/data/tag/(:tag).json`
+
+Returns the contents of the overview page of a given keyword.
 
 ### `/data/(:page).json`
 

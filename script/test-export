@@ -10,6 +10,7 @@ yarn
 cp ../../index.js node_modules/phox/
 cp -fRv ../../lib node_modules/phox/
 cp -fRv ../../bin node_modules/phox/
+cd node_modules/phox && npm i next@4.1.3 && cd ../.. # remove after release of 0.2.0
 node ./node_modules/phox/bin/phox
 npx serve -n -p 9999 -S -u ./out > /dev/null 2>&1 &
 PID=$!

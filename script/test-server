@@ -9,6 +9,7 @@ cd examples/simple
 yarn
 cp ../../index.js node_modules/phox/
 cp -fRv ../../lib node_modules/phox/
+cd node_modules/phox && npm i next@4.1.3 && cd ../.. # remove after release of 0.2.0
 node server.js > /dev/null 2>&1 &
 PID=$!
 sleep 5

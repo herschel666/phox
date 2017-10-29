@@ -3,6 +3,7 @@ import path from 'path';
 import fetch from 'isomorphic-fetch';
 import Frame from '../src/components/frame';
 import ImageNav from '../src/components/image-nav';
+import TagLink from '../src/components/tag-link';
 import { hostname, port } from '../phox.config';
 import * as types from '../src/prop-types';
 import { titleWithFallback } from '../src/util';
@@ -35,6 +36,21 @@ const Image = ({ image, back, next, prev }) => {
           bottom: 0;
           left: 0;
         }
+
+        dl {
+          padding-top: 14px;
+          border-top: 1px solid #ccc;
+          font-size: 14px;
+        }
+
+        dt,
+        dd {
+          display: inline;
+        }
+
+        dt::after {
+          content: ': ';
+        }
       `}</style>
       <ImageNav {...{ back, prev, next }} />
       <figure>
@@ -51,6 +67,16 @@ const Image = ({ image, back, next, prev }) => {
           />
         )}
       </figure>
+      {image.meta.tags && (
+        <dl>
+          <dt>Tags</dt>
+          <dd>
+            {image.meta.tags.map(tag => (
+              <TagLink key={tag.slug} slug={tag.slug} title={tag.title} />
+            ))}
+          </dd>
+        </dl>
+      )}
     </Frame>
   );
 };

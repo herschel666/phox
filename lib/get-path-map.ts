@@ -2,7 +2,8 @@ import { join, basename, dirname } from 'path';
 import * as globby from 'globby';
 import getConfig from './config';
 import { getGlobPatterns } from './util';
-import { ExportPathMap } from './definitions/global';
+import getData from './get-data';
+import { ExportPathMap, TagApiData } from './definitions/global';
 
 const removeSlashes = (str: string): string => str.replace(/^\/|\/$/g, '');
 
@@ -56,6 +57,23 @@ const getPages = (pages: string[]): ExportPathMap =>
     {}
   );
 
+const getTags = (tags: TagApiData[]): ExportPathMap =>
+  tags.reduce((acc: ExportPathMap, tag: TagApiData): ExportPathMap => {
+    const tagPage: ExportPathMap = {};
+
+    if (Boolean(tag.title)) {
+      tagPage[`/tag/${tag.slug}/`] = {
+        query: { tag: tag.slug },
+        page: '/tag',
+      };
+    }
+
+    return {
+      ...acc,
+      ...tagPage,
+    };
+  }, {});
+
 const getImageQueryFromPath = (image: string) => {
   const parts = image.split('/').filter(Boolean);
   return {
@@ -78,6 +96,7 @@ const getImages = (albumsDir: string, images: string[]): ExportPathMap =>
 
 export default async (): Promise<ExportPathMap> => {
   const conf = getConfig();
+  const { tags } = await getData(conf);
   const imagesPattern = join('static', conf.albumsDir, '**/*.{jpg,png,gif}');
   const patterns = getGlobPatterns(conf);
   const albumPaths = await getPaths(
@@ -105,6 +124,7 @@ export default async (): Promise<ExportPathMap> => {
     },
     getAlbums(conf.albumsDir, albumPaths),
     getPages(pagePathsExceptIndex),
-    getImages(conf.albumsDir, imagePaths)
+    getImages(conf.albumsDir, imagePaths),
+    getTags(tags)
   );
 };

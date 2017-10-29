@@ -14,7 +14,7 @@ export const getFrontpageApiData = async (
   const albumList = await globby(getGlobPatterns(config).albums);
   const albumData = await Promise.all(
     albumList.map(async (albumPath: string) =>
-      getPageContent(albumPath, config.albumsDir)
+      getPageContent(albumPath, `${config.albumsDir}/`)
     )
   );
   const albums = albumData.map(({ meta, name }: Page) => ({

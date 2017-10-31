@@ -18,6 +18,14 @@
 - Client-side routing for ease of use
 - Image compression during build step
 
+## Idea
+
+[Next.js](https://npm.im/next) is great when it comes to building web applications. But setting up the above mentioned features for a (static) online gallery is a rather tedious task. Here **phox** comes into play: it enables you to manage your contents in Markdown files and inside the image metadata, so you can focus on building the site.
+
+To achieve this **phox** relies on an opinionated set of views, which it provides the generated data for via an HTTP-API. Additionally **phox** provides a function for gathering all the pages of your photo site for a static export.
+
+What **phox** doesn't provide is any kind of React views. It equips you with a way to fetch the data — you then build your Next.js site on top of it. To get and idea of how this might look like, have a look at the code of the [Simple Example](https://github.com/herschel666/phox/tree/master/examples/simple).
+
 ## Built with phox 🚀
 
  - [ek|photos](https://photos.klg.bz/) — [[source](https://github.com/herschel666/photoblog/)]

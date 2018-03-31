@@ -53,6 +53,7 @@
     "interface-name": [true, "never-prefix"],
     "newline-before-return": false,
     "no-multiline-string": false,
-    "await-promise": false
+    "await-promise": false,
+    "no-implicit-dependencies": [true, "dev"]
   }
 }

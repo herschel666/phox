@@ -22,7 +22,7 @@
     "dev": "tsc --watch",
     "prepublishOnly": "npm-run-all clean build",
     "lint:examples": "eslint --quiet './examples/simple/'",
-    "lint:phox": "tslint --type-check --format stylish --project tsconfig.json",
+    "lint:phox": "tslint --format stylish --project tsconfig.json",
     "test": "./script/test",
     "semantic-release":
       "npx semantic-release pre && npm publish && npx semantic-release post"
@@ -99,9 +99,9 @@
     "request-promise": "4.2.1",
     "semantic-release": "^8.0.3",
     "ts-jest": "21.0.0",
-    "tslint": "5.7.0",
-    "tslint-microsoft-contrib": "5.0.1",
-    "typescript": "2.5.2"
+    "tslint": "5.9.1",
+    "tslint-microsoft-contrib": "5.0.3",
+    "typescript": "2.8.1"
   },
   "jest": {
     "transform": {

@@ -118,13 +118,11 @@ export default async (): Promise<ExportPathMap> => {
     throw Error('Please define a frontpage.');
   }
 
-  return Object.assign(
-    {
-      '/': { page: '/' },
-    },
-    getAlbums(conf.albumsDir, albumPaths),
-    getPages(pagePathsExceptIndex),
-    getImages(conf.albumsDir, imagePaths),
-    getTags(tags)
-  );
+  return {
+    '/': { page: '/' },
+    ...getAlbums(conf.albumsDir, albumPaths),
+    ...getPages(pagePathsExceptIndex),
+    ...getImages(conf.albumsDir, imagePaths),
+    ...getTags(tags),
+  };
 };

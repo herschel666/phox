@@ -24,7 +24,8 @@
     "lint:examples": "eslint --quiet './examples/simple/'",
     "lint:phox": "tslint --format stylish --project tsconfig.json",
     "test": "./script/test",
-    "semantic-release": "npx semantic-release pre && npm publish && npx semantic-release post"
+    "semantic-release":
+      "npx semantic-release pre && npm publish && npx semantic-release post"
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
@@ -71,8 +72,8 @@
     "node-iptc": "1.0.4",
     "pretty-ms": "3.0.0",
     "probe-image-size": "3.1.0",
-    "react": "16.2.0",
-    "react-dom": "16.2.0",
+    "react": "16.3.0",
+    "react-dom": "16.3.0",
     "rimraf": "2.6.1",
     "semantic-release-cli": "3.2.0",
     "slug": "0.9.1",
@@ -112,13 +113,7 @@
       "__snapshots__",
       "test/.*/.*\\.js$"
     ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"]
   },
   "prettier": {
     "singleQuote": true,

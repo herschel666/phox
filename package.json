@@ -36,6 +36,9 @@
   "bugs": {
     "url": "https://github.com/herschel666/phox/issues"
   },
+  "engines": {
+    "node": ">=9.10"
+  },
   "homepage": "https://github.com/herschel666/phox#readme",
   "dependencies": {
     "@types/chokidar": "1.7.3",

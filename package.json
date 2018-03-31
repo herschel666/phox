@@ -24,8 +24,7 @@
     "lint:examples": "eslint --quiet './examples/simple/'",
     "lint:phox": "tslint --format stylish --project tsconfig.json",
     "test": "./script/test",
-    "semantic-release":
-      "npx semantic-release pre && npm publish && npx semantic-release post"
+    "semantic-release": "npx semantic-release pre && npm publish && npx semantic-release post"
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
@@ -83,7 +82,7 @@
     "phox": "./bin/phox.js"
   },
   "devDependencies": {
-    "@types/jest": "21.1.2",
+    "@types/jest": "22.2.2",
     "@types/request": "2.0.3",
     "@types/request-promise": "4.1.37",
     "babel-eslint": "8.0.0",
@@ -92,7 +91,7 @@
     "eslint-plugin-import": "2.7.0",
     "eslint-plugin-jsx-a11y": "6.0.2",
     "eslint-plugin-react": "7.3.0",
-    "jest": "21.2.1",
+    "jest": "22.4.3",
     "npm-run-all": "4.1.1",
     "prettier": "1.6.1",
     "request": "2.81.0",
@@ -113,7 +112,13 @@
       "__snapshots__",
       "test/.*/.*\\.js$"
     ],
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
   },
   "prettier": {
     "singleQuote": true,

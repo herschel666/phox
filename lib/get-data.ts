@@ -26,9 +26,15 @@ interface ImageCache {
 
 type TagCache = TagApiData[];
 
-let pageCache: PageCache = {};
-let imageCache: ImageCache = {};
-let tagCache: TagCache = [];
+interface Caches {
+  [cacheType: string]: PageCache | ImageCache | TagCache;
+}
+
+const caches: Caches = {
+  pageCache: {},
+  imageCache: {},
+  tagCache: [],
+};
 
 const getDirName = (pathName: string): string =>
   path
@@ -60,38 +66,33 @@ const getIndexOfImageInTagCache = (
     (img: Image): boolean => img.filePath === filePath
   );
 
-const removeFromCache = (cacheType: 'page' | 'image') => (
-  filePath: string
-): void => {
+const removeFromCache = <T>(
+  allCaches: Caches,
+  cacheType: 'pageCache' | 'imageCache'
+) => (filePath: string): void => {
   if (!filePath.endsWith('.md') && !filePath.endsWith('.jpg')) {
     return;
   }
 
-  const cache = cacheType === 'page' ? pageCache : imageCache;
-  const relativeFilePath = util.stripSlashes(
+  const relativeFilePath: string = util.stripSlashes(
     filePath.replace(process.cwd(), '')
   );
+  const cacheObject: any = allCaches[cacheType];
+  const item: Page | Image = cacheObject[relativeFilePath];
 
-  if (!Boolean(cache[relativeFilePath])) {
+  if (!Boolean(item)) {
     return;
   }
 
-  const newCache = Object.keys(cache)
+  allCaches[cacheType] = Object.keys(cacheObject)
     .filter((f: string): boolean => f !== relativeFilePath)
     .reduce(
-      (acc: PageCache | ImageCache, f: string): PageCache | ImageCache =>
-        Object.assign({ [f]: cache[f] }, acc),
+      (acc: any, f: string): T => ({
+        [f]: cacheObject[f],
+        ...acc,
+      }),
       {}
     );
-
-  switch (cacheType) {
-    case 'page':
-      pageCache = newCache;
-      break;
-    case 'image':
-      imageCache = newCache;
-      break;
-  }
 };
 
 const addImageToTagCache = (image: Image): TagCache =>
@@ -122,7 +123,7 @@ const addImageToTagCache = (image: Image): TagCache =>
       }
       return acc;
     },
-    [...tagCache]
+    [...(caches.tagCache as TagCache)]
   );
 
 const removeImageFromTagCache = (filePath: string): void => {
@@ -133,8 +134,8 @@ const removeImageFromTagCache = (filePath: string): void => {
     filePath.replace(process.cwd(), '')
   );
 
-  tagCache = sortTagCacheAlphabetically(
-    tagCache.reduce(
+  caches.tagCache = sortTagCacheAlphabetically(
+    (caches.tagCache as TagCache).reduce(
       (acc: TagCache, tag: TagApiData, i: number): TagCache => {
         const imageIndex = getIndexOfImageInTagCache(acc, i, relativeFilePath);
 
@@ -153,7 +154,7 @@ const removeImageFromTagCache = (filePath: string): void => {
 
         return acc;
       },
-      [...tagCache]
+      [...(caches.tagCache as TagCache)]
     )
   );
 };
@@ -168,16 +169,20 @@ const getDataForImage = (albumsDir: string, albumName: string) => (
 
 const getMetaFromImage = async (image: Image): Promise<Image> => {
   const strippedImagePath = util.stripSlashes(image.filePath);
+  const imageCache = caches.imageCache as ImageCache;
   if (imageCache[strippedImagePath]) {
     return imageCache[strippedImagePath];
   }
 
   const meta = await getImageMeta(image.filePath);
   const imageWithMeta = { ...image, meta };
-  imageCache = Object.assign({}, imageCache, {
+  caches.imageCache = {
+    ...imageCache,
     [strippedImagePath]: imageWithMeta,
-  });
-  tagCache = sortTagCacheAlphabetically(addImageToTagCache(imageWithMeta));
+  };
+  caches.tagCache = sortTagCacheAlphabetically(
+    addImageToTagCache(imageWithMeta)
+  );
   return imageWithMeta;
 };
 
@@ -188,7 +193,7 @@ export const getImages = async (
   const pattern = path.join('static', albumsDir, albumName, '*.jpg');
   const files = await globby(pattern);
   const images = files.map(getDataForImage(albumsDir, albumName));
-  return await Promise.all(images.map(getMetaFromImage));
+  return Promise.all(images.map(getMetaFromImage));
 };
 
 export const getPageContent = async (
@@ -196,6 +201,7 @@ export const getPageContent = async (
   pathPrefix: string = ''
 ): Promise<Page> => {
   const strippedPagePath = util.stripSlashes(pagePath);
+  const pageCache = caches.pageCache as PageCache;
   if (pageCache[strippedPagePath]) {
     return pageCache[strippedPagePath];
   }
@@ -203,15 +209,16 @@ export const getPageContent = async (
   const content = await util.pReadFile(pagePath);
   const { attributes, body }: FrontMatter = fm(String(content));
   const name = getDirName(pagePath);
-  pageCache = Object.assign({}, pageCache, {
+  caches.pageCache = {
+    ...pageCache,
     [strippedPagePath]: {
       meta: attributes,
       path: `/${pathPrefix}${name}/`,
       body: marked(body),
       name: name === 'content' ? 'frontpage' : name,
     },
-  });
-  return pageCache[strippedPagePath];
+  };
+  return caches.pageCache[strippedPagePath];
 };
 
 const getAlbums = (albumsDir: string) => async (
@@ -231,9 +238,7 @@ const getPages = async (
   contentDir: string
 ): Promise<Page[]> => {
   const files = await globby(pagesGlob, { ignore: albumsGlob });
-  return await Promise.all(
-    files.map(async (file: string) => getPageContent(file))
-  );
+  return Promise.all(files.map(async (file: string) => getPageContent(file)));
 };
 
 export const initCachePurger = (config: Config): void => {
@@ -242,10 +247,10 @@ export const initCachePurger = (config: Config): void => {
   const pagesMonitor = watch(pages);
   const imagesMonitor = watch(images);
 
-  pagesMonitor.on('change', removeFromCache('page'));
-  pagesMonitor.on('unlink', removeFromCache('page'));
-  imagesMonitor.on('change', removeFromCache('image'));
-  imagesMonitor.on('unlink', removeFromCache('image'));
+  pagesMonitor.on('change', removeFromCache<PageCache>(caches, 'pageCache'));
+  pagesMonitor.on('unlink', removeFromCache<PageCache>(caches, 'pageCache'));
+  imagesMonitor.on('change', removeFromCache<ImageCache>(caches, 'imageCache'));
+  imagesMonitor.on('unlink', removeFromCache<ImageCache>(caches, 'imageCache'));
   imagesMonitor.on('change', removeImageFromTagCache);
   imagesMonitor.on('unlink', removeImageFromTagCache);
 };
@@ -254,13 +259,13 @@ export const getDataforTag = async (
   config: Config,
   tagSlug: string
 ): Promise<TagApiData> => {
-  const tagIndex = getIndexOfTagInCache(tagSlug, tagCache);
+  const tagIndex = getIndexOfTagInCache(tagSlug, caches.tagCache as TagCache);
 
   if (tagIndex === -1) {
     return;
   }
 
-  return tagCache[tagIndex];
+  return (caches.tagCache as TagCache)[tagIndex];
 };
 
 export default async (config: Config): Promise<Data> => {
@@ -272,6 +277,6 @@ export default async (config: Config): Promise<Data> => {
     patterns.albums,
     config.contentDir
   );
-  const tags = tagCache;
+  const tags = caches.tagCache as TagCache;
   return { albums, pages, tags };
 };

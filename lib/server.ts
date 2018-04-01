@@ -25,6 +25,11 @@ export default async (): Promise<Server> => {
 
   server.get('/', commonHandler(app, '/index'));
 
+  server.get(
+    `/${config.albumsDir}/`,
+    (req: express.Request, res: express.Response) => res.redirect(301, '/')
+  );
+
   server.get(`/${config.albumsDir}/:album/`, commonHandler(app, '/album'));
 
   server.get(

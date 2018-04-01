@@ -11,11 +11,11 @@
   "license": "MIT",
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
-    "next": "4.2.3",
+    "next": "5.1.0",
     "phox": "0.1.0",
-    "prop-types": "15.5.10",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0"
+    "prop-types": "15.6.1",
+    "react": "16.3.0",
+    "react-dom": "16.3.0"
   },
   "devDependencies": {
     "serve": "6.0.6"

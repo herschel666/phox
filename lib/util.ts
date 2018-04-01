@@ -1,7 +1,6 @@
 import { promisify } from 'util';
 import { readFile } from 'fs';
 import * as path from 'path';
-import { basename } from 'path';
 import { LinkProps, Config } from './definitions/global';
 
 export const pReadFile = promisify(readFile);
@@ -22,7 +21,7 @@ export const getDetailLinkProps = (
   albumName: string,
   filePath: string
 ): LinkProps => {
-  const baseFileName = basename(filePath, '.jpg');
+  const baseFileName = path.basename(filePath, '.jpg');
   const href = {
     pathname: '/image',
     query: {

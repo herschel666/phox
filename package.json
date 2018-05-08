@@ -24,8 +24,7 @@
     "lint:examples": "eslint --quiet './examples/simple/'",
     "lint:phox": "tslint --format stylish --project tsconfig.json",
     "test": "./script/test",
-    "semantic-release":
-      "npx semantic-release pre && npm publish && npx semantic-release post"
+    "semantic-release": "npx semantic-release pre && npm publish && npx semantic-release post"
   },
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
@@ -113,7 +112,13 @@
       "__snapshots__",
       "test/.*/.*\\.js$"
     ],
-    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"]
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json"
+    ]
   },
   "prettier": {
     "singleQuote": true,

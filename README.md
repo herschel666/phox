@@ -236,6 +236,25 @@ Returns the contents of arbitrary pages.
 
 _Note: if you set a custom value for `albumsDir` in the configuration, the HTTP-endpoint for albums & images will change accordingly._
 
+## Adding custom routes to the server
+
+In the `server.js` import the `Router`, define your custom routes and pass the router into the `createServer`-function.
+
+```js
+const { createServer, Router } = require('phox');
+const router = Router();
+
+router.get('/api/say/:text/', (req, res) => res.json({
+  text: decodeURIComponent(req.params.text),
+}));
+
+createServer(router).then(({ server }) => server.listen(…);
+```
+
+The `Router` exported by **phox** is the one from [Express](http://expressjs.com/). So you can refer to [their documentation](http://expressjs.com/en/guide/routing.html#express-router) to learn more about its usage.
+
+Have in mind that you can only use these custom routes during development. They won't be available after you'va statically built your site with **phox**.
+
 ## Contributing
 
 If you have a question or found a bug, feel free [to open an issue](https://github.com/herschel666/phox/issues). If you have an idea, what is wrong, you're highly encouraged, to open a pull request.

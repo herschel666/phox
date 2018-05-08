@@ -11,7 +11,7 @@ import tagDataHandler from './handlers/tag-data';
 import imageDataHandler from './handlers/image-data';
 import { Server } from './definitions/global';
 
-export default async (): Promise<Server> => {
+export default async (router?: express.Router): Promise<Server> => {
   const config = getConfig();
   const quiet = true;
   const dev = process.env.NODE_ENV !== 'production';
@@ -56,6 +56,10 @@ export default async (): Promise<Server> => {
   server.get('/data/tag/(:tag).json', tagDataHandler(config));
 
   server.get('/data/(:page).json', pageDataHandler(config));
+
+  if (router) {
+    server.use('/', router);
+  }
 
   // tslint:disable-next-line:no-unnecessary-callback-wrapper
   server.get('*', (req: express.Request, res: express.Response) => {

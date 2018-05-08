@@ -23,6 +23,15 @@ describe('Server JSON', async () => {
   );
 });
 
+describe('Custom route', async () => {
+  test('/api/hello%2world/', async () => {
+    const result = await request(url('/api/hello%20world/'));
+    const { text } = JSON.parse(result);
+
+    expect(text).toBe('hello world');
+  });
+});
+
 describe('Misc', async () =>
   test('Favicon.ico', async () => {
     const options = {

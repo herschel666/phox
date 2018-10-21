@@ -13,3 +13,4 @@ if [[ "${TEST_TYPE:-$EMPTY}" == "" ]]; then
 else
   ./script/test-$TEST_TYPE
 fi
+yarn clean

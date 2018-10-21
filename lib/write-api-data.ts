@@ -2,6 +2,7 @@ import { promisify } from 'util';
 import { writeFile } from 'fs';
 import * as path from 'path';
 import * as mkdirp from 'mkdirp';
+import * as debug from 'debug';
 import getData from './get-data';
 import { getFrontpageApiData } from './handlers/frontpage-data';
 import { getImageSibling } from './handlers/image-data';
@@ -15,6 +16,8 @@ import {
   ImageApiData,
   TagApiData,
 } from './definitions/global';
+
+const log = debug('phox:write-api-data');
 
 const pWriteFile = promisify(writeFile);
 const pMkdirp = promisify(mkdirp);
@@ -30,7 +33,12 @@ const writeData = async <T>(
   destination: string,
   dataItem: T
 ): Promise<void> => {
-  await pWriteFile(destination, JSON.stringify(dataItem), 'utf8');
+  try {
+    await pWriteFile(destination, JSON.stringify(dataItem), 'utf8');
+  } catch (err) {
+    log('Error: %s', err.message || err);
+    throw err;
+  }
 };
 
 const writeFrontpageData = async (
@@ -106,6 +114,8 @@ const writeTagsData = async (
   );
 
 export default async (config: Config): Promise<void> => {
+  log('Write API data.');
+
   const { albums, pages, tags } = await getData(config);
   const albumFolders = albums.map(({ content }: Album) =>
     path.join(config.outDir, 'data', config.albumsDir, content.name)

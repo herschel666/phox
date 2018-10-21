@@ -1,12 +1,17 @@
 import * as globby from 'globby';
+import * as debug from 'debug';
 import { getGlobPatterns } from '../util';
 import { Config, App, RequestHandler } from '../definitions/global';
+
+const log = debug('phox:handlers:page-view');
 
 export default (
   config: Config,
   app: App,
   view: string
 ): RequestHandler => async (req, res, next) => {
+  log('Render page view "%s" for request %O', req.path, req.params);
+
   const globPatterns = getGlobPatterns(config);
   const pages = await globby(globPatterns.pages, {
     ignore: globPatterns.albums,
@@ -20,6 +25,6 @@ export default (
     next();
     return;
   }
-  // tslint:disable-next-line:no-floating-promises
-  app.render(req, res, view, req.params);
+
+  return app.render(req, res, view, req.params);
 };

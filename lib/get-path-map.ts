@@ -1,9 +1,12 @@
 import { join, basename, dirname } from 'path';
 import * as globby from 'globby';
+import * as debug from 'debug';
 import getConfig from './config';
 import { getGlobPatterns } from './util';
 import getData from './get-data';
 import { ExportPathMap, TagApiData } from './definitions/global';
+
+const log = debug('phox:get-path-map');
 
 const removeSlashes = (str: string): string => str.replace(/^\/|\/$/g, '');
 
@@ -95,6 +98,8 @@ const getImages = (albumsDir: string, images: string[]): ExportPathMap =>
   );
 
 export default async (): Promise<ExportPathMap> => {
+  log('Retrieve path map.');
+
   const conf = getConfig();
   const { tags } = await getData(conf);
   const imagesPattern = join('static', conf.albumsDir, '**/*.{jpg,png,gif}');

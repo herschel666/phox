@@ -1,4 +1,5 @@
 import * as path from 'path';
+import * as debug from 'debug';
 import { getDetailLinkProps, getAlbumLinkProps } from '../util';
 import { getPageContent, getImages } from '../get-data';
 import {
@@ -8,6 +9,8 @@ import {
   ImageApiData,
   PageRef,
 } from '../definitions/global';
+
+const log = debug('phox:handlers:image');
 
 export const getImageSibling = (
   albumsDir: string,
@@ -70,6 +73,8 @@ export const getImageApiData = async (
 };
 
 export default (config: Config): RequestHandler => async (req, res) => {
+  log('Render image "%s" for request %O', req.path, req.params);
+
   const imageApiData = await getImageApiData(
     config,
     req.params.album,

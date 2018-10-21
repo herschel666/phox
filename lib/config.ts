@@ -1,6 +1,8 @@
 import * as deepmerge from 'deepmerge';
+import * as debug from 'debug';
 import { Config } from './definitions/global';
 
+const log = debug('phox:config');
 const userConfig = (() => {
   try {
     // tslint:disable-next-line:non-literal-require
@@ -22,5 +24,8 @@ export const defaultConfig = {
     quality: '65-80',
   },
 };
+const config = deepmerge(defaultConfig, userConfig);
 
-export default (): Config => deepmerge(defaultConfig, userConfig);
+log('Using config: %O', config);
+
+export default (): Config => config;

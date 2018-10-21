@@ -12,9 +12,9 @@ export const linkProps = PropTypes.shape({
     pathname: PropTypes.string.isRequired,
     query: PropTypes.object.isRequired,
   }).isRequired,
-  as: {
+  as: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
-  },
+  }),
 });
 
 export const pageRef = PropTypes.shape({

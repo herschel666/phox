@@ -258,8 +258,7 @@ const getAlbums = (albumsDir: string) => async (
 
 const getPages = async (
   pagesGlob: string,
-  albumsGlob: string,
-  contentDir: string
+  albumsGlob: string
 ): Promise<Page[]> => {
   const files = await globby(pagesGlob, { ignore: albumsGlob });
   return Promise.all(files.map(async (file: string) => getPageContent(file)));
@@ -281,11 +280,9 @@ export const initCachePurger = (config: Config): void => {
   imagesMonitor.on('unlink', removeImageFromTagCache);
 };
 
-export const getDataforTag = async (
-  config: Config,
-  tagSlug: string
-): Promise<TagApiData> => {
-  const tagIndex = getIndexOfTagInCache(tagSlug, caches.tagCache as TagCache);
+export const getDataforTag = async (tagSlug: string): Promise<TagApiData> => {
+  const cache = caches.tagCache as TagCache;
+  const tagIndex = getIndexOfTagInCache(tagSlug, cache);
 
   if (tagIndex === -1) {
     log('No cache data available for tag slug "%s".', tagSlug);
@@ -303,11 +300,7 @@ export default async (config: Config): Promise<Data> => {
   const patterns = util.getGlobPatterns(config);
   const albumFiles = await globby(patterns.albums);
   const albums = await Promise.all(albumFiles.map(getAlbums(config.albumsDir)));
-  const pages = await getPages(
-    patterns.pages,
-    patterns.albums,
-    config.contentDir
-  );
+  const pages = await getPages(patterns.pages, patterns.albums);
   const tags = caches.tagCache as TagCache;
 
   log('Albums: %O', albums);

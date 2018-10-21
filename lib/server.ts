@@ -60,7 +60,7 @@ export default async (router?: express.Router): Promise<Server> => {
     imageDataHandler(config)
   );
 
-  server.get('/data/tag/(:tag).json', tagDataHandler(config));
+  server.get('/data/tag/(:tag).json', tagDataHandler);
 
   server.get('/data/(:page).json', pageDataHandler(config));
 
@@ -69,7 +69,7 @@ export default async (router?: express.Router): Promise<Server> => {
   }
 
   // tslint:disable-next-line no-unnecessary-callback-wrapper
-  server.get('*', (req: express.Request, res: express.Response) =>
+  server.get('*', async (req: express.Request, res: express.Response) =>
     handle(req, res)
   );
 

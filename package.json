@@ -82,9 +82,11 @@
     "phox": "./bin/phox.js"
   },
   "devDependencies": {
+    "@types/debug": "0.0.31",
     "@types/jest": "22.2.2",
     "@types/request": "2.0.3",
     "@types/request-promise": "4.1.37",
+    "debug": "4.1.0",
     "eslint": "4.6.1",
     "eslint-config-airbnb": "15.1.0",
     "eslint-plugin-import": "2.7.0",

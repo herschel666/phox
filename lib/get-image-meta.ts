@@ -2,6 +2,7 @@ import { createReadStream } from 'fs';
 import { ExifImage, TYPE_NO_EXIF_SEGMENT, Exif, ExifError } from 'exif';
 import * as marked from 'marked';
 import * as slug from 'slug';
+import * as debug from 'debug';
 import nodeIptc = require('node-iptc');
 import getImageSize = require('probe-image-size');
 import { decode } from 'utf8';
@@ -20,6 +21,8 @@ const ORIENTATION_SQUARE = 'square';
 const ORIENTATION_LANDSCAPE = 'landscape';
 const ORIENTATION_PORTRAIT = 'portrait';
 const NO_EXIF_SEGMENT: TYPE_NO_EXIF_SEGMENT = 'NO_EXIF_SEGMENT';
+
+const log = debug('phox:getimage-meta');
 
 const isError = (err: ExifError) => err && err.code !== NO_EXIF_SEGMENT;
 
@@ -130,10 +133,13 @@ const getDetailsFromMeta = (
 });
 
 export default async (filePath: string): Promise<PhotoMeta> => {
+  log('Get image met for file "%s".', filePath);
+
   const [exif, iptc, dimensions] = await Promise.all([
     getExifData(filePath),
     getIptcData(filePath),
     getDimensions(filePath),
   ]);
+
   return getDetailsFromMeta(exif, iptc, dimensions);
 };

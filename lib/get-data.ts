@@ -3,6 +3,7 @@ import { watch } from 'chokidar';
 import fm = require('front-matter');
 import * as marked from 'marked';
 import * as globby from 'globby';
+import * as debug from 'debug';
 import * as util from './util';
 import getImageMeta from './get-image-meta';
 import {
@@ -29,6 +30,8 @@ type TagCache = TagApiData[];
 interface Caches {
   [cacheType: string]: PageCache | ImageCache | TagCache;
 }
+
+const log = debug('phox:get-data');
 
 const caches: Caches = {
   pageCache: {},
@@ -84,6 +87,8 @@ const removeFromCache = <T>(
     return;
   }
 
+  log('Purge cache for file "%s".', filePath);
+
   allCaches[cacheType] = Object.keys(cacheObject)
     .filter((f: string): boolean => f !== relativeFilePath)
     .reduce(
@@ -95,8 +100,10 @@ const removeFromCache = <T>(
     );
 };
 
-const addImageToTagCache = (image: Image): TagCache =>
-  image.meta.tags.reduce(
+const addImageToTagCache = (image: Image): TagCache => {
+  log('Add image "%s" to cache.', image.filePath);
+
+  return image.meta.tags.reduce(
     (acc: TagCache, tag: Tag): TagCache => {
       const tagIndex = getIndexOfTagInCache(tag.slug, acc);
 
@@ -125,6 +132,7 @@ const addImageToTagCache = (image: Image): TagCache =>
     },
     [...(caches.tagCache as TagCache)]
   );
+};
 
 const removeImageFromTagCache = (filePath: string): void => {
   if (!filePath.endsWith('.jpg')) {
@@ -133,6 +141,8 @@ const removeImageFromTagCache = (filePath: string): void => {
   const relativeFilePath = util.stripSlashes(
     filePath.replace(process.cwd(), '')
   );
+
+  log('Remove image "%s" from cache.', filePath);
 
   caches.tagCache = sortTagCacheAlphabetically(
     (caches.tagCache as TagCache).reduce(
@@ -193,6 +203,9 @@ export const getImages = async (
   const pattern = path.join('static', albumsDir, albumName, '*.jpg');
   const files = await globby(pattern);
   const images = files.map(getDataForImage(albumsDir, albumName));
+
+  log('Retrieved %d images for pattern "%s".', images.length, pattern);
+
   return Promise.all(images.map(getMetaFromImage));
 };
 
@@ -200,9 +213,12 @@ export const getPageContent = async (
   pagePath: string,
   pathPrefix: string = ''
 ): Promise<Page> => {
+  log('Requesting page "%s"...', pagePath);
+
   const strippedPagePath = util.stripSlashes(pagePath);
   const pageCache = caches.pageCache as PageCache;
   if (pageCache[strippedPagePath]) {
+    log('Serve page from cache.', pagePath);
     return pageCache[strippedPagePath];
   }
 
@@ -218,30 +234,39 @@ export const getPageContent = async (
       name: name === 'content' ? 'frontpage' : name,
     },
   };
+
+  log('Freshly fetched page from the file system.');
+
   return caches.pageCache[strippedPagePath];
 };
 
 const getAlbums = (albumsDir: string) => async (
   albumFile: string
 ): Promise<Album> => {
+  log('Requesting album "%s".', albumFile);
+
   const albumName = getDirName(albumFile);
   const [content, images] = await Promise.all([
     getPageContent(albumFile, `${albumsDir}/`),
     getImages(albumsDir, albumName),
   ]);
+
+  log('Found %d images for album "%s".', images.length, content.meta.title);
+
   return { content, images };
 };
 
 const getPages = async (
   pagesGlob: string,
-  albumsGlob: string,
-  contentDir: string
+  albumsGlob: string
 ): Promise<Page[]> => {
   const files = await globby(pagesGlob, { ignore: albumsGlob });
   return Promise.all(files.map(async (file: string) => getPageContent(file)));
 };
 
 export const initCachePurger = (config: Config): void => {
+  log('Initialize cache purger.');
+
   const { pages } = util.getGlobPatterns(config);
   const images = path.join('static', config.albumsDir, '**/*.jpg');
   const pagesMonitor = watch(pages);
@@ -255,28 +280,32 @@ export const initCachePurger = (config: Config): void => {
   imagesMonitor.on('unlink', removeImageFromTagCache);
 };
 
-export const getDataforTag = async (
-  config: Config,
-  tagSlug: string
-): Promise<TagApiData> => {
-  const tagIndex = getIndexOfTagInCache(tagSlug, caches.tagCache as TagCache);
+export const getDataforTag = async (tagSlug: string): Promise<TagApiData> => {
+  const cache = caches.tagCache as TagCache;
+  const tagIndex = getIndexOfTagInCache(tagSlug, cache);
 
   if (tagIndex === -1) {
+    log('No cache data available for tag slug "%s".', tagSlug);
     return;
   }
 
-  return (caches.tagCache as TagCache)[tagIndex];
+  log('Found tag "%s" in cache.', cache[tagIndex].title);
+
+  return cache[tagIndex];
 };
 
 export default async (config: Config): Promise<Data> => {
+  log('Retrieving complete site data.');
+
   const patterns = util.getGlobPatterns(config);
   const albumFiles = await globby(patterns.albums);
   const albums = await Promise.all(albumFiles.map(getAlbums(config.albumsDir)));
-  const pages = await getPages(
-    patterns.pages,
-    patterns.albums,
-    config.contentDir
-  );
+  const pages = await getPages(patterns.pages, patterns.albums);
   const tags = caches.tagCache as TagCache;
+
+  log('Albums: %O', albums);
+  log('Pages: %O', pages);
+  log('Tags: %O', tags);
+
   return { albums, pages, tags };
 };

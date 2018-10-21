@@ -1,4 +1,5 @@
 import * as globby from 'globby';
+import * as debug from 'debug';
 import { getGlobPatterns, getAlbumLinkProps } from '../util';
 import { getPageContent } from '../get-data';
 import {
@@ -7,6 +8,8 @@ import {
   FrontpageApiData,
   Page,
 } from '../definitions/global';
+
+const log = debug('phox:handlers:frontpage');
 
 export const getFrontpageApiData = async (
   config: Config
@@ -29,6 +32,8 @@ export const getFrontpageApiData = async (
 };
 
 export default (config: Config): RequestHandler => async (_, res) => {
+  log('Render frontpage view.');
+
   const data = await getFrontpageApiData(config);
   res.json(data);
 };

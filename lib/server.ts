@@ -10,6 +10,11 @@ import albumDataHandler from './handlers/album-data';
 import tagDataHandler from './handlers/tag-data';
 import imageDataHandler from './handlers/image-data';
 import { Server } from './definitions/global';
+import * as debug from 'debug';
+
+const log = debug('phox:server');
+
+log('Starting phox server.');
 
 export default async (router?: express.Router): Promise<Server> => {
   const config = getConfig();
@@ -22,6 +27,8 @@ export default async (router?: express.Router): Promise<Server> => {
 
   await app.prepare();
   const server = express();
+
+  log('Seting up routes.');
 
   server.get('/', commonHandler(app, '/index'));
 
@@ -53,7 +60,7 @@ export default async (router?: express.Router): Promise<Server> => {
     imageDataHandler(config)
   );
 
-  server.get('/data/tag/(:tag).json', tagDataHandler(config));
+  server.get('/data/tag/(:tag).json', tagDataHandler);
 
   server.get('/data/(:page).json', pageDataHandler(config));
 
@@ -61,11 +68,10 @@ export default async (router?: express.Router): Promise<Server> => {
     server.use('/', router);
   }
 
-  // tslint:disable-next-line:no-unnecessary-callback-wrapper
-  server.get('*', (req: express.Request, res: express.Response) => {
-    // tslint:disable-next-line:no-floating-promises
-    handle(req, res);
-  });
+  // tslint:disable-next-line no-unnecessary-callback-wrapper
+  server.get('*', async (req: express.Request, res: express.Response) =>
+    handle(req, res)
+  );
 
   return { server, app };
 };

@@ -5,6 +5,7 @@ set -ev
 EMPTY=""
 
 yarn run clean
+yarn fmt:ci
 yarn run lint:phox
 yarn run lint:examples
 if [[ "${TEST_TYPE:-$EMPTY}" == "" ]]; then

@@ -17,7 +17,6 @@
     "no-http-string": false,
     "no-relative-imports": [0],
     "no-require-imports": false,
-    "no-unused-variable": [true, { "ignore-pattern": "^React$" }],
     "no-var-requires": false,
     "ordered-imports": false,
     "prefer-type-cast": false,
@@ -54,6 +53,7 @@
     "newline-before-return": false,
     "no-multiline-string": false,
     "await-promise": false,
-    "no-implicit-dependencies": [true, "dev"]
+    "no-implicit-dependencies": [true, "dev"],
+    "no-console": [true, "log", "info"]
   }
 }

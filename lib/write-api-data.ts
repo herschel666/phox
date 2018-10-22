@@ -107,10 +107,12 @@ const writeTagsData = async (
   tags: TagApiData[]
 ): Promise<void[]> =>
   Promise.all(
-    tags.map(async (tag: TagApiData): Promise<void> => {
-      const destination = path.join(tagFolder, `${tag.slug}.json`);
-      await writeData<TagApiData>(destination, tag);
-    })
+    tags.map(
+      async (tag: TagApiData): Promise<void> => {
+        const destination = path.join(tagFolder, `${tag.slug}.json`);
+        await writeData<TagApiData>(destination, tag);
+      }
+    )
   );
 
 export default async (config: Config): Promise<void> => {

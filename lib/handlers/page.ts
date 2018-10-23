@@ -17,8 +17,11 @@ export default (
     ignore: globPatterns.albums,
   });
   const pageNames: string[] = pages
-    .map((pathname: string): string =>
-      pathname.replace(`${config.contentDir}/`, '').replace(/\/?index\.md$/, '')
+    .map(
+      (pathname: string): string =>
+        pathname
+          .replace(`${config.contentDir}/`, '')
+          .replace(/\/?index\.md$/, '')
     )
     .filter(Boolean);
   if (!pageNames.includes(req.params.page)) {

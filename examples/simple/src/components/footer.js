@@ -75,7 +75,9 @@ export default () => (
       <span className="item">
         <a href="https://npm.im/phox" target="_blank" rel="noopener noreferrer">
           Built with phox
-        </a>&nbsp;<span aria-label="Fox emoji" role="img" className="fox">
+        </a>
+        &nbsp;
+        <span aria-label="Fox emoji" role="img" className="fox">
           🦊
         </span>
       </span>

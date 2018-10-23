@@ -96,10 +96,11 @@ const minifyImages = async () => {
   const folder = path.join(outDir, 'static', config.albumsDir);
   const albums = await globby(path.join(folder, '*'));
   await Promise.all(
-    albums.map(async (album: string): Promise<void> =>
-      imagemin([path.join(album, '*.{jpg,png}')], album, {
-        plugins,
-      })
+    albums.map(
+      async (album: string): Promise<void> =>
+        imagemin([path.join(album, '*.{jpg,png}')], album, {
+          plugins,
+        })
     )
   );
 };

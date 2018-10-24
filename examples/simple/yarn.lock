@@ -5543,10 +5543,10 @@ performance-now@^2.1.0:
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
-phox@0.6.0-rc.1:
-  version "0.6.0-rc.1"
-  resolved "https://registry.yarnpkg.com/phox/-/phox-0.6.0-rc.1.tgz#974d5d690dd7c424296c2c788675d850370f2456"
-  integrity sha512-un895Glu0AWyICyKTCH4FJAUnAvJ1iTIBO6Jm/5D410lCnXGUphUrRxJu2xWeepyEocVtli7oIppcrNjiCLV2Q==
+phox@0.6.0-rc.3:
+  version "0.6.0-rc.3"
+  resolved "https://registry.yarnpkg.com/phox/-/phox-0.6.0-rc.3.tgz#1115f964d13fbd605e7b7c511233c39b81ecb4fa"
+  integrity sha512-z1byIxBw89it4dggXxy0Mvoh70hdlaDI3Thhh7Nw8H60yQmlw8qAOTBDRgcVMDqJUbEC5lyOi8EnmRnlaCEv4A==
   dependencies:
     chokidar "1.7.0"
     deepmerge "^1.5.1"

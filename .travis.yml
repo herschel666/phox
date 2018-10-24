@@ -14,6 +14,8 @@ install:
   - yarn
   - yarn --cwd examples/simple/
 
+after_install: yarn jest --clearCache
+
 notifications:
   email: false
 

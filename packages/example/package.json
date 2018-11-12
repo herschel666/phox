@@ -1,6 +1,6 @@
 {
-  "name": "phox-examples-simple",
-  "version": "0.1.0",
+  "name": "phox-example",
+  "private": true,
   "description": "A simple phox site",
   "main": "server.js",
   "scripts": {
@@ -15,7 +15,7 @@
   "dependencies": {
     "isomorphic-fetch": "2.2.1",
     "next": "5.1.0",
-    "phox": "0.4.0",
+    "phox": "latest",
     "prop-types": "15.6.1",
     "react": "16.3.0",
     "react-dom": "16.3.0"

@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as next from 'next';
 import getConfig from './config';
-import { initCachePurger } from './get-data';
+import getData, { initCachePurger } from './get-data';
 import commonHandler from './handlers/common';
 import pageHandler from './handlers/page';
 import pageDataHandler from './handlers/page-data';
@@ -25,7 +25,7 @@ export default async (router?: express.Router): Promise<Server> => {
 
   initCachePurger(config);
 
-  await app.prepare();
+  await Promise.all([app.prepare(), getData(config)]);
   const server = express();
 
   log('Seting up routes.');

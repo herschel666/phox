@@ -8,12 +8,12 @@ const log = debug('phox:handlers:page');
 export const getPageApiData = async (
   config: Config,
   page: string
-): Promise<PageApiData | null> => {
+): Promise<PageApiData | void> => {
   const filePath = `${config.contentDir}/${page}/index.md`;
   try {
     return getPageContent(filePath);
   } catch {
-    return null;
+    return;
   }
 };
 

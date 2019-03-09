@@ -1,4 +1,3 @@
-import * as globby from 'globby';
 import * as debug from 'debug';
 import { getGlobPatterns, getAlbumLinkProps } from '../util';
 import { getPageContent } from '../get-data';
@@ -8,6 +7,9 @@ import {
   FrontpageApiData,
   Page,
 } from '../definitions/global';
+
+// TOOD: use ESModule syntax
+const globby = require('globby');
 
 const log = debug('phox:handlers:frontpage');
 

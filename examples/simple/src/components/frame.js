@@ -7,31 +7,33 @@ import Header from './header';
 
 const Frame = ({ title, headline, description, children }) => (
   <div>
-    <style jsx>{`
-      .frame {
-        display: flex;
-        flex-direction: column;
-        justify-content: stretch;
-        flex: 1;
-        min-height: 100vh;
-        flex-grow: 1;
-      }
-
-      main {
-        width: calc(100% - 36px);
-        max-width: ${MAX_WIDTH};
-        padding: 18px 0;
-        margin: 0 18px;
-        flex: 1;
-      }
-
-      @media screen and (min-width: ${BREAKPOINT_MEDIUM}) {
-        main {
-          margin-left: auto;
-          margin-right: auto;
+    <style jsx>
+      {`
+        .frame {
+          display: flex;
+          flex-direction: column;
+          justify-content: stretch;
+          flex: 1;
+          min-height: 100vh;
+          flex-grow: 1;
         }
-      }
-    `}</style>
+
+        main {
+          width: calc(100% - 36px);
+          max-width: ${MAX_WIDTH};
+          padding: 18px 0;
+          margin: 0 18px;
+          flex: 1;
+        }
+
+        @media screen and (min-width: ${BREAKPOINT_MEDIUM}) {
+          main {
+            margin-left: auto;
+            margin-right: auto;
+          }
+        }
+      `}
+    </style>
     <Head>
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="icon" type="image/ico" href="/static/favicon.ico" />
@@ -47,9 +49,7 @@ const Frame = ({ title, headline, description, children }) => (
   </div>
 );
 
-Frame.defaultProps = {
-  description: null,
-};
+Frame.defaultProps = { description: null };
 
 Frame.propTypes = {
   title: PropTypes.string.isRequired,

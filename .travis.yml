@@ -7,12 +7,14 @@ cache:
     - examples/simple/node_modules
 
 before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.5.1
+  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.13.0
   - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
   - yarn
   - yarn --cwd examples/simple/
+
+script: npm test
 
 notifications:
   email: false

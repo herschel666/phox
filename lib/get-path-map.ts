@@ -1,17 +1,19 @@
 import { join, basename, dirname } from 'path';
-import * as globby from 'globby';
 import * as debug from 'debug';
 import getConfig from './config';
 import { getGlobPatterns } from './util';
 import getData from './get-data';
 import { ExportPathMap, TagApiData } from './definitions/global';
 
+// TOOD: use ESModule syntax
+const globby = require('globby');
+
 const log = debug('phox:get-path-map');
 
 const removeSlashes = (str: string): string => str.replace(/^\/|\/$/g, '');
 
-const getPaths = async (prefix: string, pattern: string, ignore?: string) => {
-  const paths = await globby(pattern, ignore ? { ignore } : null);
+const getPaths = async (prefix: string, pattern: string, ignore?: string[]) => {
+  const paths = await globby(pattern, ignore ? { ignore } : undefined);
   return (
     paths
       .map(dirname)
@@ -109,11 +111,9 @@ export default async (): Promise<ExportPathMap> => {
     patterns.albums
   );
   const imagePaths = await getImagePaths(imagesPattern, conf.albumsDir);
-  const pagePaths = await getPaths(
-    conf.contentDir,
-    patterns.pages,
-    patterns.albums
-  );
+  const pagePaths = await getPaths(conf.contentDir, patterns.pages, [
+    patterns.albums,
+  ]);
   const pagePathsExceptIndex = pagePaths.filter(
     (x: string) => x !== `/${conf.contentDir}/`
   );

@@ -2,7 +2,6 @@ import * as path from 'path';
 import { watch } from 'chokidar';
 import fm = require('front-matter');
 import * as marked from 'marked';
-import * as globby from 'globby';
 import * as debug from 'debug';
 import * as util from './util';
 import getImageMeta from './get-image-meta';
@@ -16,6 +15,9 @@ import {
   Tag,
   TagApiData,
 } from './definitions/global';
+
+// TOOD: use ESModule syntax
+const globby = require('globby');
 
 interface PageCache {
   [pagePath: string]: Page;
@@ -206,7 +208,7 @@ export const getImages = async (
 
   log('Retrieved %d images for pattern "%s".', images.length, pattern);
 
-  return Promise.all(images.map(getMetaFromImage));
+  return Promise.all<Image>(images.map(getMetaFromImage));
 };
 
 export const getPageContent = async (
@@ -260,8 +262,10 @@ const getPages = async (
   pagesGlob: string,
   albumsGlob: string
 ): Promise<Page[]> => {
-  const files = await globby(pagesGlob, { ignore: albumsGlob });
-  return Promise.all(files.map(async (file: string) => getPageContent(file)));
+  const files = await globby(pagesGlob, { ignore: [albumsGlob] });
+  return Promise.all<Page>(
+    files.map(async (file: string) => getPageContent(file))
+  );
 };
 
 export const initCachePurger = (config: Config): void => {
@@ -299,7 +303,9 @@ export default async (config: Config): Promise<Data> => {
 
   const patterns = util.getGlobPatterns(config);
   const albumFiles = await globby(patterns.albums);
-  const albums = await Promise.all(albumFiles.map(getAlbums(config.albumsDir)));
+  const albums = await Promise.all<Album>(
+    albumFiles.map(getAlbums(config.albumsDir))
+  );
   const pages = await getPages(patterns.pages, patterns.albums);
   const tags = caches.tagCache as TagCache;
 

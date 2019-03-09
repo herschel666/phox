@@ -8,22 +8,22 @@ const TagLink = ({ slug, title }) => {
       pathname: '/tag',
       query: { tag: slug },
     },
-    as: {
-      pathname: `/tag/${slug}/`,
-    },
+    as: { pathname: `/tag/${slug}/` },
   };
 
   return (
     <span>
-      <style jsx>{`
-        span::after {
-          content: ' · ';
-        }
+      <style jsx>
+        {`
+          span::after {
+            content: ' · ';
+          }
 
-        span:last-child::after {
-          content: '';
-        }
-      `}</style>
+          span:last-child::after {
+            content: '';
+          }
+        `}
+      </style>
       <Link {...linkProps}>
         <a>{title}</a>
       </Link>

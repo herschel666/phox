@@ -1,6 +1,9 @@
 {
   "rulesDirectory": ["./node_modules/tslint-microsoft-contrib"],
-  "extends": "tslint-microsoft-contrib/recommended_ruleset",
+  "extends": [
+    "tslint-microsoft-contrib/recommended_ruleset",
+    "tslint-config-prettier"
+  ],
   "rules": {
     "align": [true, "parameters", "statements"],
     "export-name": [0],

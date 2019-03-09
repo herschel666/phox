@@ -3,33 +3,39 @@ import PropTypes from 'prop-types';
 import Link from 'next/link';
 import * as types from '../prop-types';
 
-const FrontpageTile = props => (
-  <li>
-    <style jsx>{`
-      li {
-        margin: 9px;
-        list-style: none;
-        display: inline-block;
-      }
+const FrontpageTile = ({ title, banner, linkProps }) => {
+  const { href, as } = linkProps;
 
-      figure {
-        margin: 0;
-      }
-    `}</style>
-    <figure>
-      <Link {...props.linkProps}>
-        <a>
-          <img src={props.banner} alt={`Album "${props.title}"`} />
-        </a>
-      </Link>
-      <figcaption>
-        <Link {...props.linkProps}>
-          <a>{props.title}</a>
+  return (
+    <li>
+      <style jsx>
+        {`
+          li {
+            margin: 9px;
+            list-style: none;
+            display: inline-block;
+          }
+
+          figure {
+            margin: 0;
+          }
+        `}
+      </style>
+      <figure>
+        <Link href={href} as={as}>
+          <a>
+            <img src={banner} alt={`Album "${title}"`} />
+          </a>
         </Link>
-      </figcaption>
-    </figure>
-  </li>
-);
+        <figcaption>
+          <Link href={href} as={as}>
+            <a>{title}</a>
+          </Link>
+        </figcaption>
+      </figure>
+    </li>
+  );
+};
 
 FrontpageTile.propTypes = {
   linkProps: types.linkProps.isRequired,

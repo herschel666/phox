@@ -5,8 +5,6 @@ import { readFileSync, stat } from 'fs';
 import { spawn, exec, ChildProcess } from 'child_process';
 import { promisify } from 'util';
 import * as rimraf from 'rimraf';
-import * as delay from 'delay';
-import * as globby from 'globby';
 import * as prettyMs from 'pretty-ms';
 import * as minimist from 'minimist';
 import imagemin = require('imagemin');
@@ -15,6 +13,10 @@ import imageminPngquant = require('imagemin-pngquant');
 import getConfig from '../lib/config';
 import writeApiData from '../lib/write-api-data';
 import { log } from '../lib/util';
+
+// TOOD: use ESModule syntax
+const globby = require('globby');
+const wait = require('waait');
 
 interface Main {
   server?: ChildProcess | null;
@@ -117,7 +119,7 @@ const serverJsExists = async (): Promise<boolean> => {
 process.env.NODE_ENV = 'production';
 
 const main = async (): Promise<Main> => {
-  let server = null;
+  let server;
   try {
     const hasServerJs = await serverJsExists();
     if (!hasServerJs) {
@@ -135,7 +137,7 @@ const main = async (): Promise<Main> => {
     log('Starting the dev-server ...');
     server = spawn('node', [config.server]);
 
-    await delay(1000);
+    await wait(1000);
 
     log('Exporting the site ...');
     await pExec(`npx next export -o ${outDir}`);
@@ -169,7 +171,7 @@ const checkResult = ({ server, error }: Main): CheckResult => {
 const killServer = async ({ server, exitCode }: CheckResult): Promise<void> => {
   if (server) {
     process.kill(server.pid);
-    await new Promise(innerResolve => server.on('close', innerResolve));
+    await new Promise((innerResolve) => server.on('close', innerResolve));
   }
   process.exit(exitCode);
 };

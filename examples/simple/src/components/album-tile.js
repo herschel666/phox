@@ -7,39 +7,37 @@ const AlbumTile = ({ linkProps, src, title, width, height }) => {
   const ratio = height / width;
   return (
     <li>
-      <style jsx>{`
-        li {
-          margin: 36px 0;
-          list-style: none;
-        }
+      <style jsx>
+        {`
+          li {
+            margin: 36px 0;
+            list-style: none;
+          }
 
-        figure {
-          margin: 0;
-        }
+          figure {
+            margin: 0;
+          }
 
-        a {
-          display: block;
-          position: relative;
-          overflow: hidden;
-          width: 100%;
-          height: 0;
-        }
+          a {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 0;
+          }
 
-        img {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-        }
-      `}</style>
+          img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+          }
+        `}
+      </style>
       <figure>
         <Link {...linkProps}>
-          <a
-            style={{
-              paddingTop: `${(ratio * 100).toFixed(6)}%`,
-            }}
-          >
+          <a style={{ paddingTop: `${(ratio * 100).toFixed(6)}%` }}>
             <img src={src} alt={title} />
           </a>
         </Link>

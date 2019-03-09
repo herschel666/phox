@@ -60,8 +60,8 @@ const getIptcData = async (filePath: string): Promise<Meta> => {
 
 const getDimensions = async (filePath: string): Promise<Dimensions> => {
   const input = createReadStream(filePath);
-  let orientation: Orientation = null;
-  let size = null;
+  let orientation: Orientation;
+  let size;
   try {
     size = await getImageSize(input);
     const { width, height } = size;
@@ -121,13 +121,17 @@ const getDetailsFromMeta = (
   description: marked(decode(iptc.caption || '')),
   createdAt: iptc.date_created
     ? getCreationDateFromString(iptc.date_created)
-    : null,
+    : undefined,
   camera: exif.image.Model || '',
   lens: exif.exif.LensModel || '',
-  iso: exif.exif.ISO ? Number(exif.exif.ISO) : null,
-  aperture: exif.exif.FNumber ? exif.exif.FNumber.toFixed(1) : null,
-  focalLength: exif.exif.FocalLength ? exif.exif.FocalLength.toFixed(1) : null,
-  exposureTime: exif.exif.ExposureTime ? Number(exif.exif.ExposureTime) : null,
+  iso: exif.exif.ISO ? Number(exif.exif.ISO) : undefined,
+  aperture: exif.exif.FNumber ? exif.exif.FNumber.toFixed(1) : undefined,
+  focalLength: exif.exif.FocalLength
+    ? exif.exif.FocalLength.toFixed(1)
+    : undefined,
+  exposureTime: exif.exif.ExposureTime
+    ? Number(exif.exif.ExposureTime)
+    : undefined,
   flash: Boolean(exif.exif.Flash),
   gps: coordToDecimal(exif.gps),
 });

@@ -18,10 +18,10 @@ export const getImageSibling = (
   images: Image[],
   imageIndex: number,
   direction: number
-): PageRef | null => {
+): PageRef | void => {
   const siblingIndex = imageIndex + direction;
   if (siblingIndex === -1 || siblingIndex === images.length) {
-    return null;
+    return;
   }
   const sibling = images[siblingIndex];
   return {
@@ -34,21 +34,21 @@ export const getImageApiData = async (
   config: Config,
   albumName: string,
   imageName: string
-): Promise<ImageApiData | null> => {
+): Promise<ImageApiData | void> => {
   const albumDir = path.join(config.contentDir, config.albumsDir, albumName);
   const album = await getPageContent(
     `${albumDir}/index.md`,
     `${config.albumsDir}/`
   );
   if (!album) {
-    return null;
+    return;
   }
   const images = await getImages(config.albumsDir, albumName);
   const image = images.find(
     ({ fileName }: Image) => fileName.split('.').shift() === imageName
   );
   if (!image) {
-    return null;
+    return;
   }
   const imageIndex = images.indexOf(image);
   const prev = getImageSibling(

@@ -16,49 +16,47 @@ const Image = ({ image, back, next, prev }) => {
       title={`Photo "${titleWithFallback(image.meta.title)}" :: phox`}
       headline={titleWithFallback(image.meta.title)}
     >
-      <style jsx>{`
-        figure {
-          margin: 36px 0 0 0;
-        }
+      <style jsx>
+        {`
+          figure {
+            margin: 36px 0 0 0;
+          }
 
-        span {
-          display: block;
-          position: relative;
-          overflow: hidden;
-          width: 100%;
-          height: 0;
-        }
+          span {
+            display: block;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+            height: 0;
+          }
 
-        img {
-          position: absolute;
-          top: 0;
-          right: 0;
-          bottom: 0;
-          left: 0;
-        }
+          img {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+          }
 
-        dl {
-          padding-top: 14px;
-          border-top: 1px solid #ccc;
-          font-size: 14px;
-        }
+          dl {
+            padding-top: 14px;
+            border-top: 1px solid #ccc;
+            font-size: 14px;
+          }
 
-        dt,
-        dd {
-          display: inline;
-        }
+          dt,
+          dd {
+            display: inline;
+          }
 
-        dt::after {
-          content: ': ';
-        }
-      `}</style>
+          dt::after {
+            content: ': ';
+          }
+        `}
+      </style>
       <ImageNav {...{ back, prev, next }} />
       <figure>
-        <span
-          style={{
-            paddingTop: `${(ratio * 100).toFixed(6)}%`,
-          }}
-        >
+        <span style={{ paddingTop: `${(ratio * 100).toFixed(6)}%` }}>
           <img src={`/${image.filePath}`} alt={image.meta.title} />
         </span>
         {image.meta.description && (
@@ -71,7 +69,7 @@ const Image = ({ image, back, next, prev }) => {
         <dl>
           <dt>Tags</dt>
           <dd>
-            {image.meta.tags.map(tag => (
+            {image.meta.tags.map((tag) => (
               <TagLink key={tag.slug} slug={tag.slug} title={tag.title} />
             ))}
           </dd>

@@ -143,8 +143,8 @@ export interface FrontpageApiData {
 
 export interface ImageApiData {
   image: Image;
-  next: PageRef;
-  prev: PageRef;
+  next: PageRef | void;
+  prev: PageRef | void;
   back: PageRef;
 }
 

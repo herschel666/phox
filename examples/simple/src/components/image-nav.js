@@ -11,36 +11,38 @@ const itemType = PropTypes.shape({
 
 const ImageNav = ({ back, prev, next }) => (
   <div>
-    <style jsx>{`
-      .back {
-        display: block;
-        margin-bottom: 18px;
-        text-align: center;
-      }
+    <style jsx>
+      {`
+        .back {
+          display: block;
+          margin-bottom: 18px;
+          text-align: center;
+        }
 
-      .prev-next {
-        display: flex;
-        justify-content: space-between;
-      }
+        .prev-next {
+          display: flex;
+          justify-content: space-between;
+        }
 
-      b {
-        font-weight: normal;
-      }
+        b {
+          font-weight: normal;
+        }
 
-      .prev b::before {
-        content: '«';
-        padding-right: 4px;
-      }
+        .prev b::before {
+          content: '«';
+          padding-right: 4px;
+        }
 
-      .next {
-        text-align: right;
-      }
+        .next {
+          text-align: right;
+        }
 
-      .next b::after {
-        content: '»';
-        padding-left: 4px;
-      }
-    `}</style>
+        .next b::after {
+          content: '»';
+          padding-left: 4px;
+        }
+      `}
+    </style>
     <nav>
       <span className="back">
         <Link {...back.linkProps}>

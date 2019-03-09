@@ -1,7 +1,9 @@
-import * as globby from 'globby';
 import * as debug from 'debug';
 import { getGlobPatterns } from '../util';
 import { Config, App, RequestHandler } from '../definitions/global';
+
+// TOOD: use ESModule syntax
+const globby = require('globby');
 
 const log = debug('phox:handlers:page-view');
 
@@ -14,7 +16,7 @@ export default (
 
   const globPatterns = getGlobPatterns(config);
   const pages = await globby(globPatterns.pages, {
-    ignore: globPatterns.albums,
+    ignore: [globPatterns.albums],
   });
   const pageNames: string[] = pages
     .map(

@@ -22,20 +22,13 @@ notifications:
 branches:
   only:
     - master
-    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
 
 env:
   - secure: JMS1Ajgh9W7PbLBur4LF3YjDhqZk10J6uhOBrX4HYsxLdJ8xxzCTxkExXsGIwwCbnDZv55K31wTbR5XQ23YDiACRg/UkUewabnCTnHP5A8jZTTru2thYLa4L8DbbwH4gxKig5CUfyISCla8mOi3NT44i3vv84/RFkTRnnpjbyAEEwP51sn0kHyfEwzaD2Bl4H0cHnVwqs3pq4NdJQYy14x1ETGO3iVgoaToFL+UGKZ5cSDj3yZVFvnP6mCLMcJgR/nJl0pF0soH5VfxrWJzs0R7dvUW+VUcun7LYxOtv0/KPsh5WXcZDJ2mSgEdxk+DJtOpuWNlFpxT49yH7MhIbK+rtAsjbqn55zLyQFN0HPISwZcvMPlLUOsQDXlSoUmZV3A0xEDZgz+b0LZBW2da4Av3E9/dZu+ysD5FlWlYtMdfLggs8ejE7LLEaq4+ZreBBze3UgyPB04sQYrP/FZWnU8QcBhhU04xI6AezNITa0F6EM7J0adaslIAktRlbGvJJ1excTCZBz3+Cr49KQBD5dg9JX0blo/kHvGoQANO54SZkXowXRZSTNS0wDVVmN669RfWE8VjKeQgaQcqX7DipQiz9MpA5gNejlxC3T87U4s/SLFkY3K1ef6H6fPmA0d6DuQhKP/4Vc7J83G2rpw1IOKlpHI2Cnfx5fHUZhHgCAKM=
 
 deploy:
   - provider: script
-    script: yarn semantic-release || echo "😎"
-    skip_cleanup: true
-    on:
-      branch: master
-
-  - provider: script
     script: script/deploy-simple-example
     skip_cleanup: true
     on:
-      tags: true
+      branch: master

@@ -38,7 +38,7 @@ What **phox** doesn't provide is any kind of React views. It equips you with a w
 Install the requirements:
 
 ```shell
-$ npm install phox --save
+$ npm install phox next react react-dom --save
 ```
 
 Add a `scripts`-block to your `package.json`, like …

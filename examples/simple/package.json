@@ -15,7 +15,7 @@
   "dependencies": {
     "isomorphic-fetch": "^2.2.1",
     "next": "^8.0.3",
-    "phox": "0.6.0-rc.3",
+    "phox": "0.6.0-rc.4",
     "prop-types": "^15.6.1",
     "react": "^16.6.0",
     "react-dom": "^16.6.0"

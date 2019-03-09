@@ -10,7 +10,7 @@ yarn
 cp ../../index.js node_modules/phox/
 cp -fRv ../../lib node_modules/phox/
 cp -fRv ../../bin node_modules/phox/
-node ./node_modules/phox/bin/phox
+PHOX_BUILD_ID=snapshot  node ./node_modules/phox/bin/phox
 npx serve -l 9999 > /dev/null 2>&1 &
 PID=$!
 sleep 5

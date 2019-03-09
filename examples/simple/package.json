@@ -13,14 +13,14 @@
   "author": "Emanuel Kluge (https://www.emanuel-kluge.de/)",
   "license": "MIT",
   "dependencies": {
-    "isomorphic-fetch": "2.2.1",
-    "next": "6.1.1",
+    "isomorphic-fetch": "^2.2.1",
+    "next": "^8.0.3",
     "phox": "0.6.0-rc.3",
-    "prop-types": "15.6.1",
-    "react": "16.3.0",
-    "react-dom": "16.3.0"
+    "prop-types": "^15.6.1",
+    "react": "^16.6.0",
+    "react-dom": "^16.6.0"
   },
   "devDependencies": {
-    "serve": "10.0.2"
+    "serve": "^10.0.2"
   }
 }

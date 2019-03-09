@@ -265,7 +265,7 @@ Emanuel Kluge ([@Herschel_R](https://twitter.com/Herschel_R))
 
 ## LICENSE
 
-Copyright 2017 Emanuel Kluge
+Copyright 2018 Emanuel Kluge
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this
 software and associated documentation files (the "Software"), to deal in the Software

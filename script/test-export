@@ -16,11 +16,11 @@ PID=$!
 sleep 5
 cd ../..
 if [ "$1" == "-u" ]; then
-  npx jest -u --testRegex="\/export\/" || EXIT_CODE=1
+  npx jest -u export || EXIT_CODE=1
 else
-  npx jest --testRegex="\/export\/" || EXIT_CODE=1
+  npx jest export || EXIT_CODE=1
 fi
-kill $PID
+kill $PID || { echo "No process associated with pid $PID running."; }
 if [[ "$EXIT_CODE" == "1" ]]; then
   exit $EXIT_CODE
 fi

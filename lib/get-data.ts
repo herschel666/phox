@@ -10,6 +10,8 @@ import {
   Config,
   Data,
   FrontMatter,
+  FrontpageApiData,
+  FrontpageAlbum,
   Image,
   Page,
   Tag,
@@ -208,7 +210,10 @@ export const getImages = async (
 
   log('Retrieved %d images for pattern "%s".', images.length, pattern);
 
-  return Promise.all<Image>(images.map(getMetaFromImage));
+  const imagesWithMeta = await Promise.all<Image>(images.map(getMetaFromImage));
+  return imagesWithMeta.sort((a: Image, b: Image) =>
+    a.fileName.localeCompare(b.fileName)
+  );
 };
 
 export const getPageContent = async (
@@ -263,9 +268,34 @@ const getPages = async (
   albumsGlob: string
 ): Promise<Page[]> => {
   const files = await globby(pagesGlob, { ignore: [albumsGlob] });
-  return Promise.all<Page>(
+  const pages = await Promise.all<Page>(
     files.map(async (file: string) => getPageContent(file))
   );
+  return pages.sort((a: Page, b: Page) => a.name.localeCompare(b.name));
+};
+
+export const getFrontpageApiData = async (
+  config: Config
+): Promise<FrontpageApiData> => {
+  const albumList = await globby(util.getGlobPatterns(config).albums);
+  const albumData = await Promise.all(
+    albumList.map(async (albumPath: string) =>
+      getPageContent(albumPath, `${config.albumsDir}/`)
+    )
+  );
+  const albums = albumData
+    .map(({ meta, name }: Page) => ({
+      linkProps: util.getAlbumLinkProps(config.albumsDir, name),
+      meta: {
+        ...meta,
+        name,
+      },
+    }))
+    .sort((a: FrontpageAlbum, b: FrontpageAlbum) =>
+      a.meta.title.localeCompare(b.meta.title)
+    );
+  const content = await getPageContent(`${config.contentDir}/index.md`);
+  return { albums, content };
 };
 
 export const initCachePurger = (config: Config): void => {

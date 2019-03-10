@@ -18,11 +18,6 @@ const Image = ({ image, back, next, prev }) => {
     >
       <style jsx>
         {`
-          h1 {
-            text-align: center;
-            font-weight: normal;
-            font-size: 28px;
-          }
           figure {
             margin: 36px 0 0 0;
           }
@@ -60,7 +55,6 @@ const Image = ({ image, back, next, prev }) => {
         `}
       </style>
       <ImageNav {...{ back, prev, next }} />
-      <h1>{image.meta.title}</h1>
       <figure>
         <span style={{ paddingTop: `${(ratio * 100).toFixed(6)}%` }}>
           <img src={`/${image.filePath}`} alt={image.meta.title} />

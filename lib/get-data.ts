@@ -10,6 +10,8 @@ import {
   Config,
   Data,
   FrontMatter,
+  FrontpageApiData,
+  FrontpageAlbum,
   Image,
   Page,
   Tag,
@@ -266,6 +268,29 @@ const getPages = async (
   return Promise.all<Page>(
     files.map(async (file: string) => getPageContent(file))
   );
+
+export const getFrontpageApiData = async (
+  config: Config
+): Promise<FrontpageApiData> => {
+  const albumList = await globby(util.getGlobPatterns(config).albums);
+  const albumData = await Promise.all(
+    albumList.map(async (albumPath: string) =>
+      getPageContent(albumPath, `${config.albumsDir}/`)
+    )
+  );
+  const albums = albumData
+    .map(({ meta, name }: Page) => ({
+      linkProps: util.getAlbumLinkProps(config.albumsDir, name),
+      meta: {
+        ...meta,
+        name,
+      },
+    }))
+    .sort((a: FrontpageAlbum, b: FrontpageAlbum) =>
+      a.meta.title.localeCompare(b.meta.title)
+    );
+  const content = await getPageContent(`${config.contentDir}/index.md`);
+  return { albums, content };
 };
 
 export const initCachePurger = (config: Config): void => {

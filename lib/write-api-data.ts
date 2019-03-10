@@ -3,8 +3,7 @@ import { writeFile } from 'fs';
 import * as path from 'path';
 import * as mkdirp from 'mkdirp';
 import * as debug from 'debug';
-import getData from './get-data';
-import { getFrontpageApiData } from './handlers/frontpage-data';
+import getData, { getFrontpageApiData } from './get-data';
 import { getImageSibling } from './handlers/image-data';
 import { getAlbumLinkProps } from './util';
 import {

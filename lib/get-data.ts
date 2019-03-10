@@ -210,7 +210,10 @@ export const getImages = async (
 
   log('Retrieved %d images for pattern "%s".', images.length, pattern);
 
-  return Promise.all<Image>(images.map(getMetaFromImage));
+  const imagesWithMeta = await Promise.all<Image>(images.map(getMetaFromImage));
+  return imagesWithMeta.sort((a: Image, b: Image) =>
+    a.fileName.localeCompare(b.fileName)
+  );
 };
 
 export const getPageContent = async (
@@ -265,9 +268,11 @@ const getPages = async (
   albumsGlob: string
 ): Promise<Page[]> => {
   const files = await globby(pagesGlob, { ignore: [albumsGlob] });
-  return Promise.all<Page>(
+  const pages = await Promise.all<Page>(
     files.map(async (file: string) => getPageContent(file))
   );
+  return pages.sort((a: Page, b: Page) => a.name.localeCompare(b.name));
+};
 
 export const getFrontpageApiData = async (
   config: Config

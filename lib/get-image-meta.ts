@@ -5,7 +5,7 @@ import * as slug from 'slug';
 import * as debug from 'debug';
 import nodeIptc = require('node-iptc');
 import getImageSize = require('probe-image-size');
-import { decode } from 'utf8';
+import * as utf8 from 'utf8';
 import { pReadFile, sortAlphabetically } from './util';
 import {
   GPS,
@@ -32,6 +32,8 @@ const toTagData = (tag: string): Tag => ({
   slug: slug(tag),
   title: tag,
 });
+
+const decodeUtf8 = (str: string) => utf8.decode(utf8.encode(str));
 
 const getExifData = async (filePath: string): Promise<Meta> =>
   new Promise((resolve, reject) => {
@@ -112,13 +114,13 @@ const getDetailsFromMeta = (
   dimensions: Dimensions
 ): PhotoMeta => ({
   ...dimensions,
-  title: decode(iptc.object_name || ''),
+  title: decodeUtf8(iptc.object_name || ''),
   tags: (iptc.keywords || [])
-    .map(decode)
+    .map(decodeUtf8)
     .filter(Boolean)
     .sort(sortAlphabetically)
     .map(toTagData),
-  description: marked(decode(iptc.caption || '')),
+  description: marked(decodeUtf8(iptc.caption || '')),
   createdAt: iptc.date_created
     ? getCreationDateFromString(iptc.date_created)
     : undefined,

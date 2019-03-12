@@ -37,7 +37,7 @@
     "url": "https://github.com/herschel666/phox/issues"
   },
   "engines": {
-    "node": ">=9.10"
+    "node": ">=8.10"
   },
   "homepage": "https://github.com/herschel666/phox#readme",
   "dependencies": {

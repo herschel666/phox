@@ -1,6 +1,6 @@
 {
   "name": "phox",
-  "version": "0.7.0",
+  "version": "0.8.0-rc.1",
   "description": "Create a static photo site powered by Next.js",
   "keywords": [
     "next",

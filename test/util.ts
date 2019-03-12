@@ -28,5 +28,9 @@ export const url = (pathname: string): string =>
 export const ignoreThingies = (snapshot: string): string =>
   snapshot
     .replace(/\?ts=\d+/g, '?ts=now')
+    .replace(/\/dll_[^ .]+/g, '/dll_some-hash')
+    .replace(/\/main-[^ .]+/g, '/main-some-hash')
+    .replace(/\/webpack-[^ .]+/g, '/webpack-some-hash')
+    .replace(/\/commons\.[^ .]+/g, '/commons.some-hash')
     .replace(/\/\*#\ssourceMappingURL[^*]+\*\//g, '')
     .replace(/\/\*@\s?sourceURL=[^*]+\*\//g, '');

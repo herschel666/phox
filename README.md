@@ -1,5 +1,5 @@
 
-🦊 Phox
+[discontinued] 🦊 Phox
 ====
 
 > Create a static photo site powered by Next.js 🖼
@@ -8,6 +8,14 @@
 [![styled with prettier](https://img.shields.io/badge/styled_with-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 [![Current package version](https://img.shields.io/npm/v/phox.svg)](https://npm.im/phoxg)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+
+## PSA
+
+phox will be discontinued. I built this tool to be able to create a nice photo website. Today I deployed a new version of that nice photo website, which is based on [Gatsby](https://gatsbyjs.com) now. Though next.js is a great tool, it is far too basic for what I need for building a photo website. Gatsby however comes with batteries included regarding those kind of sites.
+
+If you're relying on phox (and from what the "Used by"-button at the top of this page tells me, you probably aren't… 😅) feel free to have a look at the [source of my photo website](https://github.com/herschel666/photoblog/) and get inspired for your migration to Gatsby.
+
+Cheers.
 
 ## Features
 
@@ -28,7 +36,7 @@ What **phox** doesn't provide is any kind of React views. It equips you with a w
 
 ## Built with phox 🚀
 
- - [ek|photos](https://photos.klg.bz/) — [[source](https://github.com/herschel666/photoblog/)]
+ - ~~[ek|photos](https://photos.klg.bz/) — [[source](https://github.com/herschel666/photoblog/)]~~
  - [Simple Example](https://phox.netlify.com/) — [[source](https://github.com/herschel666/phox/tree/master/examples/simple)]
 
 ## How to use

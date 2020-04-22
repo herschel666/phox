@@ -1,3 +1,4 @@
 package.json
 examples/**/out
 examples/**/.next
+packages/phox/**/*.js

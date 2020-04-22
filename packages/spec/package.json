@@ -1,0 +1,22 @@
+{
+  "name": "phox-spec",
+  "version": "0.8.0-rc.1",
+  "private": true,
+  "scripts": {
+    "test": "jest"
+  },
+  "engines": {
+    "node": ">=8.10.0"
+  },
+  "devDependencies": {
+    "@types/jest": "23.3.6",
+    "jest": "^24.5.0",
+    "phox": "*",
+    "ts-jest": "^24.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest/presets/js-with-ts",
+    "testMatch": null
+  },
+  "typings": "./typings.d.ts"
+}
